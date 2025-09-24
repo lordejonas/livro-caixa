@@ -126,6 +126,10 @@
         </style>
         <script type="text/javascript">
 
+            if (typeof navigator.serviceWorker !== 'undefined') {
+                navigator.serviceWorker.register('sw.js')
+            }
+
             function showFields(){
                 const initialState = (document.getElementById("initial-state").value === '1') ? true : false;
                 const resultField37 = document.getElementById("vf37").value;

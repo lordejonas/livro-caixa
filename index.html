@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Livro Caixa</title>
+        <!--<link rel="stylesheet" href="tablecss.css">-->
+        <style>
+
+            responsive-table {
+                display: table; /* Torna o elemento pai como uma tabela */
+                width: 100%;
+            }
+
+            .table-header, .table-row {
+                display: table-row; /* Faz com que os elementos internos sejam linhas */
+            }
+
+            .header-item-left{
+                display: table-cell; /* Torna os elementos internos como células */
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-top-left-radius :5px;
+            }
+
+            .header-item-midle{
+                display: table-cell; /* Torna os elementos internos como células */
+                padding: 8px;
+                border: 1px solid #ccc;
+                width: 100%;
+                
+            }
+
+            .header-item-right{
+                display: table-cell; /* Torna os elementos internos como células */
+                padding: 8px 45px 8px 8px;
+                border: 1px solid #ccc;
+                border-top-right-radius :5px;
+            }
+
+            .header-item-left {
+                display: table-cell; /* Torna os elementos internos como células */
+                padding: 8px;
+                border: 1px solid #ccc;
+                color: #0064b6;
+            }
+
+            .table-item-desc{
+                display: table-cell; /* Torna os elementos internos como células */
+                padding: 8px;
+                border: 1px solid #ccc;
+                width: 100%;
+                color: #0064b6;
+                font-size: large;
+            }
+
+            .table-item-val {
+                display: table-cell; /* Torna os elementos internos como células */
+                border: 1px solid #ccc;
+                width: 10%;
+            }
+
+            .table-header {
+                background-color: #0064b6;
+                font-weight: bold;
+                color: #fff;
+            }
+
+            .table-item-val, .valor{
+                display: table-cell;
+                border: 1px solid #ccc;
+                width: 69px;
+                line-height: 4em;
+                vertical-align: middle;
+                font-size: initial;
+                color: #0064b6;
+                font-size: 17px;
+            }
+
+            .chose{
+                margin-top: 5px;
+            }
+
+            .valor{
+                text-align: right;
+                border: 0;
+            }
+
+            #cbx-fields, #despesa-table, #resumo-table{
+                margin-top: 10px;
+            }
+
+            input:disabled {
+                background-color: #e0e0e0; /* A light grey background */
+                color: #0064b6; /* A lighter grey text color */
+                cursor: not-allowed; /* Changes the cursor to a "not allowed" symbol */
+                opacity: 0.7; /* Reduces the opacity to make it appear less prominent */
+            }
+
+            button{
+                background-color: #0064b6;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                color: #f56363;
+                font-size: 16px;
+                margin-top: 20px;
+                padding: 10px;
+                width: 100%;
+                font-weight: bold;
+                font-family: sans;
+            }
+
+            select{
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #fff;
+                color: #0064b6;
+                font-size: 16px;
+            }
+
+            #message{
+                color: #f56363;
+                margin-left: 10px;
+            }
+
+        </style>
+        <script type="text/javascript">
+
+            function showFields(){
+                const initialState = (document.getElementById("initial-state").value === '1') ? true : false;
+                const resultField37 = document.getElementById("vf37").value;
+                const selectElement = document.getElementById("cbx-fields");
+                if (!resultField37 && initialState){
+                    document.getElementById("message").textContent="Insira um valor no campo 20 antes de prosseguir";
+                }else{
+                    if(initialState){
+                        document.getElementById("message").textContent="";
+                        document.getElementById("vf14").value = resultField37;
+                        document.getElementById("initial-state").value = 0;
+                        document.getElementById('receita-table').style.display = 'block';
+                        document.getElementById('btn-limpar-todos').style.display = 'block';
+                    }
+                    
+                    showHeader(selectElement);
+                    
+                    document.getElementById(selectElement.value).style.display = 'block';
+                    document.getElementById('btn-consolidar').style.display = 'block';
+                    
+                    const selectedValField = document.getElementById('vf'+selectElement.value.split("-")[1]);
+                    hideAllBlank(selectedValField);
+                    if(initialState && !receitaAnyPadding(selectedValField))
+                        document.getElementById('receita-table').style.display = 'none';
+                    if(!despesaAnyPadding(selectedValField))
+                        document.getElementById('despesa-table').style.display = 'none';
+                    if(!resumoSituacaoCaixaAnyPadding(selectedValField))
+                        document.getElementById('resumo-table').style.display = 'none';
+                }
+                selectElement.value = 'field-0';
+               
+            }
+            
+            function showHeader(selectElement){
+                document.getElementById('reuniao-passada-table').style.display = 'none';
+                const valueSelected = parseInt(selectElement.value.split("-")[1]);
+                if(valueSelected > 0 && valueSelected < 16)
+                    document.getElementById('receita-table').style.display = 'block';
+                else if(valueSelected > 15 && valueSelected < 27 )
+                    document.getElementById('despesa-table').style.display = 'block';
+                else
+                    document.getElementById('resumo-table').style.display = 'block';
+            }
+
+            function hideBasics(focusField){
+                document.getElementById('field-6').style.display = 'none';
+                document.getElementById('field-13').style.display = 'none';
+                document.getElementById('field-15').style.display = 'none';
+                document.getElementById('field-24').style.display = 'none';
+                document.getElementById('field-28').style.display = 'none';
+                document.getElementById('field-29').style.display = 'none';
+                document.getElementById('field-30').style.display = 'none';
+                document.getElementById('field-34').style.display = 'none';
+                document.getElementById('field-36').style.display = 'none';
+                
+                hideAllBlank(focusField);
+
+                if(!receitaAnyPadding(focusField))
+                    document.getElementById('receita-table').style.display = 'none';
+                if(!despesaAnyPadding(focusField))
+                    document.getElementById('despesa-table').style.display = 'none';
+                if(!resumoSituacaoCaixaAnyPadding(focusField))
+                    document.getElementById('resumo-table').style.display = 'none';
+
+                //isBool = resumoSituacaoCaixaAnyPadding(focusField);
+                //console.log(typeof (isBool)+" - "+isBool);
+                
+            }
+
+            function hideAllBlank(focusField){
+                const inputElements = document.querySelectorAll('.valor');
+                for (const element of inputElements) {
+                    let idField = parseInt(element.id.split("f")[1]);
+                    let idPointedField = focusField ? parseInt(focusField.id.split("f")[1]) : 0;
+                    if(!element.value && idField != idPointedField){
+                        document.getElementById('field-'+idField).style.display = 'none';
+                    }
+                }
+            }
+
+            function receitaAnyPadding(focusField){
+                const inputElements = document.querySelectorAll('.valor');
+                let idFocusField = parseInt(focusField.id.split("f")[1]);
+                for (const element of inputElements) {
+                    let idField = parseInt(element.id.split("f")[1]);
+                    if(element.value){
+                        if(idField > 0 && idField < 16){
+                            return true;
+                        }
+                    }else if((idFocusField > 0 && idFocusField < 16)){
+                        //console.log("entrou no else");
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function despesaAnyPadding(focusField){
+                //console.log(idField);
+                const inputElements = document.querySelectorAll('.valor');
+                let idFocusField = parseInt(focusField.id.split("f")[1]);
+                //console.log(idFocusField);
+                for (const element of inputElements) {
+                    let idField = parseInt(element.id.split("f")[1]);
+                    if(element.value && ((idField > 15 && idField < 24) || idField == 25)){
+                        return true;
+                    }else if((idFocusField > 15 && idFocusField < 24) || idFocusField == 25){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function resumoSituacaoCaixaAnyPadding(focusField){
+                const inputElements = document.querySelectorAll('.valor');
+                let idFocusField = parseInt(focusField.id.split("f")[1]);
+                //console.log(idFocusField);
+                for (const element of inputElements) {
+                    let idField = parseInt(element.id.split("f")[1]);
+                    if(element.value && idField == 35){
+                        return true;
+                    }else if(idFocusField == 35){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function unhideBasics(){
+                document.getElementById('field-6').style.display = 'block';
+                document.getElementById('field-13').style.display = 'block';
+                document.getElementById('field-15').style.display = 'block';
+                document.getElementById('field-24').style.display = 'block';
+                document.getElementById('field-28').style.display = 'block';
+                document.getElementById('field-29').style.display = 'block';
+                document.getElementById('field-30').style.display = 'block';
+                document.getElementById('field-34').style.display = 'block';
+                document.getElementById('field-36').style.display = 'block';
+            }
+            
+            function consolidate(){
+                hideAllBlank(null);
+                updateValues();
+                document.getElementById('receita-table').style.display = 'block';
+                document.getElementById('despesa-table').style.display = 'block';
+                document.getElementById('resumo-table').style.display = 'block';
+                unhideBasics();
+                document.getElementById('receita-table').scrollIntoView();
+            }
+
+            function updateValues(){
+                const vf1 = fullIntValue(document.getElementById("vf1").value);
+                const vf2 = fullIntValue(document.getElementById("vf2").value);
+                const vf3 = fullIntValue(document.getElementById("vf3").value);
+                const vf4 = fullIntValue(document.getElementById("vf4").value);
+                const vf5 = fullIntValue(document.getElementById("vf5").value);
+                //vf6 auto
+                let resultField6 = sumArray([vf1 , vf2 , vf3 , vf4 , vf5]);
+                document.getElementById('vf6').value = strValue(resultField6);
+                const vf7 = fullIntValue(document.getElementById("vf7").value);
+                const vf8 = fullIntValue(document.getElementById("vf8").value);
+                const vf9 = fullIntValue(document.getElementById("vf9").value);
+                const vf10 = fullIntValue(document.getElementById("vf10").value);
+                const vf11 = fullIntValue(document.getElementById("vf11").value);
+                const vf12 = fullIntValue(document.getElementById("vf12").value);
+                //vf13 auto
+                let resultField13 = sumArray([resultField6, vf7, vf8, vf9, vf10, vf11, vf12]);
+                document.getElementById('vf13').value = strValue(resultField13);
+                const vf14 = fullIntValue(document.getElementById("vf14").value);
+                //vf15 auto
+                let resultField15 = sumArray([resultField13, vf14]);
+                document.getElementById('vf15').value = strValue(resultField15);
+                const vf16 = fullIntValue(document.getElementById("vf16").value);
+                const vf17 = fullIntValue(document.getElementById("vf17").value);
+                const vf18 = fullIntValue(document.getElementById("vf18").value);
+                const vf19 = fullIntValue(document.getElementById("vf19").value);
+                const vf20 = fullIntValue(document.getElementById("vf20").value);
+                const vf21 = fullIntValue(document.getElementById("vf21").value);
+                const vf22 = fullIntValue(document.getElementById("vf22").value);
+                const vf23 = fullIntValue(document.getElementById("vf23").value);
+                //vf24 auto
+                //let resultField24 = resultField6 * 0.10;
+                let resultField24 = tenthPart(resultField6);
+                document.getElementById('vf24').value = strValue(resultField24);
+                const vf25 = fullIntValue(document.getElementById("vf25").value);
+                //vf26 auto
+                let resultField26 = vf8;
+                document.getElementById('vf26').value = blankZero(strValue(resultField26));
+                //vf27 auto
+                let resultField27 = vf12;
+                document.getElementById('vf27').value = blankZero(strValue(resultField27));
+                //vf28 auto
+                let resultField28 = sumArray([vf16, vf17, vf18, vf19,vf20, vf21, vf22, vf23, resultField24, vf25, resultField26, resultField27]);
+                document.getElementById('vf28').value = strValue(resultField28);
+                //vf29 auto
+                let resultField29 = subArray([resultField15, resultField28]);
+                document.getElementById('vf29').value = strValue(resultField29);
+                //vf30 auto
+                let resultField30 = sumArray([resultField28, resultField29]);
+                document.getElementById('vf30').value = strValue(resultField30);
+                
+                const vf38 = fullIntValue(document.getElementById("vf38").value);
+                //document.getElementById('vf33').value = strValue(vf33);
+
+                let resultField34 = sumArray([resultField24, vf38]);
+                document.getElementById('vf34').value = strValue(resultField34);
+                const vf35 = fullIntValue(document.getElementById("vf35").value);
+                let resultField36 = sumArray([resultField29, resultField34, vf35]);
+                document.getElementById('vf36').value = strValue(resultField36);
+                
+                setAccumulatedTenth(strValue(vf38), strValue(resultField24));
+                
+            }
+
+            function fullIntValue(imputVal){
+                if(imputVal){
+                    imputVal = imputVal.includes(".") ? imputVal.replace(".", "") : imputVal;
+                    imputVal = imputVal.replace(",", "");
+                    return parseInt(imputVal);
+                }else{
+                    return 0;
+                }
+            }
+
+            function sumArray(numbers){
+                let sum = 0;
+                for (let i = 0; i < numbers.length; i++) {
+                    //console.log(numbers[i]);
+                    sum += numbers[i];
+                }
+                //alert(sum);
+                return sum;
+            }
+
+            function subArray(numbers){
+                let sum = numbers[0];
+                for (let i = 1; i < numbers.length; i++) {
+                    sum -= numbers[i];
+                }
+                //alert(sum);
+                return sum;
+            }
+
+            function strValue(val){
+                let strFullVal = val.toString();
+                //console.log(strFullVal); 
+                if(strFullVal.length < 3){
+                    return "0," + strFullVal;
+                }else{
+                    let tam = strFullVal.length;
+                    let decimal = "," + strFullVal.substring((tam - 2), tam);
+                    //console.log(decimal); 
+                    let integer = strFullVal.substring(0, (tam - 2));
+                    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    return integer + decimal;
+                }
+            }
+
+            function blankZero(val){
+                if(val === '0,0'){
+                    return '';
+                }
+                return val;
+            }
+
+            function tenthPart(val){
+                //console.log(val);
+                let ret = "";
+                let percent = val * 0.001;
+                //console.log(percent);
+                let strPercent = percent.toString();
+                if(strPercent.includes(".")){
+                    let parts = strPercent.split(".");
+                    //colorPercent(parts[1])
+                    ret = parts[0] + parts[1].substring(0, 2);
+                    if(parts[1].length == 1){
+                        ret += "0";
+                    }
+                }else{
+                    ret = strPercent + "00";
+                }
+                //console.log(ret);
+                return parseInt(ret);
+            }
+
+            function setAccumulatedTenth(past, actual){
+                document.getElementById('accumulatedTenth').textContent = 
+                    "(" + past + ")";
+                document.getElementById('vf34').disabled = true;
+            }
+           
+            function clearAll(){
+                const confirmation = confirm("Tem certeza?");
+                if (confirmation) {
+                    // Seleciona todos os elementos de input na p&aacute;gina
+                    const todosOsInputs = document.querySelectorAll('input');
+                    // Percorre cada input e define seu valor como vazio
+                    todosOsInputs.forEach(input => {
+                        input.value = ''; // Ou input.value = null;
+                    });
+                    //Refresh page
+                    window.location.reload();
+                }
+            }
+
+            function formatValue(a, e, r, t){
+                let n = ""
+                , h = j = 0
+                , u = tamanho2 = 0
+                , l = ajd2 = ""
+                , o = window.Event ? t.which : t.keyCode;
+                if (13 == o || 8 == o)
+                    return !0;
+                if (n = String.fromCharCode(o),
+                -1 == "0123456789".indexOf(n))
+                    return !1;
+                for (u = a.value.length,
+                h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
+                    ;
+                for (l = ""; h < u; h++)
+                    -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
+                if (l += n,
+                0 == (u = l.length) && (a.value = ""),
+                1 == u && (a.value = "0" + r + "0" + l),
+                2 == u && (a.value = "0" + r + l),
+                u > 2) {
+                    for (ajd2 = "",
+                    j = 0,
+                    h = u - 3; h >= 0; h--)
+                        3 == j && (ajd2 += e,
+                        j = 0),
+                        ajd2 += l.charAt(h),
+                        j++;
+                    for (a.value = "",
+                    tamanho2 = ajd2.length,
+                    h = tamanho2 - 1; h >= 0; h--)
+                        a.value += ajd2.charAt(h);
+                    a.value += r + l.substr(u - 2, u)
+                }
+                return !1
+            }
+
+        </script>
+        
+        <link rel="icon" type="image/png" href="https://www.ssvpbrasil.org.br/source/icon/7/favicon.ico" sizes="16x16" />
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <input type="hidden" id="initial-state" class="valor" value="1" >
+        <div id="receita-table" class="responsive-table" style="display: none;">
+            <div id="field-r" class="table-header">
+                <div class="header-item-left">##</div>
+                <div class="header-item-midle">RECEITAS</div>
+                <div class="header-item-right">R$</div>
+            </div>
+            <div id="field-1" class="table-row" style="display: none;">
+                <div class="header-item-left">01</div>
+                <div class="table-item-desc">Coleta na reuni&atilde;o</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf1" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-2" class="table-row" style="display: none;">
+                <div class="header-item-left">02</div>
+                <div class="table-item-desc">Subscritore e benfeitores</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf2" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-3" class="table-row" style="display: none;">
+                <div class="header-item-left">03</div>
+                <div class="table-item-desc">Outras doa&ccedil;&otilde;es recebidas (exclusivamente em R$)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf3" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-4" class="table-row" style="display: none;">
+                <div class="header-item-left">04</div>
+                <div class="table-item-desc">
+                    Resultados L&iacute;quidos c/ realiza&ccedil;&atilde;o de eventos (rifas, bazar, almo&ccedil;os etc)
+                </div>
+                <div class="table-item-val">
+                    <input type="text" id="vf4" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-5" class="table-row" style="display: none;">
+                <div class="header-item-left">05</div>
+                <div class="table-item-desc">Outras receitas sujeitas a D&eacute;cimas</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf5" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-6" class="table-row" style="display: none;">
+                <div class="header-item-left">06</div>
+                <div class="table-item-desc">Subtotal (valor base de C&aacute;lculo da d&eacute;cima do dia)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf6" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-7" class="table-row" style="display: none;">
+                <div class="header-item-left">07</div>
+                <div class="table-item-desc">Subven&ccedil;&atilde;o ofical dos Poderes P&uacute;blicos</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf7" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-8" class="table-row" style="display: none;">
+                <div class="header-item-left">08</div>
+                <div class="table-item-desc">Contribui&ccedil;&atilde;o da sociedade e Coleta da Ozanam</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf8" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-9" class="table-row" style="display: none;">
+                <div class="header-item-left">09</div>
+                <div class="table-item-desc">Uni&atilde;o Fraternal</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf9" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-10" class="table-row" style="display: none;">
+                <div class="header-item-left">10</div>
+                <div class="table-item-desc">Outros 1 (Receita)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf10" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-11" class="table-row" style="display: none;">
+                <div class="header-item-left">11</div>
+                <div class="table-item-desc">Outros 2 (Receita)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf11" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-12" class="table-row" style="display: none;">
+                <div class="header-item-left">12</div>
+                <div class="table-item-desc">Recebimentos para repasses (exclusivamente em R$)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf12" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-13" class="table-row" style="display: none;">
+                <div class="header-item-left">13</div>
+                <div class="table-item-desc">Soma da receita da semana</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf13" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-14" class="table-row">
+                <div class="header-item-left">14<!--<br>&#9660;--></div>
+                <div class="table-item-desc">Saldo final da semana anterior</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf14" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-15" class="table-row" style="display: none;">
+                <div class="header-item-left">15</div>
+                <div class="table-item-desc">Balan&ccedil;o</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf15" class="valor" disabled>
+                </div>
+            </div>
+        </div>
+
+        <div id="despesa-table" class="responsive-table" style="display: none;">
+            
+            <div id="field-d" class="table-header">
+                <div class="header-item-left">##</div>
+                <div class="header-item-midle">DESPESAS</div>
+                <div class="header-item-right">R$</div>
+            </div>
+            <div id="field-16" class="table-row" style="display: none;">
+                <div class="header-item-left">16</div>
+                <div class="table-item-desc">Depesas com cestas b&aacute;sicas (Alimentos, produtos de higiene e limpeza etc)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf16" class="valor"
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-17" class="table-row" style="display: none;">
+                <div class="header-item-left">17</div>
+                <div class="table-item-desc">Despesas com moradia dos assitidos</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf17" class="valor"
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-18" class="table-row" style="display: none;">
+                <div class="header-item-left">18</div>
+                <div class="table-item-desc">Pagamento de contas dos assistidos</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf18" class="valor"
+                         inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-19" class="table-row" style="display: none;">
+                <div class="header-item-left">19</div>
+                <div class="table-item-desc">Obras especiais</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf19" class="valor"
+                         inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-20" class="table-row" style="display: none;">
+                <div class="header-item-left">20</div>
+                <div class="table-item-desc">Uni&atilde;o Fraternal</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf20" class="valor"
+                         inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-21" class="table-row" style="display: none;">
+                <div class="header-item-left">21</div>
+                <div class="table-item-desc">Outros 1 (despoesas)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf21" class="valor"
+                         inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-22" class="table-row" style="display: none;">
+                <div class="header-item-left">22</div>
+                <div class="table-item-desc">Outros 2 (despoesas)</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf22" class="valor"
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-23" class="table-row" style="display: none;">
+                <div class="header-item-left">23</div>
+                <div class="table-item-desc">Despesas administrativas e de consumo da confer&ecirc;ncia</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf23" class="valor"
+                         inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-24" class="table-row" style="display: none;">
+                <div class="header-item-left">24</div>
+                <div class="table-item-desc">D&eacute;cimas pagas ao conselho particular</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf24" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-25" class="table-row" style="display: none;">
+                <div class="header-item-left">25</div>
+                <div class="table-item-desc">Outros 3</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf25" class="valor"
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-26" class="table-row" style="display: none;">
+                <div class="header-item-left">26</div>
+                <div class="table-item-desc">Repasse da contribui&ccedil;&atilde;o da solidariedade e da coleta de Ozanan</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf26" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-27" class="table-row" style="display: none;">
+                <div class="header-item-left">27</div>
+                <div class="table-item-desc">Repasse referente a linha 12</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf27" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-28" class="table-row" style="display: none;">
+                <div class="header-item-left">28</div>
+                <div class="table-item-desc">Soma das despesas da semana</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf28" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-29" class="table-row" style="display: none;">
+                <div class="header-item-left">29</div>
+                <div class="table-item-desc">Saldo final da semana atual</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf29" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-30" class="table-row" style="display: none;">
+                <div class="header-item-left">30</div>
+                <div class="table-item-desc">Balan&ccedil;o
+                </div>
+                <div class="table-item-val">
+                    <input type="text" id="vf30" class="valor" disabled>
+                </div>
+            </div>
+        </div>
+    
+        <div id="resumo-table" class="responsive-table" style="display: none;" >
+            <div id="field-res" class="table-header" >
+                <div class="header-item-left">##</div>
+                <div class="header-item-midle">RESUMO SITUACAO CAIXA</div>
+                <div class="header-item-right">R$</div>
+            </div>
+            <!--
+            <div id="field-33" class="table-row">
+                <div class="header-item-left">**</div>
+                <div class="table-item-desc">D&eacute;cimas acumulada</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf33" class="valor" 
+                        inputmode="numeric" onfocus="hiddenBasics()" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            -->
+            <!--<input type="hidden" id="vf33" > -->
+            <div id="field-34" class="table-row">
+                <div class="header-item-left">34</div>
+                <div class="table-item-desc">
+                    D&eacute;cimas a serem enviadas ao conselho particular
+                    <span id="accumulatedTenth"> </span>
+                </div>
+                <div class="table-item-val">
+                    <input type="text" id="vf34" class="valor" disabled>
+                </div>
+            </div>
+            <div id="field-35" class="table-row" style="display: none;" >
+                <div class="header-item-left">35</div>
+                <div class="table-item-desc">
+                    Outras contrubi&ccedil;&otilde;es a enviar ao conselho particular (Coleta de Ozanam, contribui&ccedil;&atilde;o da solidariedade)
+                </div>
+                <div class="table-item-val">
+                    <input type="text" id="vf35" class="valor" 
+                        inputmode="numeric" onfocus="hideBasics(this)" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-36" class="table-row" style="display: none;">
+                <div class="header-item-left">36</div>
+                <div class="table-item-desc">Total de recursos com a tesouraria</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf36" class="valor" disabled>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="reuniao-passada-table" class="responsive-table" >
+            <div id="field-reuniao-passada" class="table-header" >
+                <div class="header-item-left">##</div>
+                <div class="header-item-midle">VALORES REUNI&Atilde;O PASSADA</div>
+                <div class="header-item-right">R$</div>
+            </div>
+            <div id="field-37" class="table-row">
+                <div class="header-item-left">14<!--<br>&#9660;--></div>
+                <div class="table-item-desc">Saldo final da semana anterior</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf37" class="valor" 
+                        inputmode="numeric" onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <div id="field-38" class="table-row">
+                <div class="header-item-left">34</div>
+                <div class="table-item-desc">
+                    D&eacute;cimas a serem enviadas ao conselho particular
+                </div>
+                <div class="table-item-val">
+                    <input type="text" id="vf38" class="valor" 
+                        inputmode="numeric"  onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            <!--
+            <div id="field-39" class="table-row" >
+                <div class="header-item-left">35</div>
+                <div class="table-item-desc">
+                    Outras contrubi&ccedil;&otilde;es a enviar ao conselho particular (Coleta de Ozanam, contribui&ccedil;&atilde;o da solidariedade)
+                </div>
+                <div class="table-item-val">
+                    <input type="text" id="vf39" class="valor" 
+                        inputmode="numeric"  onKeyPress="return(formatValue(this,'.',',',event))">
+                </div>
+            </div>
+            -->
+        </div>
+        <span id="message"></span>
+        <div class="chose">
+            <select name="cbx-fields" id="cbx-fields" onchange="showFields()">
+                <option value="field-0" selected="selected" >Selecione...</option>
+                <option value="field-1" >1 - Coleta na reuniao</option>
+                <option value="field-2" >2 - Subscritore e benfeitores</option>
+                <option value="field-3" >3 - Outras doa&ccedil;&otilde;es recebidas</option>
+                <option value="field-4" >4 - Resultados L&iacute;quidos, Bazar...</option>
+                <option value="field-5" >5 - Outras receitas sujeitas a D&eacute;cimas</option>
+                <!--field-5 auto-->
+                <option value="field-7" >7 - Subven&ccedil;&atilde;o ofical dos Poderes P&uacute;blicos</option>
+                <option value="field-8" >8 - Contrib. da sociedade e Col. Ozanam</option>
+                <option value="field-9" >9 - Uni&atilde;o Fraternal</option>
+                <option value="field-10">10 - Outros (Receita)</option>
+                <option value="field-11">11 - Outros (Receita)</option>
+                <option value="field-12">12 - Recebimentos para repasses</option>
+                <!--field-13 auto-->
+                <!--field-14 auto-->
+                <!--field-15 auto-->
+                <option value="field-16">16 - Depesas com cestas b&aacute;sicas etc</option>
+                <option value="field-17">17 - Despesas com moradia dos assitidos</option>
+                <option value="field-18">18 - Pagamento de contas dos assistidos</option>
+                <option value="field-19">19 - Obras especiais</option>
+                <option value="field-20">20 - Uni&atilde;o Fraternal</option>
+                <option value="field-21">21 - Outros despesas 1</option>
+                <option value="field-22">22 - Outros despesas 2</option>
+                <option value="field-23">23 - Despesas administrativas </option>
+                <!--field-24 auto-->
+                <option value="field-25">25 - Outros</option>
+                <option value="field-26">26 - Repasse da contribui&ccedil;&atilde;o </option>
+                <option value="field-35">35 - Outras Contribui&ccedil;&otilde;es ao C. Particular </option>
+            </select>
+            <!--<button id="show-hidden" onclick="showField()">Teste</button>-->
+        </div>
+        <div id="btn-consolidar" style="display: none;">
+            <button onclick="consolidate()">Calcular lan&ccedil;amentos</button>
+        </div>
+        <div id="btn-limpar-todos" style="display: none;">
+            <button onclick="clearAll()">Limpar todos os campos</button>
+        </div>
+    </body>
+    <!--
+        Quando campo 14 Saldo final da semana anterior é igual a 3.356,66
+        Quando coloca duas receitas no valor de 12,40 e 75,60 a soma do valor de base de cáuclou da décima é 87,99
+        quando deveria ser 88,00
+    -->
+</html>

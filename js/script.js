@@ -3,6 +3,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
 }
 
+document.getElementById('btn-whatsapp').addEventListener('click', enviarWhatsApp);
+
 document.addEventListener('focusin', (event) => {
     const campo = event.target;
     const isInitialState = document.getElementById("initial-state").value === '1';
@@ -21,6 +23,7 @@ document.addEventListener('focusin', (event) => {
         // NOTA: Não forçamos o display:block das sections aqui.
         // Se o campo já está visível para o usuário clicar, a section dele já está aberta.
         document.getElementById("resumo-table").style.display = 'none';
+        document.getElementById("btn-whatsapp").style.display = 'none';
     }
 
 });
@@ -225,6 +228,7 @@ function consolidate() {
 
         // Se a tabela tem algum valor (digitado ou calculado), ela PRECISA aparecer
         tabela.style.display = temConteudo ? 'block' : 'none';
+        document.getElementById("btn-whatsapp").style.display = 'block';
     });
 
     // Verificar se tem valores nas ROWS (Linhas) dentro das tabelas visíveis
@@ -265,4 +269,39 @@ function validatePresentFieldsInForm(){
             console.error(`ERRO CRÍTICO: O campo ID "${id}" não foi encontrado no HTML.`);
         }
     });
+}
+
+function enviarWhatsApp() {
+    let mensagem = "*LIVRO CAIXA SSVP*\n";
+    mensagem += "--------------------------\n";
+
+    // Pega as tabelas que estão visíveis
+    const secoes = [
+        { id: 'receita-table', titulo: "*RECEITAS*" },
+        { id: 'despesa-table', titulo: "*DESPESAS*" },
+        { id: 'resumo-table', titulo: "*RESUMO FINAL*" }
+    ];
+
+    secoes.forEach(secao => {
+        const tabela = document.getElementById(secao.id);
+        if (tabela && tabela.style.display !== 'none') {
+            mensagem += `\n${secao.titulo}\n`;
+            
+            tabela.querySelectorAll('.table-row').forEach(row => {
+                // Só inclui na mensagem se a linha estiver visível (ou seja, tem valor)
+                if (row.style.display !== 'none') {
+                    const desc = row.querySelector('.table-item-desc').innerText;
+                    const val = row.querySelector('input').value;
+                    mensagem += `${desc}: R$ ${val}\n`;
+                }
+            });
+        }
+    });
+
+    mensagem += "\n--------------------------\n";
+    mensagem += "_Relatório gerado pelo App Caixa SSVP_";
+
+    // Codifica para URL e abre o WhatsApp
+    const uri = "https://wa.me/?text=" + encodeURIComponent(mensagem);
+    window.open(uri, '_blank');
 }

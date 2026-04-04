@@ -270,38 +270,3 @@ function validatePresentFieldsInForm(){
         }
     });
 }
-
-function enviarWhatsApp() {
-    let mensagem = "*LIVRO CAIXA SSVP*\n";
-    mensagem += "--------------------------\n";
-
-    // Pega as tabelas que estão visíveis
-    const secoes = [
-        { id: 'receita-table', titulo: "*RECEITAS*" },
-        { id: 'despesa-table', titulo: "*DESPESAS*" },
-        { id: 'resumo-table', titulo: "*RESUMO FINAL*" }
-    ];
-
-    secoes.forEach(secao => {
-        const tabela = document.getElementById(secao.id);
-        if (tabela && tabela.style.display !== 'none') {
-            mensagem += `\n${secao.titulo}\n`;
-            
-            tabela.querySelectorAll('.table-row').forEach(row => {
-                // Só inclui na mensagem se a linha estiver visível (ou seja, tem valor)
-                if (row.style.display !== 'none') {
-                    const desc = row.querySelector('.table-item-desc').innerText;
-                    const val = row.querySelector('input').value;
-                    mensagem += `${desc}: R$ ${val}\n`;
-                }
-            });
-        }
-    });
-
-    mensagem += "\n--------------------------\n";
-    mensagem += "_Relatório gerado pelo App Caixa SSVP_";
-
-    // Codifica para URL e abre o WhatsApp
-    const uri = "https://wa.me/?text=" + encodeURIComponent(mensagem);
-    window.open(uri, '_blank');
-}

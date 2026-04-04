@@ -4,6 +4,7 @@ const assets = [
   './index.html',
   './css/style.css',
   './js/script.js',
+  './js/export.js',
   './manifest.json',
   'assets/icons/favicon.ico'
 ];

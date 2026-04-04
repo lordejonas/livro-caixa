@@ -48,7 +48,7 @@ function enviarWhatsApp() {
     mensagem += `Saldo final: R$ ${vf29}\n\n`;
 
     mensagem += "--------------------------\n";
-    mensagem += "_Relatório gerado pelo App Caixa SSVP_";
+    mensagem += "_Relatório gerado pelo App Livro Caixa_";
 
     // 4. Envio
     const uri = "https://wa.me/?text=" + encodeURIComponent(mensagem);

@@ -2,10 +2,10 @@ const CACHE_NAME = 'caixa-ssvp-v1';
 const assets = [
   './',
   './index.html',
-  './style.css',
-  './script.js',
+  './css/style.css',
+  './js/script.js',
   './manifest.json',
-  'favicon.ico'
+  'assets/icons/favicon.ico'
 ];
 
 // Instalação do Service Worker e Cache dos arquivos

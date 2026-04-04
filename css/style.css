@@ -10,6 +10,7 @@ body {
     background-color: var(--bg-gray);
     margin: 0; padding: 10px;
     color: #333;
+    padding-bottom: 70px;
 }
 
 header {
@@ -99,3 +100,32 @@ button {
 .btn-danger { background: var(--error-red); }
 
 #message { color: var(--error-red); text-align: center; margin-bottom: 10px; }
+
+.footer-fixo {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(244, 244, 249, 0.9); /* Mesma cor do seu --bg-gray com transparência */
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0;
+    z-index: 1000; /* Garante que fique acima de tudo */
+    backdrop-filter: blur(8px); /* Efeito de vidro fosco elegante */
+    -webkit-backdrop-filter: blur(8px); /* Compatibilidade para iOS/Safari */
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column; /* Empilha autoria e versão no celular */
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    color: #666;
+    gap: 2px;
+}
+
+.version-tag {
+    font-weight: bold;
+    color: var(--primary-blue);
+    opacity: 0.8;
+}

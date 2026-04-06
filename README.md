@@ -41,6 +41,7 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 │   └── export.js       # Relatório: Formatação e envio para WhatsApp
 └── assets/
     └── icons/          # Ícones do aplicativo em diferentes tamanhos
+```
 
 ---
 
@@ -74,4 +75,10 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 
     Desenvolvido por: [Jonas Linhares Conferência Santa Perpétua e Santa Felicidade]
 
-    Versão: 2.1.1
+    Versão: 2.1.2
+
+---
+
+## 🔄 Histórico de Versões
+
+    Histórico de Mudanças: Veja o [CHANGELOG.md](./CHANGELOG.md) para detalhes de todas as atualizações.

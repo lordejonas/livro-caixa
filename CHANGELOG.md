@@ -6,7 +6,7 @@ OBS: Os tópicos serão descritos com Adicionado, Corrigido, Alterado, Removido.
 ## [2.1.2] - 2026-04-03
 ### Adicionado
 - Criação do arquivo README.md e CHANGELOG.md
-- Mudação do texto das descrições de alguns tópicos
+- Mudaça do texto das descrições de alguns tópicos
 
 ## [2.1.1] - 2026-04-03
 ### Adicionado

@@ -44,7 +44,7 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 
 ---
 
-⚙️ Como Utilizar
+## ⚙️ Como Utilizar
 
     Saldo Inicial: Informe o saldo da semana anterior e as décimas acumuladas (se houver).
 
@@ -58,7 +58,7 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 
 ---
 
-📝 Regras de Negócio Implementadas
+## 📝 Regras de Negócio Implementadas
 
     Campo 06 (Base Décima): Soma dos campos 01 a 05.
 
@@ -70,8 +70,8 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 
 ---
 
-✒️ Autoria e Versão
+## ✒️ Autoria e Versão
 
     Desenvolvido por: [Jonas Linhares Conferência Santa Perpétua e Santa Felicidade]
 
-    Versão: 3.0.0
+    Versão: 2.1.1

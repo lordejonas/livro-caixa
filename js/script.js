@@ -3,6 +3,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
 }
 
+document.getElementById('btn-whatsapp').addEventListener('click', enviarWhatsApp);
+
 document.addEventListener('focusin', (event) => {
     const campo = event.target;
     const isInitialState = document.getElementById("initial-state").value === '1';
@@ -21,6 +23,7 @@ document.addEventListener('focusin', (event) => {
         // NOTA: Não forçamos o display:block das sections aqui.
         // Se o campo já está visível para o usuário clicar, a section dele já está aberta.
         document.getElementById("resumo-table").style.display = 'none';
+        document.getElementById("btn-whatsapp").style.display = 'none';
     }
 
 });
@@ -225,6 +228,7 @@ function consolidate() {
 
         // Se a tabela tem algum valor (digitado ou calculado), ela PRECISA aparecer
         tabela.style.display = temConteudo ? 'block' : 'none';
+        document.getElementById("btn-whatsapp").style.display = 'block';
     });
 
     // Verificar se tem valores nas ROWS (Linhas) dentro das tabelas visíveis

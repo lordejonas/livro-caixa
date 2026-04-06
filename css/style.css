@@ -97,6 +97,15 @@ button {
     cursor: pointer;
 }
 
+.btn-success {
+    background-color: #25d366; /* Verde do WhatsApp */
+    color: white;
+}
+
+.btn-success:active {
+    background-color: #128c7e;
+}
+
 .btn-danger { background: var(--error-red); }
 
 #message { color: var(--error-red); text-align: center; margin-bottom: 10px; }

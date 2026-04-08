@@ -29,6 +29,7 @@ document.addEventListener('focusin', (event) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    preencherDataAtual();
     
     const cbxFields = document.getElementById('cbx-fields');
     const btnConsolidar = document.getElementById('btn-consolidar');
@@ -47,6 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             e.target.value = value === "0,00" ? "" : value;
         });
+    });
+
+    const inputData = document.getElementById('vf41');
+    
+    // 1. Preenche com a data atual ao carregar
+    const hoje = new Date();
+    inputData.value = hoje.toLocaleDateString('pt-BR');
+
+    // 2. Máscara de auto-completar para a Data (dd/mm/aaaa)
+    inputData.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+        
+        if (value.length > 2 && value.length <= 4) {
+            value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+        } else if (value.length > 4) {
+            value = value.replace(/(\d{2})(\d{2})(\d{1,4})/, "$1/$2/$3");
+        }
+        e.target.value = value;
     });
 
     btnConsolidar.addEventListener('click', consolidate);
@@ -269,4 +288,13 @@ function validatePresentFieldsInForm(){
             console.error(`ERRO CRÍTICO: O campo ID "${id}" não foi encontrado no HTML.`);
         }
     });
+}
+
+function preencherDataAtual() {
+    const inputData = document.getElementById('vf41');
+    if (inputData) {
+        const hoje = new Date();
+        const dataFormatada = hoje.toLocaleDateString('pt-BR');
+        inputData.value = dataFormatada;
+    }
 }

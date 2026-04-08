@@ -6,6 +6,10 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
+## [2.5.8] - 2026-04-08
+## Adicionado
+- Implementar a dinâmica de salvar dados resultantes de calculos e carregar na tela inicial
+
 ## [2.4.8] - 2026-04-08
 ### Corrigido
 - Ajuste de configurações

@@ -97,3 +97,18 @@ button {
     border-radius: 8px;
     cursor: pointer;
 }
+
+#btn-limpar-inicio {
+    width: auto;             /* Não ocupa a largura toda */
+    display: inline-block;   /* Permite centralizar */
+    padding: 8px 16px;       /* Um pouco menor que os botões principais */
+    font-size: 0.85em;
+    background-color: #f8f9fa;
+    color: #666;
+    border: 1px dashed var(--border-color);
+    margin: 0 auto;
+}
+
+#btn-limpar-inicio:active {
+    background-color: #e2e6ea;
+}

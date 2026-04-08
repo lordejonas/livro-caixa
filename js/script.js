@@ -11,8 +11,13 @@ import * as math from './math.js';
 import * as ui from './ui.js';
 import { enviarWhatsApp } from './export.js';
 
+let tipoLimpeza = "";
+
 // 3. Inicialização e Eventos
 document.addEventListener('DOMContentLoaded', () => {
+    
+    carregarDadosLocalStorage();
+    
     // Preencher data atual
     const inputData = document.getElementById('vf41');
     if (inputData && !inputData.value) {
@@ -28,23 +33,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botões Principais
     document.getElementById('btn-consolidar').addEventListener('click', consolidar);
     document.getElementById('btn-whatsapp').addEventListener('click', enviarWhatsApp);
-    
-    /*
-    document.getElementById('btn-limpar-todos').addEventListener('click', () => {
-        if (confirm("Deseja realmente limpar todos os dados?")) window.location.reload();
-    });
-    */
-
-
 
     // No evento do botão de limpar:
     document.getElementById('btn-limpar-todos').addEventListener('click', () => {
+        tipoLimpeza = "total";
         ui.toggleModal(true); // Abre o modal em vez do confirm
     });
 
-    // Eventos de clique dentro do Modal (coloque dentro do DOMContentLoaded)
+    // Botão Limpar Valores Iniciais (Novo)
+    document.getElementById('btn-limpar-inicio').addEventListener('click', () => {
+        tipoLimpeza = "inicial";
+        ui.toggleModal(true);
+    });
+
+    // Eventos de clique dentro do Modal 
     document.getElementById('btn-confirm-yes').addEventListener('click', () => {
-        window.location.reload();
+        if (tipoLimpeza === "total") {
+            salvarDadosParaProximaSemana();
+            window.location.reload();
+        } else if (tipoLimpeza === "inicial") {
+            localStorage.removeItem('dados_conferencia'); // Deleta os dados salvos
+            // Limpa os campos da tela (exceto data vf41)
+            document.getElementById('vf40').value = "";
+            document.getElementById('vf37').value = "";
+            document.getElementById('vf38').value = "";
+            document.getElementById('vf39').value = "";
+            document.getElementById('container-limpar-inicio').style.display = 'none';
+            ui.toggleModal(false);
+            ui.exibirMensagem("Dados iniciais removidos.");
+        }
     });
 
     document.getElementById('btn-confirm-cancel').addEventListener('click', () => {
@@ -55,11 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modal-confirm').addEventListener('click', (e) => {
         if (e.target.id === 'modal-confirm') ui.toggleModal(false);
     });
-
-
-
-
-
 
     // Seletor de Lançamentos (Lógica de Menu)
     document.getElementById('cbx-fields').addEventListener('change', function() {
@@ -94,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("initial-state").value = '0';
             document.getElementById("reuniao-passada-table").style.display = 'none';
             document.getElementById("btn-limpar-todos").style.display = 'block';
+            document.getElementById("container-limpar-inicio").style.display = 'none';
         }
 
         const fieldNumber = parseInt(selectedId.split('-')[1]);
@@ -187,4 +200,50 @@ function consolidar() {
     document.getElementById("btn-whatsapp").style.display = 'block';
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Função para Salvar os dados antes de limpar
+function salvarDadosParaProximaSemana() {
+    const numAtaAtual = parseInt(document.getElementById('vf40').value) || 0;
+    
+    const dados = {
+        proximaAta: numAtaAtual + 1,
+        saldoAnterior: document.getElementById('vf29').value, // vf29 -> vf37
+        decimasAcumuladas: document.getElementById('vf34').value, // vf34 -> vf38
+        outrasContribuicoes: document.getElementById('vf35').value // vf35 -> vf39
+    };
+
+    localStorage.setItem('dados_conferencia', JSON.stringify(dados));
+}
+
+// Função para Carregar os dados ao abrir o app
+function carregarDadosLocalStorage() {
+    const dadosSalvos = localStorage.getItem('dados_conferencia');
+    
+    if (dadosSalvos) {
+        // Se existem dados, mostramos o botão de limpeza
+        document.getElementById('container-limpar-inicio').style.display = 'block';
+        const dados = JSON.parse(dadosSalvos);
+        
+        // Função auxiliar interna para validar se o valor deve ser preenchido
+        const preencherSeValido = (inputEl, valor) => {
+            if (!inputEl) return;
+            // Se o valor for nulo, indefinido, vazio ou "0,00", o campo permanece limpo
+            if (valor && valor !== "0,00" && valor !== "") {
+                inputEl.value = valor;
+            } else {
+                inputEl.value = "";
+            }
+        };
+
+        // 1. Número da Ata (Sempre preenche se existir e for maior que 0)
+        if (dados.proximaAta && dados.proximaAta > 0) {
+            document.getElementById('vf40').value = dados.proximaAta;
+        }
+
+        // 2. Saldos e Repasses (Aplica a regra do "0,00")
+        preencherSeValido(document.getElementById('vf37'), dados.saldoAnterior);
+        preencherSeValido(document.getElementById('vf38'), dados.decimasAcumuladas);
+        preencherSeValido(document.getElementById('vf39'), dados.outrasContribuicoes);
+    }
 }

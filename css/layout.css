@@ -50,3 +50,10 @@ header h2 {
     color: var(--primary-blue);
     opacity: 0.8;
 }
+
+#container-limpar-inicio {
+    display: none; /* O JS mudará para 'block' se houver dados */
+    margin-top: -10px;
+    margin-bottom: 20px;
+    text-align: center;
+}

@@ -16,7 +16,13 @@ Os tópicos tem a seguinte descrições
 ### Alterado
 - Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
 
-## [2.1.3] - 2026-04-03
+## [2.2.3] - 2026-04-07
+### Adicionado
+- Inclusão Campo "número da atá" no carregamento inicial
+- Inclusão Campo "Data da reunião" no carregamento inicial
+- Inclusão dos campos "Data da reunião" e "número da atá" no relatório WhatsApp
+
+## [2.1.3] - 2026-04-07
 ### Alterado
 - Melhoramento no código que engloba a dinâmica de carregamento da página
 - Mudançã no 'scroll' automático para uma transição mais suave.

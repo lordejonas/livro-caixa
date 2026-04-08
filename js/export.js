@@ -34,11 +34,9 @@ function enviarWhatsApp() {
     const dataReuniao = document.getElementById('vf41').value || dataAtual;
 
     // 3. Montagem da Mensagem (Template solicitado)
-    let mensagem = `*POSIÇÃO DO CAIXA DIA ${dataAtual}*\n`;
-    mensagem += "--------------------------\n\n";
+    let mensagem = `*POSIÇÃO DO CAIXA DIA ${dataReuniao}*\n`;
 
-    mensagem = `*LIVRO CAIXA - ATA Nº ${numeroAta}*\n`; // Título com a Ata
-    mensagem += `*DATA DA REUNIÃO: ${dataReuniao}*\n`;
+    mensagem += `*ATA Nº ${numeroAta}*\n`;
     mensagem += "--------------------------\n\n";
 
     mensagem += "*RECEITAS*\n";

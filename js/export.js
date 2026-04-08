@@ -1,3 +1,40 @@
+import { toInt, toReal } from './math.js';
+
+export function enviarWhatsApp() {
+    const numeroAta = document.getElementById('vf40').value || "---";
+    const dataReuniao = document.getElementById('vf41').value || new Date().toLocaleDateString('pt-BR');
+
+    const vf1 = toInt(document.getElementById('vf1').value);
+    const vf13 = toInt(document.getElementById('vf13').value);
+    const demaisReceitas = vf13 - vf1;
+
+    const vf24 = toInt(document.getElementById('vf24').value);
+    const vf28 = toInt(document.getElementById('vf28').value);
+    const subTotalDespesas = vf28 - vf24;
+    const vf29 = document.getElementById('vf29').value;
+
+    let mensagem = `*LIVRO CAIXA - ATA Nº ${numeroAta}*\n`;
+    mensagem += `*DATA DA REUNIÃO: ${dataReuniao}*\n`;
+    mensagem += "--------------------------\n\n";
+
+    mensagem += "*RECEITAS*\n";
+    if (vf1 > 0) mensagem += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
+    if (demaisReceitas > 0) mensagem += `Demais Receitas: R$ ${toReal(demaisReceitas)}\n`;
+    mensagem += `Total: R$ ${toReal(vf13)}\n\n`;
+
+    mensagem += "*DESPESAS*\n";
+    if (vf24 > 0) mensagem += `Décimas pagas ao C.P.: R$ ${toReal(vf24)}\n`;
+    if (subTotalDespesas > 0) mensagem += `Sub total despesas: R$ ${toReal(subTotalDespesas)}\n`;
+    mensagem += `Total: R$ ${toReal(vf28)}\n\n`;
+
+    mensagem += "*TOTAIS*\n";
+    mensagem += `Saldo final: R$ ${vf29}\n\n`;
+    mensagem += "--------------------------\n";
+    mensagem += "_Relatório gerado pelo App Livro Caixa_";
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
+}
+/*
 function enviarWhatsApp() {
     // 1. Funções auxiliares para conversão (conforme você já usa no script)
     const toInt = (val) => {
@@ -40,12 +77,20 @@ function enviarWhatsApp() {
     mensagem += "--------------------------\n\n";
 
     mensagem += "*RECEITAS*\n";
-    mensagem += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
+
+    if (vf1 > 0) {// SÓ mostra a Coleta se for maior que zero
+        mensagem += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
+    }
+
     mensagem += `Demais Receitas: R$ ${toReal(demaisReceitas)}\n`;
     mensagem += `Total: R$ ${toReal(totalReceitas)}\n\n`;
 
     mensagem += "*DESPESAS*\n";
-    mensagem += `Décimas pagas ao C.P.: R$ ${toReal(vf24)}\n`;
+
+    if (vf24 > 0) {// SÓ mostra as Décimas se houver valor
+        mensagem += `Décimas recolhida: R$ ${toReal(vf24)}\n`;
+    }
+
     mensagem += `Sub total despesas: R$ ${toReal(subTotalDespesas)}\n`;
     mensagem += `Total: R$ ${toReal(totalDespesas)}\n\n`;
 
@@ -59,7 +104,7 @@ function enviarWhatsApp() {
     const uri = "https://wa.me/?text=" + encodeURIComponent(mensagem);
     window.open(uri, '_blank');
 }
-
+*/
 /*
 function enviarWhatsApp() {
     let mensagem = "*LIVRO CAIXA SSVP*\n";

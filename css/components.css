@@ -1,0 +1,44 @@
+/* Inputs de valor */
+input.valor {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+input:disabled { 
+    background: #e9ecef; 
+    color: #495057; 
+}
+
+/* Menu de Seleção */
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-blue);
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Botões */
+button {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-success { background-color: #25d366; color: white; }
+.btn-success:active { background-color: #128c7e; }
+
+.btn-danger { background: var(--error-red); }
+
+.actions { margin-top: 20px; }

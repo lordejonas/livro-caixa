@@ -1,0 +1,22 @@
+/*Configurações globais, variáveis e o "esqueleto" básico.*/
+:root {
+    --primary-blue: #0064b6;
+    --error-red: #f56363;
+    --bg-gray: #f4f4f9;
+    --border-color: #ccc;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-gray);
+    margin: 0; 
+    padding: 10px;
+    color: #333;
+    padding-bottom: 90px; /* Ajustado para dar folga ao rodapé fixo */
+}
+
+#message { 
+    color: var(--error-red); 
+    text-align: center; 
+    margin-bottom: 10px; 
+}

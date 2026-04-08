@@ -1,0 +1,29 @@
+/*Toda a estrutura visual das tabelas de dados.*/
+.responsive-table {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.table-header {
+    background-color: var(--primary-blue);
+    color: #f6f4f4;
+    display: flex;
+    font-weight: bold;
+    padding: 12px;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.table-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.h-col1 { width: 10%; font-size: 0.8em; }
+.table-item-desc { width: 60%; padding-right: 5px; font-size: 0.9em; }
+.table-item-val { width: 30%; }

@@ -16,11 +16,20 @@ Os tópicos tem a seguinte descrições
 ### Alterado
 - Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
 
-## [2.2.3] - 2026-04-07
+## [2.2.5] - 2026-04-08
+### Alterado
+- Modularização e molhoramento dos códigos .js(s) e .css(s)
+-- Como agora está usando módulos (type="module"), o navegador exige que o projeto seja rodado através de um servidor local   para carregar os arquivos (por questões de segurança do protocolo http/https).
+Se tentar abrir o index.html clicando duas vezes no arquivo (protocolo file://), os imports podem falhar.
+
+## [2.2.4] - 2026-04-07
 ### Adicionado
 - Inclusão Campo "número da atá" no carregamento inicial
 - Inclusão Campo "Data da reunião" no carregamento inicial
 - Inclusão dos campos "Data da reunião" e "número da atá" no relatório WhatsApp
+### Alterado
+- Retirar do relatório do WhatsApp as linhas 'Coleta na reunião' e 'Décimas recolhida' caso valor igual a zero
+- Acrescentado mais dois caracteres "=" na parte de despesa do combo
 
 ## [2.1.3] - 2026-04-07
 ### Alterado

@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livro Caixa SSVP</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/tables.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="assets/icons/favicon.ico">
     <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
@@ -23,20 +26,19 @@
     <main id="main-container">
         <section id="reuniao-passada-table" class="responsive-table">
             <div class="table-header">
-                VALORES REUNIÃO PASSADA
+                VALORES INICIAIS
             </div>
             <div class="table-row">
                 <div class="h-col1">00</div>
                 <div class="table-item-desc">Número da Ata</div>
-                <div class="table-item-val">
-                    <input type="number" id="vf40" class="valor" inputmode="numeric">
-                </div>
+                <div class="table-item-val"><input type="number" id="vf40" class="valor" inputmode="numeric"></div>
             </div>
             <div class="table-row">
                 <div class="h-col1">00</div>
                 <div class="table-item-desc">Data da Reunião</div>
                 <div class="table-item-val">
-                    <input type="text" id="vf41" class="valor" maxlength="10" placeholder="dd/mm/aaaa" inputmode="numeric">
+                    <input type="text" id="vf41" class="valor" maxlength="10" 
+                        placeholder="dd/mm/aaaa" inputmode="numeric" autocomplete="off">
                 </div>
             </div>
             <div class="table-row">
@@ -259,7 +261,7 @@
                     <option value="field-11">11 - Outros (Receita 2)</option>
                     <option value="field-12">12 - Recebi. repasses R$</option>
                 </optgroup>
-                <optgroup label="======Despesas======">
+                <optgroup label="========Despesas========">
                     <option value="field-16">16 - Cestas básicas out.</option>
                     <option value="field-17">17 - Moradia assistidos</option>
                     <option value="field-18">18 - Contas assistidos</option>
@@ -283,10 +285,9 @@
     <footer class="footer-fixo">
         <div class="footer-content">
             <span>Conferência Santa Perpétua e Santa Felicidade</span>
-            <span class="version-tag">v2.2.3</span>
+            <span class="version-tag">v2.2.5</span>
         </div>
     </footer>
-    <script src="js/export.js"></script>
-    <script src="js/script.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>

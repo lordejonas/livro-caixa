@@ -1,10 +1,15 @@
-const CACHE_NAME = 'caixa-ssvp-v2';
+const CACHE_NAME = 'caixa-ssvp-v225';
 const assets = [
   './',
   './index.html',
-  './css/style.css',
+  './css/base.css',
+  './css/layout.css',
+  './css/components.css',
+  './css/tables.css',
   './js/script.js',
   './js/export.js',
+  './js/math.js',
+  './js/ui.js',
   './manifest.json',
   'assets/icons/favicon.ico',
   './assets/icons/icon512_maskable.png',

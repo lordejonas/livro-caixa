@@ -1,5 +1,4 @@
 # Changelog
-
 Todos os lançamentos e mudanças notáveis neste projeto serão documentados neste arquivo.
 Os tópicos tem a seguinte descrições
 - **Adicionado**: Para novos recursos.
@@ -7,12 +6,18 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
-## [2.2.3] - 2026-04-?? (implementando)
+## [?.?.?] - 2026-04-?? (implementando)
 ### Adicionado
 - Adcionar a funcionalidade de manter dados da ultima reunião
 - Adcionar a descrição do número da ATA no relatório do WhatAPP
 ### Alterado
 - Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
+
+## [2.4.7] - 2026-04-08
+### Alterado
+- reescrita e adição de funções que garanta que a plciação funcione melhor no IOS/Safari
+--Essa mudanças fora focadas nas mascaras dos campos de valor e data.
+--No CSS foi adcionada uma instrução que impede o zoom automático no iOS em campos de formulário
 
 ## [2.4.6] - 2026-04-08
 ### Alterado

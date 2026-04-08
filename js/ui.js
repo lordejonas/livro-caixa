@@ -20,22 +20,55 @@ export const limparInterfaceParaNovoLancamento = () => {
 };
 
 export const aplicarMascaraMoeda = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    value = (value / 100).toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    e.target.value = value === "0,00" ? "" : value;
+    let input = e.target;
+    let value = input.value.replace(/\D/g, "");
+
+    // Evita processar se estiver vazio para não travar o backspace
+    if (value === "") {
+        input.value = "";
+        return;
+    }
+
+    // Converte para número e formata
+    const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+    const result = new Intl.NumberFormat('pt-BR', options).format(
+        parseFloat(value) / 100
+    );
+
+    input.value = result;
+
+    // Força o cursor a ficar sempre no final do input (comum em máscaras de moeda)
+    // Isso evita que o usuário tente editar o meio do número, o que quebra a lógica
+    setTimeout(() => {
+        input.setSelectionRange(input.value.length, input.value.length);
+    }, 0);
 };
 
 export const aplicarMascaraData = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 2 && value.length <= 4) {
-        value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
-    } else if (value.length > 4) {
-        value = value.replace(/(\d{2})(\d{2})(\d{1,4})/, "$1/$2/$3");
+    let input = e.target;
+    let value = input.value.replace(/\D/g, ""); // Remove tudo que não é dígito
+    
+    if (value.length > 8) value = value.slice(0, 8); // Limita a 8 dígitos (DDMMYYYY)
+
+    let formatted = "";
+    if (value.length > 0) {
+        formatted = value.substring(0, 2);
+        if (value.length > 2) {
+            formatted += "/" + value.substring(2, 4);
+            if (value.length > 4) {
+                formatted += "/" + value.substring(4, 8);
+            }
+        }
     }
-    e.target.value = value;
+
+    input.value = formatted;
+
+    // Ajuste de cursor para iOS
+    if (input.setSelectionRange) {
+        setTimeout(() => {
+            input.setSelectionRange(input.value.length, input.value.length);
+        }, 0);
+    }
 };
 
 let messageTimer;

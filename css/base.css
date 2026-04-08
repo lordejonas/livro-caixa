@@ -18,5 +18,8 @@ body {
 #message { 
     color: var(--error-red); 
     text-align: center; 
-    margin-bottom: 10px; 
+    margin: 10px 0;
+    font-weight: bold;
+    min-height: 1.2em; /* Mantém o espaço reservado mesmo vazia */
+    padding: 0 10px;
 }

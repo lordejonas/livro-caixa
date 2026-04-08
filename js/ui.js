@@ -37,3 +37,27 @@ export const aplicarMascaraData = (e) => {
     }
     e.target.value = value;
 };
+
+let messageTimer;
+
+export const exibirMensagem = (texto, duracao = 5000) => {
+    const msgDiv = document.getElementById("message");
+    if (!msgDiv) return;
+
+    // Limpa qualquer timer que já esteja rodando (caso o usuário clique várias vezes)
+    clearTimeout(messageTimer);
+
+    msgDiv.innerHTML = texto;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Define o timer para sumir com a mensagem
+    messageTimer = setTimeout(() => {
+        msgDiv.innerHTML = "";
+    }, duracao);
+};
+
+export const limparMensagem = () => {
+    clearTimeout(messageTimer);
+    const msgDiv = document.getElementById("message");
+    if (msgDiv) msgDiv.innerHTML = "";
+};

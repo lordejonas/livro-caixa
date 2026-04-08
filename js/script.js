@@ -41,11 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const valF37 = document.getElementById("vf37").value;
 
         if (initialState && !valF37) {
-            alert("Por favor, insira o saldo anterior na tabela 'Valores Reunião Passada' para começar.");
+            ui.exibirMensagem("Para começar, insira o valor do campo:<br>'Valores Reunião Passada'");
             this.value = "field-0";
             return;
         }
 
+        ui.limparMensagem();
         ui.limparInterfaceParaNovoLancamento();
 
         if (initialState) {

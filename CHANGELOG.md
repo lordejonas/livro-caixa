@@ -16,7 +16,12 @@ Os tópicos tem a seguinte descrições
 ### Alterado
 - Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
 
-## [2.2.5] - 2026-04-08
+## [2.3.5] - 2026-04-08
+### Removido
+- Alert para validar o não preencimeno do campo 14 na tela inicial
+### Adicionado
+- Para informar ao usuário a necessidade de preencher o valor do campo 14 a mensagem é exibida na proria pagina
+-- desaparecendo automaticamente
 ### Alterado
 - Modularização e molhoramento dos códigos .js(s) e .css(s)
 -- Como agora está usando módulos (type="module"), o navegador exige que o projeto seja rodado através de um servidor local   para carregar os arquivos (por questões de segurança do protocolo http/https).

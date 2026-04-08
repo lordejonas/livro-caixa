@@ -1,7 +1,7 @@
 import { toInt, toReal } from './math.js';
 
 export function enviarWhatsApp() {
-    const numeroAta = document.getElementById('vf40').value || "---";
+    const numeroAta = document.getElementById('vf40').value || "----";
     const dataReuniao = document.getElementById('vf41').value || new Date().toLocaleDateString('pt-BR');
 
     const vf1 = toInt(document.getElementById('vf1').value);

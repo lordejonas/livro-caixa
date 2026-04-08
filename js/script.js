@@ -39,9 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const initialState = document.getElementById("initial-state").value === '1';
         const valF37 = document.getElementById("vf37").value;
+        const valData = document.getElementById("vf41").value; // Data da reunião
 
+        // 1. Validação de Saldo Inicial
         if (initialState && !valF37) {
-            ui.exibirMensagem("Para começar, insira o valor do campo:<br>'Valores Reunião Passada'");
+            ui.exibirMensagem("Para começar, insira o valor do campo:\n'Valores Reunião Passada'");
+            this.value = "field-0";
+            return;
+        }
+
+        // 2. Validação de Data Existente
+        if (initialState && !math.isDataValida(valData)) {
+            ui.exibirMensagem(`A data "${valData}" não existe.\nPor favor, informe uma data válida.`);
+            document.getElementById("vf41").focus();
             this.value = "field-0";
             return;
         }

@@ -75,7 +75,7 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 
     Desenvolvido por: [Jonas Linhares Conferência Santa Perpétua e Santa Felicidade]
 
-    Versão: 2.3.5
+    Versão: 2.3.6
 
 ---
 

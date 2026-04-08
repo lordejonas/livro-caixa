@@ -22,4 +22,5 @@ body {
     font-weight: bold;
     min-height: 1.2em; /* Mantém o espaço reservado mesmo vazia */
     padding: 0 10px;
+    white-space: pre-line;
 }

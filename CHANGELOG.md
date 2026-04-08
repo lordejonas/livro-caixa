@@ -9,12 +9,18 @@ Os tópicos tem a seguinte descrições
 
 ## [2.2.3] - 2026-04-?? (implementando)
 ### Adicionado
-- Adcionar o campo número da atá reunião
-- Adcionar o campo data da reunião
 - Adcionar a funcionalidade de manter dados da ultima reunião
 - Adcionar a descrição do número da ATA no relatório do WhatAPP
 ### Alterado
 - Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
+
+## [2.3.6] - 2026-04-08
+### Corrigido
+- O campo 'data da reunião' esta deixando passar datas inexistentes ex: 31/02/2026 
+- Alterar o 'innerHTML' para 'textContent' e habilitar o  white-space: pre-line na propriedade CSS #message
+--para quando a string conter o caractere \n acontecer uma quebra de linha na página.
+--A medida de trocar 'innerHTML' para 'textContent' é importante pois 
+--é segura contra ataques de injeção de código (XSS) do que usar innerHTML.
 
 ## [2.3.5] - 2026-04-08
 ### Removido

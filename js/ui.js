@@ -47,17 +47,17 @@ export const exibirMensagem = (texto, duracao = 5000) => {
     // Limpa qualquer timer que já esteja rodando (caso o usuário clique várias vezes)
     clearTimeout(messageTimer);
 
-    msgDiv.innerHTML = texto;
+    msgDiv.textContent = texto;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Define o timer para sumir com a mensagem
     messageTimer = setTimeout(() => {
-        msgDiv.innerHTML = "";
+        msgDiv.textContent = "";
     }, duracao);
 };
 
 export const limparMensagem = () => {
     clearTimeout(messageTimer);
     const msgDiv = document.getElementById("message");
-    if (msgDiv) msgDiv.innerHTML = "";
+    if (msgDiv) msgDiv.textContent = "";
 };

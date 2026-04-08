@@ -6,12 +6,11 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
-## [?.?.?] - 2026-04-?? (implementando)
-### Adicionado
-- Adcionar a funcionalidade de manter dados da ultima reunião
-- Adcionar a descrição do número da ATA no relatório do WhatAPP
-### Alterado
-- Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
+## [2.4.8] - 2026-04-08
+### Corrigido
+- Ajuste de configurações
+## Adicionado
+- Adicionar a instrução <meta name="theme-color" content="#0064b6"> que no Android, isso pintará a barra de status do navegador/sistema. Seria interessante garantir que no seu index.html exista a tag correspondente para que o visual seja idêntico antes e depois da instalação:
 
 ## [2.4.7] - 2026-04-08
 ### Alterado

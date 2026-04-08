@@ -11,7 +11,7 @@ const assets = [
   './js/math.js',
   './js/ui.js',
   './manifest.json',
-  'assets/icons/favicon.ico',
+  './assets/icons/favicon.ico',
   './assets/icons/icon512_maskable.png',
   './assets/icons/icon512_rounded.png'
 ];

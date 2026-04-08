@@ -6,7 +6,9 @@ const assets = [
   './js/script.js',
   './js/export.js',
   './manifest.json',
-  'assets/icons/favicon.ico'
+  'assets/icons/favicon.ico',
+  './assets/icons/icon512_maskable.png',
+  './assets/icons/icon512_rounded.png'
 ];
 
 // Instalação do Service Worker e Cache dos arquivos
@@ -32,6 +34,10 @@ self.addEventListener('activate', event => {
 // Estratégia de busca: Tenta a rede, se falhar, usa o cache
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+    fetch(event.request).catch(() => {
+      return caches.match(event.request).then(response => {
+        return response || caches.match('./index.html'); // Fallback para a home se tudo falhar
+      });
+    })
   );
 });

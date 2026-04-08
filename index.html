@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="assets/icons/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
@@ -72,7 +73,7 @@
                 <div class="table-item-desc">Outras receitas sujeitas a D&eacute;cimas</div>
                 <div class="table-item-val"><input type="text" id="vf5" class="valor input-mask" inputmode="numeric"></div>
             </div>
-            <div id="field-6" class="table-row" style="display:none" class="auto-field">
+            <div id="field-6" class="table-row auto-field" style="display:none">
                 <div class="h-col1">06</div>
                 <div class="table-item-desc">Subtotal Base Décima</div>
                 <div class="table-item-val"><input type="text" id="vf6" class="valor" disabled></div>
@@ -107,7 +108,7 @@
                 <div class="table-item-desc">Recebimentos para repasses (exclusivamente em R$)</div>
                 <div class="table-item-val"><input type="text" id="vf12" class="valor input-mask" inputmode="numeric"></div>
             </div>
-            <div id="field-13" class="table-row" style="display:none" class="auto-field">
+            <div id="field-13" class="table-row auto-field" style="display:none">
                 <div class="h-col1">13</div>
                 <div class="table-item-desc">Soma Receita Semana</div>
                 <div class="table-item-val"><input type="text" id="vf13" class="valor" disabled></div>
@@ -230,7 +231,7 @@
 
         <section class="chose-section">
             <select id="cbx-fields">
-                <option value="field-0" selected>Selecione o lançamento...</option>
+                <option value="field-0" disabled selected>Selecione o lançamento...</option>
                 <optgroup label="Receitas">
                     <option  value="field-1">01 - Coleta na reunião</option>
                     <option  value="field-2">02 - Subscritores/benf</option>
@@ -268,7 +269,7 @@
     <footer class="footer-fixo">
         <div class="footer-content">
             <span>Conferência Santa Perpétua e Santa Felicidade</span>
-            <span class="version-tag">v2.1.2</span>
+            <span class="version-tag">v2.1.3</span>
         </div>
     </footer>
     <script src="js/export.js"></script>

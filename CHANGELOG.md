@@ -1,7 +1,25 @@
 # Changelog
 
 Todos os lançamentos e mudanças notáveis neste projeto serão documentados neste arquivo.
-OBS: Os tópicos serão descritos com Adicionado, Corrigido, Alterado, Removido.
+Os tópicos tem a seguinte descrições
+- **Adicionado**: Para novos recursos.
+- **Corrigido**: Para bugs resolvidos.
+- **Alterado**: Para mudanças em funcionalidades já existentes.
+- **Removido**: Para recursos que foram tirados do app.
+
+## [2.2.3] - 2026-04-?? (implementando)
+### Adicionado
+- Adcionar o campo número da atá reunião
+- Adcionar o campo data da reunião
+- Adcionar a funcionalidade de manter dados da ultima reunião
+- Adcionar a descrição do número da ATA no relatório do WhatAPP
+### Alterado
+- Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
+
+## [2.1.3] - 2026-04-03
+### Alterado
+- Melhoramento no código que engloba a dinâmica de carregamento da página
+- Mudançã no 'scroll' automático para uma transição mais suave.
 
 ## [2.1.2] - 2026-04-03
 ### Adicionado
@@ -29,5 +47,8 @@ OBS: Os tópicos serão descritos com Adicionado, Corrigido, Alterado, Removido.
 
 ## [1.0.0] - 2025-09-01
 ### Adicionado
-- Primeira versão com um unico arquivo HTML contendo JS e CSS
-- Em separado os arquivos PWA (Progressive Web App)
+- Implementar o PWA (Progressive Web App) na aplicação
+
+## [0.1.0] - 2025-09-01
+### Adicionado
+- Primeira versão com um único arquivo HTML contendo JS e CSS

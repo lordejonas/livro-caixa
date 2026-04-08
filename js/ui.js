@@ -61,3 +61,10 @@ export const limparMensagem = () => {
     const msgDiv = document.getElementById("message");
     if (msgDiv) msgDiv.textContent = "";
 };
+
+export const toggleModal = (show) => {
+    const modal = document.getElementById('modal-confirm');
+    if (modal) {
+        modal.style.display = show ? 'flex' : 'none';
+    }
+};

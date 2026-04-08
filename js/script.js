@@ -28,9 +28,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botões Principais
     document.getElementById('btn-consolidar').addEventListener('click', consolidar);
     document.getElementById('btn-whatsapp').addEventListener('click', enviarWhatsApp);
+    
+    /*
     document.getElementById('btn-limpar-todos').addEventListener('click', () => {
         if (confirm("Deseja realmente limpar todos os dados?")) window.location.reload();
     });
+    */
+
+
+
+    // No evento do botão de limpar:
+    document.getElementById('btn-limpar-todos').addEventListener('click', () => {
+        ui.toggleModal(true); // Abre o modal em vez do confirm
+    });
+
+    // Eventos de clique dentro do Modal (coloque dentro do DOMContentLoaded)
+    document.getElementById('btn-confirm-yes').addEventListener('click', () => {
+        window.location.reload();
+    });
+
+    document.getElementById('btn-confirm-cancel').addEventListener('click', () => {
+        ui.toggleModal(false); // Apenas fecha o modal
+    });
+
+    // Opcional: Fechar o modal ao clicar fora dele
+    document.getElementById('modal-confirm').addEventListener('click', (e) => {
+        if (e.target.id === 'modal-confirm') ui.toggleModal(false);
+    });
+
+
+
+
+
 
     // Seletor de Lançamentos (Lógica de Menu)
     document.getElementById('cbx-fields').addEventListener('change', function() {

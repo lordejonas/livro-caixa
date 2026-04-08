@@ -14,6 +14,12 @@ Os tópicos tem a seguinte descrições
 ### Alterado
 - Melhoramento na apresentação de dados no relatório do WhatAPP omitindo campos com valor zero
 
+## [2.4.6] - 2026-04-08
+### Alterado
+- Retirar a função "confirm()" quando acionar o botão "Limpar Tudo"
+### Adicionado
+- Modal para receber a confirmação ou não do usuário quando acionar o botão "Limpar Tudo"
+
 ## [2.3.6] - 2026-04-08
 ### Corrigido
 - O campo 'data da reunião' esta deixando passar datas inexistentes ex: 31/02/2026 

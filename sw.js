@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caixa-ssvp-v1';
+const CACHE_NAME = 'caixa-ssvp-v2';
 const assets = [
   './',
   './index.html',

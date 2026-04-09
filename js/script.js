@@ -84,6 +84,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.id === 'modal-confirm') ui.toggleModal(false);
     });
 
+    ['38', '39'].forEach(num => {
+        document.getElementById(`link-repasse-${num}`).addEventListener('click', (e) => {
+            e.preventDefault();
+            const rowRepasse = document.getElementById(`field-${num}a`);
+            rowRepasse.style.display = (rowRepasse.style.display === 'none') ? 'flex' : 'none';
+            if (rowRepasse.style.display === 'flex') {
+                document.getElementById(`vf${num}a`).focus();
+            }
+        });
+    });
+
     // Seletor de Lançamentos (Lógica de Menu)
     document.getElementById('cbx-fields').addEventListener('change', function() {
         
@@ -205,15 +216,23 @@ function consolidar() {
 
     // --- PARTE C: RESUMO SITUAÇÃO CAIXA (TESOURARIA) ---
     const pastTenth = math.toInt(document.getElementById('vf38').value);
-    const totalTenth = d24 + pastTenth; // Décimas acumuladas (Hoje + Passado)
+    const transferTenth = math.toInt(document.getElementById('vf38a').value);
+    const totalTenth = d24 + pastTenth - transferTenth; // Décimas acumuladas (Hoje + Passado - Tranferida (caso tenha))
     ui.mostrarLinha('vf34', math.toReal(totalTenth));
-
+    //console.log("Décima acumulada (int):" + pastTenth);
+    //console.log("Décima a trasferir (int):" + transferTenth);
+    //console.log("Total décima:" + math.toReal(totalTenth));
+    
     const pastContributions = math.toInt(document.getElementById('vf39').value);
-    const totalOthers = pastContributions + d26 + d27; // Outros repasses
+    const transferContributions = math.toInt(document.getElementById('vf39a').value);
+    const totalOthers = (pastContributions + d26 + d27) - transferContributions; // Outros repasses
     ui.mostrarLinha('vf35', math.toReal(totalOthers));
+    //console.log("Contribuições acumuladas (int):" + pastContributions);
+    //console.log("Contribuições repassadas (int):" + transferContributions);
+    //console.log("Total contribuições (real):" + math.toReal(totalOthers));
 
     // Recursos em Tesouraria (Saldo Livre + o que deve ser repassado ao CP)
-    const totalResources = r29 + totalTenth + pastContributions; 
+    const totalResources = r29 + totalTenth + totalOthers; 
     ui.mostrarLinha('vf36', math.toReal(totalResources));
 
     calculoRealizado = true;

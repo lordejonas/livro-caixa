@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     carregarDadosLocalStorage();
     
+    // Desativa o autocomplete em todos os inputs da página
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.setAttribute('autocomplete', 'off');
+    });
+    
     // Preencher data atual
     const inputData = document.getElementById('vf41');
     if (inputData && !inputData.value) {

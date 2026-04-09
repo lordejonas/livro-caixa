@@ -37,7 +37,7 @@
     background-color: rgba(245, 99, 99, 0.05); /* Opcional: um fundo leve avermelhado */
 }
 
-/* Opcional: Remover a borda de baixo da última linha do bloco para ficar mais limpo */
+/*Remover a borda de baixo da última linha do bloco para ficar mais limpo */
 .bloco-fechamento-receita .table-row:last-child,
 .bloco-fechamento-despesa .table-row:last-child {
     border-bottom: none;

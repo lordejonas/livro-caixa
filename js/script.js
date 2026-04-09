@@ -18,11 +18,11 @@ let calculoRealizado = false;
 document.addEventListener('DOMContentLoaded', () => {
     
     carregarDadosLocalStorage();
-    
+
     // Desativa o autocomplete em todos os inputs da página
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => {
-        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('autocomplete', 'one-time-code');
     });
     
     // Preencher data atual

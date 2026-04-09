@@ -5,7 +5,14 @@ export const mostrarLinha = (id, valorFormatado) => {
     if (campo) {
         campo.value = valorFormatado;
         const row = campo.closest('.table-row');
-        if (row) row.style.display = 'flex';
+        
+        if (row) {
+            // Verifica se o valor é nulo, vazio ou o "0,00" padrão
+            const isZero = !valorFormatado || valorFormatado === "0,00" || valorFormatado === "";
+            
+            // Só mostra (flex) se houver valor, caso contrário esconde (none)
+            row.style.display = isZero ? 'none' : 'flex';
+        }
     }
 };
 

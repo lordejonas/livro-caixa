@@ -176,6 +176,12 @@ function consolidar() {
     const d28 = dDespesasFixas + d24 + d26 + d27; // Soma Total Despesas
     ui.mostrarLinha('vf28', math.toReal(d28));
 
+    // Se houver qualquer despesa (mesmo que seja apenas a décima automática)
+    // precisamos mostrar a tabela de despesas que estava oculta
+    if (d28 > 0) {
+        document.getElementById('despesa-table').style.display = 'block';
+    }
+
     // Saldos Finais
     const r29 = r15 - d28; // Saldo Final Semana Atual
     ui.mostrarLinha('vf29', math.toReal(r29));
@@ -198,6 +204,10 @@ function consolidar() {
     // Finalização Visual
     document.getElementById('resumo-table').style.display = 'block';
     document.getElementById("btn-whatsapp").style.display = 'block';
+
+    // Garante que as seções de resultado apareçam se houver saldo ou movimento
+    if (r15 > 0) document.getElementById('receita-table').style.display = 'block';
+    if (d28 > 0) document.getElementById('despesa-table').style.display = 'block';
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }

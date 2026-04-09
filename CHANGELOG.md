@@ -6,6 +6,10 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
+## [2.5.10] - 2026-04-08
+### Corrigido
+- Corrigir relatório WhatsApp
+
 ## [2.5.9] - 2026-04-08
 ### Corrigido
 - Corrigir apresentação de dados

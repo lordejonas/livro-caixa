@@ -13,8 +13,11 @@ export function enviarWhatsApp() {
     const subTotalDespesas = vf28 - vf24;
     const vf29 = document.getElementById('vf29').value;
 
-    let mensagem = `*LIVRO CAIXA - ATA Nº ${numeroAta}*\n`;
-    mensagem += `*DATA DA REUNIÃO: ${dataReuniao}*\n`;
+    let mensagem = `*POSIÇÃO CAIXA CONFERÊNCIA*\n`;
+    mensagem += `*DIA ${dataReuniao} ATA Nº ${numeroAta}*\n`;
+
+    //let mensagem = `*LIVRO CAIXA - ATA Nº ${numeroAta}*\n`;
+    //mensagem += `*DATA DA REUNIÃO: ${dataReuniao}*\n`;
     mensagem += "--------------------------\n\n";
 
     mensagem += "*RECEITAS*\n";
@@ -31,6 +34,8 @@ export function enviarWhatsApp() {
     mensagem += `Saldo final: R$ ${vf29}\n\n`;
     mensagem += "--------------------------\n";
     mensagem += "_Relatório gerado pelo App Livro Caixa_";
+
+    //console.log(mensagem);
 
     window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
 }

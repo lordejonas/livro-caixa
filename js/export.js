@@ -4,41 +4,59 @@ export function enviarWhatsApp() {
     const numeroAta = document.getElementById('vf40').value || "----";
     const dataReuniao = document.getElementById('vf41').value || new Date().toLocaleDateString('pt-BR');
 
+    /*Coletar valores receitas sugeitas a decima*/
     const vf1 = toInt(document.getElementById('vf1').value);
+    const vf6 = toInt(document.getElementById('vf6').value);
     const vf13 = toInt(document.getElementById('vf13').value);
-    const demaisReceitas = vf13 - vf1;
-
     const vf24 = toInt(document.getElementById('vf24').value);
     const vf28 = toInt(document.getElementById('vf28').value);
-    const subTotalDespesas = vf28 - vf24;
     const vf29 = document.getElementById('vf29').value;
 
     let mensagem = `*POSIÇÃO CAIXA CONFERÊNCIA*\n`;
     mensagem += `*DIA ${dataReuniao} ATA Nº ${numeroAta}*\n`;
-
-    //let mensagem = `*LIVRO CAIXA - ATA Nº ${numeroAta}*\n`;
-    //mensagem += `*DATA DA REUNIÃO: ${dataReuniao}*\n`;
     mensagem += "--------------------------\n\n";
-
     mensagem += "*RECEITAS*\n";
-    if (vf1 > 0) mensagem += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
-    if (demaisReceitas > 0) mensagem += `Demais Receitas: R$ ${toReal(demaisReceitas)}\n`;
-    mensagem += `Total: R$ ${toReal(vf13)}\n\n`;
-
+    mensagem += receitas(vf1, vf6, vf13);
     mensagem += "*DESPESAS*\n";
-    if (vf24 > 0) mensagem += `Décimas pagas ao C.P.: R$ ${toReal(vf24)}\n`;
-    if (subTotalDespesas > 0) mensagem += `Sub total despesas: R$ ${toReal(subTotalDespesas)}\n`;
-    mensagem += `Total: R$ ${toReal(vf28)}\n\n`;
-
+    mensagem += despesas(vf24, vf28);
     mensagem += "*TOTAIS*\n";
     mensagem += `Saldo final: R$ ${vf29}\n\n`;
     mensagem += "--------------------------\n";
     mensagem += "_Relatório gerado pelo App Livro Caixa_";
 
-    //console.log(mensagem);
+    console.log(mensagem);
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
+    //window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
 }
+
+function receitas(vf1, vf6, vf13){
+    let ret = "";
+    if (vf1 > 0 && vf1 == vf6){
+        ret += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
+    }else if(vf1 > 0){
+        let demaisRecSujeitasDecima = vf6 - vf1;
+        ret += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
+        ret += `Sujeitas a décima: R$ ${toReal(demaisRecSujeitasDecima)}\n`;
+    }
+    if(vf13 > vf6){
+        let restanteReceitas = vf13 - vf6;
+        ret += `Não sujeitas a décima: R$ ${toReal(restanteReceitas)}\n`;
+    }
+    ret += `Total receitas: R$ ${toReal(vf13)}\n\n`;
+    return ret;
+}
+
+function despesas(vf24, vf28){
+    let ret = "";
+    if(vf24 > 0){
+        let demaisDespesas = vf28 - vf24;
+        ret += `Recolhimento décima: R$ ${toReal(vf24)}\n`;
+        ret += `Demais despesas: R$ ${toReal(demaisDespesas)}\n`;
+    }
+    ret += `Total despesas: R$ ${toReal(vf28)}\n\n`;
+    return ret;
+}
+
 /*
 function enviarWhatsApp() {
     // 1. Funções auxiliares para conversão (conforme você já usa no script)

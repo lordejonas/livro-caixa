@@ -12,6 +12,7 @@ import * as ui from './ui.js';
 import { enviarWhatsApp } from './export.js';
 
 let tipoLimpeza = "";
+let calculoRealizado = false;
 
 // 3. Inicialização e Eventos
 document.addEventListener('DOMContentLoaded', () => {
@@ -49,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Eventos de clique dentro do Modal 
     document.getElementById('btn-confirm-yes').addEventListener('click', () => {
         if (tipoLimpeza === "total") {
-            salvarDadosParaProximaSemana();
+            if (calculoRealizado) {
+                salvarDadosParaProximaSemana();
+            }
             window.location.reload();
         } else if (tipoLimpeza === "inicial") {
             localStorage.removeItem('dados_conferencia'); // Deleta os dados salvos
@@ -75,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Seletor de Lançamentos (Lógica de Menu)
     document.getElementById('cbx-fields').addEventListener('change', function() {
+        
+        calculoRealizado = false;
         const selectedId = this.value;
         if (selectedId === "field-0") return;
 
@@ -107,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("reuniao-passada-table").style.display = 'none';
             document.getElementById("btn-limpar-todos").style.display = 'block';
             document.getElementById("container-limpar-inicio").style.display = 'none';
+            document.getElementById("message").style.display = 'none';
         }
 
         const fieldNumber = parseInt(selectedId.split('-')[1]);
@@ -200,6 +206,8 @@ function consolidar() {
     // Recursos em Tesouraria (Saldo Livre + o que deve ser repassado ao CP)
     const totalResources = r29 + totalTenth + pastContributions; 
     ui.mostrarLinha('vf36', math.toReal(totalResources));
+
+    calculoRealizado = true;
 
     // Finalização Visual
     document.getElementById('resumo-table').style.display = 'block';

@@ -6,6 +6,11 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
+## [2.5.11] - 2026-04-09
+### Corrigido
+- Quando o cálculo dos lançamentos não tiver sido concluído o botão "Limpar Tudo" não deve
+armazenar os dados apenas retornar ao estado inicial sem sobrescrever o histórico.
+
 ## [2.5.10] - 2026-04-08
 ### Corrigido
 - Corrigir relatório WhatsApp

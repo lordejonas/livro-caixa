@@ -27,3 +27,18 @@
 .h-col1 { width: 10%; font-size: 0.8em; }
 .table-item-desc { width: 60%; padding-right: 5px; font-size: 0.9em; }
 .table-item-val { width: 30%; }
+
+/* Destaque para os Totais (Respiro visual e auxilio no preenchimento do livro) */
+.bloco-fechamento-receita {
+    background-color: rgba(0, 100, 182, 0.05); /* Opcional: um fundo bem leve para diferenciar */
+}
+
+.bloco-fechamento-despesa {
+    background-color: rgba(245, 99, 99, 0.05); /* Opcional: um fundo leve avermelhado */
+}
+
+/* Opcional: Remover a borda de baixo da última linha do bloco para ficar mais limpo */
+.bloco-fechamento-receita .table-row:last-child,
+.bloco-fechamento-despesa .table-row:last-child {
+    border-bottom: none;
+}

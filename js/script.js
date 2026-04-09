@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.input-mask').forEach(input => {
         input.addEventListener('input', ui.aplicarMascaraMoeda);
     });
+
     if (inputData) inputData.addEventListener('input', ui.aplicarMascaraData);
 
     // Botões Principais
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('vf38').value = "";
             document.getElementById('vf39').value = "";
             document.getElementById('container-limpar-inicio').style.display = 'none';
+            document.getElementById("message").style.display = 'block';
             ui.toggleModal(false);
             ui.exibirMensagem("Dados iniciais removidos.");
         }
@@ -95,13 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Validação de Saldo Inicial
         if (initialState && !valF37) {
-            ui.exibirMensagem("Para começar, insira o valor do campo:\n'Valores Reunião Passada'");
+            document.getElementById("message").style.display = 'block';
+            ui.exibirMensagem("Para começar, insira o valor do campo:\n'Saldo final da semana anterior'");
             this.value = "field-0";
             return;
         }
 
         // 2. Validação de Data Existente
         if (initialState && !math.isDataValida(valData)) {
+            document.getElementById("message").style.display = 'block';
             ui.exibirMensagem(`A data "${valData}" não existe.\nPor favor, informe uma data válida.`);
             document.getElementById("vf41").focus();
             this.value = "field-0";
@@ -118,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById("reuniao-passada-table").style.display = 'none';
             document.getElementById("btn-limpar-todos").style.display = 'block';
             document.getElementById("container-limpar-inicio").style.display = 'none';
-            document.getElementById("message").style.display = 'none';
         }
 
         const fieldNumber = parseInt(selectedId.split('-')[1]);

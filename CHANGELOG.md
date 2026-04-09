@@ -11,97 +11,35 @@ Os tópicos tem a seguinte descrições
 - Quando o cálculo dos lançamentos não tiver sido concluído o botão "Limpar Tudo" não deve
 armazenar os dados apenas retornar ao estado inicial sem sobrescrever o histórico.
 
-## [2.5.10] - 2026-04-08
-### Corrigido
-- Corrigir relatório WhatsApp
-
-## [2.5.9] - 2026-04-08
-### Corrigido
-- Corrigir apresentação de dados
-
-## [2.5.8] - 2026-04-08
-## Adicionado
-- Implementar a dinâmica de salvar dados resultantes de cálculos e carregar na tela inicial
-
-## [2.4.8] - 2026-04-08
-### Corrigido
-- Ajuste de configurações
-## Adicionado
-- Adicionar a instrução <meta name="theme-color" content="#0064b6"> que no Android, isso pintará a barra de status do navegador/sistema. Seria interessante garantir que no seu index.html exista a tag correspondente para que o visual seja idêntico antes e depois da instalação:
-
-## [2.4.7] - 2026-04-08
-### Alterado
-- reescrita e adição de funções que garanta que a plciação funcione melhor no IOS/Safari
---Essa mudanças fora focadas nas mascaras dos campos de valor e data.
---No CSS foi adcionada uma instrução que impede o zoom automático no iOS em campos de formulário
-
-## [2.4.6] - 2026-04-08
-### Alterado
-- Retirar a função "confirm()" quando acionar o botão "Limpar Tudo"
-### Adicionado
-- Modal para receber a confirmação ou não do usuário quando acionar o botão "Limpar Tudo"
-
-## [2.3.6] - 2026-04-08
-### Corrigido
-- O campo 'data da reunião' esta deixando passar datas inexistentes ex: 31/02/2026 
-- Alterar o 'innerHTML' para 'textContent' e habilitar o  white-space: pre-line na propriedade CSS #message
---para quando a string conter o caractere \n acontecer uma quebra de linha na página.
---A medida de trocar 'innerHTML' para 'textContent' é importante pois 
---é segura contra ataques de injeção de código (XSS) do que usar innerHTML.
-
-## [2.3.5] - 2026-04-08
-### Removido
-- Alert para validar o não preencimeno do campo 14 na tela inicial
-### Adicionado
-- Para informar ao usuário a necessidade de preencher o valor do campo 14 a mensagem é exibida na proria pagina
--- desaparecendo automaticamente
-### Alterado
-- Modularização e molhoramento dos códigos .js(s) e .css(s)
--- Como agora está usando módulos (type="module"), o navegador exige que o projeto seja rodado através de um servidor local   para carregar os arquivos (por questões de segurança do protocolo http/https).
-Se tentar abrir o index.html clicando duas vezes no arquivo (protocolo file://), os imports podem falhar.
-
-## [2.2.4] - 2026-04-07
-### Adicionado
-- Inclusão Campo "número da atá" no carregamento inicial
-- Inclusão Campo "Data da reunião" no carregamento inicial
-- Inclusão dos campos "Data da reunião" e "número da atá" no relatório WhatsApp
-### Alterado
-- Retirar do relatório do WhatsApp as linhas 'Coleta na reunião' e 'Décimas recolhida' caso valor igual a zero
-- Acrescentado mais dois caracteres "=" na parte de despesa do combo
-
-## [2.1.3] - 2026-04-07
-### Alterado
-- Melhoramento no código que engloba a dinâmica de carregamento da página
-- Mudançã no 'scroll' automático para uma transição mais suave.
-
-## [2.1.2] - 2026-04-03
-### Adicionado
-- Criação do arquivo README.md e CHANGELOG.md
-- Mudaça do texto das descrições de alguns tópicos
-
-## [2.1.1] - 2026-04-03
+## [2.0.0] – 2026-04-02
 ### Adicionado
 - Criação da funcionalidade "Enviar Relatório WhatsApp"
-- Criação do arquivo README.md e CHANGELOG.md
-
-## [2.0.1] - 2026-04-03
-### Alterado
-- Alterar estrutura do códico separando os arquivos em pastas
-- Criação das pastas `assets`, `css`, `js`.
-
-## [2.0.0] - 2026-04-02
+- Modularização e molhoramento dos códigos .js(s) e .css(s)
+--Como agora está usando módulos (type="module"), o navegador exige que o projeto seja rodado através de um servidor local   --para carregar os arquivos (por questões de segurança do protocolo http/https).
+--Se tentar abrir o index.html clicando duas vezes no arquivo (protocolo file://), os imports podem falhar.
+- Inclusão campo "número da ata" no carregamento inicial
+- Inclusão campo "Data da reunião" no carregamento inicial
+- Inclusão dos campos "Data da reunião"
+- Melhoramento no código que engloba a dinâmica de carregamento da página
+- Mudança no 'scroll' automático para uma transição mais suave.
+- Adição de funções que garanta que a aplicação funcione melhor no IOS/Safari
+--Essa mudanças fora focadas nas mascaras dos campos de valor e data.
+--No CSS foi adcionada uma instrução que impede o zoom automático no iOS em campos de formulário
+- Adicionar a instrução <meta name="theme-color" content="#0064b6"> que pinta a barra de status do navegador/sistema. Só para Android.
 ### Alterado
 - Reescrita do projeto para novo desing
 - Melhoramento e reescrita das funções java script
 - Retirar chamadas de Java Script do código HTML
 - Retirada dos códigos de Java Script e CSS do html principal
+- Alterar estrutura do código separando os arquivos em pastas
+- Criação das pastas `assets`, `css`, `js` e dos arquivos README.md e CHANGELOG.md
+- Fazer com que a mensagem de validação desapareça automaticamente
+- Substituir as funções de alerta “alert()” e confirmação "confirm()" por Modal
 ### Corrigido
 - Toranar o campo 27 não editável importando o valor do campo 12
+- Ajustar alguns cálculos
 
-## [1.0.0] - 2025-09-01
-### Adicionado
-- Implementar o PWA (Progressive Web App) na aplicação
-
-## [0.1.0] - 2025-09-01
-### Adicionado
-- Primeira versão com um único arquivo HTML contendo JS e CSS
+## [1.0.0] – 2025-09-??
+- Primeira versão da aplicação
+- Foi construída para ser executada com a tecnologia PWA (Progressive Web App).
+- Toda codificação de html, css e Java Script fica em um único arquivo html.

@@ -75,10 +75,16 @@ O app automatiza cálculos complexos como as **Décimas**, repasses de **Coleta 
 
     Desenvolvido por: [Jonas Linhares Conferência Santa Perpétua e Santa Felicidade]
 
-    Versão: 2.1.2
+    Versão: 2.0.0
 
 ---
 
 ## 🔄 Histórico de Versões
 
     Histórico de Mudanças: Veja o [CHANGELOG.md](./CHANGELOG.md) para detalhes de todas as atualizações.
+
+---
+
+"Servir aos nossos mestres e senhores com alegria e simplicidade."
+
+---

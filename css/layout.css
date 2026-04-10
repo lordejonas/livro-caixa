@@ -1,0 +1,59 @@
+/*Cabeçalho, Rodapé e o posicionamento das grandes seções.*/
+header {
+    display: flex;
+    padding: 10px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-icon {
+    width: 31px;
+    height: 31px;
+    border-radius: 4px;
+}
+
+header h2 {
+    margin: 0;
+    font-size: 1.3em;
+    color: var(--primary-blue);
+}
+
+.footer-fixo {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(244, 244, 249, 0.9);
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0;
+    z-index: 1000;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    color: #666;
+    gap: 2px;
+}
+
+.version-tag {
+    font-weight: bold;
+    color: var(--primary-blue);
+    opacity: 0.8;
+}
+
+#container-limpar-inicio {
+    display: none; /* O JS mudará para 'block' se houver dados */
+    margin-top: -10px;
+    margin-bottom: 20px;
+    text-align: center;
+}

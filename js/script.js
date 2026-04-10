@@ -1,272 +1,289 @@
-// Registro do Service Worker para PWA
+// 1. Registro do Service Worker
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .catch(err => console.error('Erro ao registrar SW:', err));
+    });
 }
 
-document.getElementById('btn-whatsapp').addEventListener('click', enviarWhatsApp);
+// 2. Importações de Módulos
+import * as math from './math.js';
+import * as ui from './ui.js';
+import { enviarWhatsApp } from './export.js';
 
-document.addEventListener('focusin', (event) => {
-    const campo = event.target;
-    const isInitialState = document.getElementById("initial-state").value === '1';
+let tipoLimpeza = "";
+let calculoRealizado = false;
 
-    // SÓ executa a limpeza se:
-    // 1. O clique for em um campo de valor que NÃO está desabilitado
-    // 2. NÃO estivermos mais no estado inicial (ou seja, o usuário já passou da 'reuniao-passada')
-    if (campo.classList.contains('valor') && !campo.disabled && !isInitialState) {
-        
-        // Esconde apenas os campos 'disabled' (resultados/subtotais)
-        document.querySelectorAll('input:disabled').forEach(input => {
-            const row = input.closest('.table-row');
-            if (row) row.style.display = 'none';
-        });
-
-        // NOTA: Não forçamos o display:block das sections aqui.
-        // Se o campo já está visível para o usuário clicar, a section dele já está aberta.
-        document.getElementById("resumo-table").style.display = 'none';
-        document.getElementById("btn-whatsapp").style.display = 'none';
-    }
-
-});
-
+// 3. Inicialização e Eventos
 document.addEventListener('DOMContentLoaded', () => {
     
-    const cbxFields = document.getElementById('cbx-fields');
-    const btnConsolidar = document.getElementById('btn-consolidar');
-    const btnLimpar = document.getElementById('btn-limpar-todos');
+    carregarDadosLocalStorage();
 
-    // Listener para o Select dinâmico
-    cbxFields.addEventListener('change', handleFieldSelection);
+    // Desativa o autocomplete em todos os inputs da página
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.setAttribute('autocomplete', 'one-time-code');
+    });
+    
+    // Preencher data atual
+    const inputData = document.getElementById('vf41');
+    if (inputData && !inputData.value) {
+        inputData.value = new Date().toLocaleDateString('pt-BR');
+    }
 
-    // Listener para formatação de moeda em tempo real (Substitui o formatValue antigo)
+    // Configurar Máscaras de Input
     document.querySelectorAll('.input-mask').forEach(input => {
-        input.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, "");
-            value = (value / 100).toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-            e.target.value = value === "0,00" ? "" : value;
+        input.addEventListener('input', ui.aplicarMascaraMoeda);
+    });
+
+    if (inputData) inputData.addEventListener('input', ui.aplicarMascaraData);
+
+    // Botões Principais
+    document.getElementById('btn-consolidar').addEventListener('click', consolidar);
+    document.getElementById('btn-whatsapp').addEventListener('click', enviarWhatsApp);
+
+    // No evento do botão de limpar:
+    document.getElementById('btn-limpar-todos').addEventListener('click', () => {
+        tipoLimpeza = "total";
+        ui.toggleModal(true); // Abre o modal em vez do confirm
+    });
+
+    // Botão Limpar Valores Iniciais (Novo)
+    document.getElementById('btn-limpar-inicio').addEventListener('click', () => {
+        tipoLimpeza = "inicial";
+        ui.toggleModal(true);
+    });
+
+    // Eventos de clique dentro do Modal 
+    document.getElementById('btn-confirm-yes').addEventListener('click', () => {
+        if (tipoLimpeza === "total") {
+            if (calculoRealizado) {
+                salvarDadosParaProximaSemana();
+            }
+            window.location.reload();
+        } else if (tipoLimpeza === "inicial") {
+            localStorage.removeItem('dados_conferencia'); // Deleta os dados salvos
+            // Limpa os campos da tela (exceto data vf41)
+            document.getElementById('vf40').value = "";
+            document.getElementById('vf37').value = "";
+            document.getElementById('vf38').value = "";
+            document.getElementById('vf39').value = "";
+            document.getElementById('container-limpar-inicio').style.display = 'none';
+            document.getElementById("message").style.display = 'block';
+            ui.toggleModal(false);
+            ui.exibirMensagem("Dados iniciais removidos.");
+        }
+    });
+
+    document.getElementById('btn-confirm-cancel').addEventListener('click', () => {
+        ui.toggleModal(false); // Apenas fecha o modal
+    });
+
+    // Opcional: Fechar o modal ao clicar fora dele
+    document.getElementById('modal-confirm').addEventListener('click', (e) => {
+        if (e.target.id === 'modal-confirm') ui.toggleModal(false);
+    });
+
+    ['38', '39'].forEach(num => {
+        document.getElementById(`link-repasse-${num}`).addEventListener('click', (e) => {
+            e.preventDefault();
+            const rowRepasse = document.getElementById(`field-${num}a`);
+            rowRepasse.style.display = (rowRepasse.style.display === 'none') ? 'flex' : 'none';
+            if (rowRepasse.style.display === 'flex') {
+                document.getElementById(`vf${num}a`).focus();
+            }
         });
     });
 
-    btnConsolidar.addEventListener('click', consolidate);
-    btnLimpar.addEventListener('click', clearAll);
+    // Seletor de Lançamentos (Lógica de Menu)
+    document.getElementById('cbx-fields').addEventListener('change', function() {
+        
+        calculoRealizado = false;
+        const selectedId = this.value;
+        if (selectedId === "field-0") return;
+
+        const initialState = document.getElementById("initial-state").value === '1';
+        const valF37 = document.getElementById("vf37").value;
+        const valData = document.getElementById("vf41").value; // Data da reunião
+
+        // 1. Validação de Saldo Inicial
+        if (initialState && !valF37) {
+            document.getElementById("message").style.display = 'block';
+            ui.exibirMensagem("Para começar, insira o valor do campo:\n'Saldo final da semana anterior'");
+            this.value = "field-0";
+            return;
+        }
+
+        // 2. Validação de Data Existente
+        if (initialState && !math.isDataValida(valData)) {
+            document.getElementById("message").style.display = 'block';
+            ui.exibirMensagem(`A data "${valData}" não existe.\nPor favor, informe uma data válida.`);
+            document.getElementById("vf41").focus();
+            this.value = "field-0";
+            return;
+        }
+
+        ui.limparMensagem();
+        ui.limparInterfaceParaNovoLancamento();
+
+        if (initialState) {
+            // Migra saldo da reunião passada para o fluxo atual
+            document.getElementById("vf14").value = valF37;
+            document.getElementById("initial-state").value = '0';
+            document.getElementById("reuniao-passada-table").style.display = 'none';
+            document.getElementById("btn-limpar-todos").style.display = 'block';
+            document.getElementById("container-limpar-inicio").style.display = 'none';
+        }
+
+        const fieldNumber = parseInt(selectedId.split('-')[1]);
+        const targetTable = (fieldNumber <= 15) ? "receita-table" : "despesa-table";
+        document.getElementById(targetTable).style.display = 'block';
+
+        const row = document.getElementById(selectedId);
+        if (row) {
+            row.style.display = 'flex';
+            document.getElementById('btn-consolidar').style.display = 'block';
+            row.querySelector('input').focus();
+        }
+        this.value = "field-0";
+    });
 });
 
-function handleFieldSelection() {
-    const initialState = document.getElementById("initial-state").value === '1';
-    const valF37 = document.getElementById("vf37").value;
-    const selectedId = this.value; // Ex: "field-1" ou "field-16"
-
-    if (selectedId === "field-0") return;
-
-    // Validação de segurança: exige saldo inicial antes de começar
-    if (initialState && !valF37) {
-        document.getElementById("message").textContent = "Insira o saldo anterior antes de prosseguir.";
-        this.value = "field-0";
-        return;
-    }
-
-    document.getElementById("message").textContent = "";
-
-    //limpar os resultados da tela para o usuário focar na nova inserção
-    document.querySelectorAll('input:disabled').forEach(input => {
-        const row = input.closest('.table-row');
-        if (row) row.style.display = 'none';
-    });
+// 4. Função Principal de Consolidação
+function consolidar() {
+    // --- PARTE A: RECEITAS ---
+    const r1 = math.toInt(document.getElementById('vf1').value);
+    const r2 = math.toInt(document.getElementById('vf2').value);
+    const r3 = math.toInt(document.getElementById('vf3').value);
+    const r4 = math.toInt(document.getElementById('vf4').value);
+    const r5 = math.toInt(document.getElementById('vf5').value);
     
-    // Se for o primeiro lançamento, configura o estado inicial
-    if (initialState) {
-        document.getElementById("vf14").value = valF37;
-        document.getElementById("initial-state").value = '0';
-        document.getElementById("reuniao-passada-table").style.display = 'none';
-        document.getElementById("btn-limpar-todos").style.display = 'block';
-    }
-
-    // Extrai o número do campo (ex: de "field-16" extrai 16)
-    const fieldNumber = parseInt(selectedId.split('-')[1]);
-
-    // Mostra a tabela correspondente
-    if (fieldNumber >= 1 && fieldNumber <= 15) {
-        document.getElementById("receita-table").style.display = 'block';
-    } else {
-        document.getElementById("despesa-table").style.display = 'block';
-    }
-
-    // Exibe a linha para digitação
-    const targetRow = document.getElementById(selectedId);
-    if (targetRow) {
-        targetRow.style.display = 'flex';
-        document.getElementById('btn-consolidar').style.display = 'block';
-        const input = targetRow.querySelector('input');
-        if (input) input.focus();
-    }
-
-    this.value = "field-0";
-}
-
-function consolidate() {
-    validatePresentFieldsInForm();
-    // 1. Funções auxiliares para conversão (Real -> Centavos -> Real)
-    const toInt = (val) => {
-        if (!val) return 0;
-        // Remove pontos de milhar e troca vírgula por nada para tratar como inteiro (centavos)
-        return parseInt(val.replace(/\./g, '').replace(',', '')) || 0;
-    };
-
-    const toReal = (intVal) => {
-        return (intVal / 100).toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-    };
-
-    // 2. Coleta de Valores de Receita
-    const r1 = toInt(document.getElementById('vf1').value);
-    const r2 = toInt(document.getElementById('vf2').value);
-    const r3 = toInt(document.getElementById('vf3').value);
-    const r4 = toInt(document.getElementById('vf4').value);
-    const r5 = toInt(document.getElementById('vf5').value);
-    
-    // Campo 06: Subtotal Base para Décima (1 a 5)
+    // Subtotal Base Décima (Campos 01 a 05)
     const r6 = r1 + r2 + r3 + r4 + r5;
-    document.getElementById('vf6').value = toReal(r6);
-    document.getElementById('field-6').style.display = 'flex';
+    ui.mostrarLinha('vf6', math.toReal(r6));
 
-    const r7 = toInt(document.getElementById('vf7').value);
-    const r8 = toInt(document.getElementById('vf8').value);
-    const r9 = toInt(document.getElementById('vf9').value);
-    const r10 = toInt(document.getElementById('vf10').value);
-    const r11 = toInt(document.getElementById('vf11').value);
-    const r12 = toInt(document.getElementById('vf12').value);
+    // Receitas Extras e Totais
+    const r7 = math.toInt(document.getElementById('vf7').value);
+    const r8 = math.toInt(document.getElementById('vf8').value);
+    const r9 = math.toInt(document.getElementById('vf9').value);
+    const r10 = math.toInt(document.getElementById('vf10').value);
+    const r11 = math.toInt(document.getElementById('vf11').value);
+    const r12 = math.toInt(document.getElementById('vf12').value);
 
-    // Campo 13: Soma da Receita da Semana (6 a 12)
-    const r13 = r6 + r7 + r8 + r9 + r10 + r11 + r12;
-    document.getElementById('vf13').value = toReal(r13);
-    document.getElementById('field-13').style.display = 'flex';
+    const r13 = r6 + r7 + r8 + r9 + r10 + r11 + r12; // Soma Receita Semana
+    ui.mostrarLinha('vf13', math.toReal(r13));
 
-    //Campo 14: preenchido no inicio no campo extra 37
-    //e repassado para o campo 14 na tansição do estagio (initialState) 1 para o 2
-    const r14 = toInt(document.getElementById('vf14').value);
+    const r14 = math.toInt(document.getElementById('vf14').value); // Saldo Anterior
+    const r15 = r13 + r14; // Balanço Total
+    ui.mostrarLinha('vf15', math.toReal(r15));
 
-    // Campo 15: Balanço (Soma da semana + Saldo anterior)
-    const r15 = r13 + r14;
-    document.getElementById('vf15').value = toReal(r15);
-    document.getElementById('field-15').style.display = 'flex';
+    // --- PARTE B: DESPESAS E REPASSES ---
+    const d24 = math.calcularDecima(r6); // 10% do r6
+    ui.mostrarLinha('vf24', math.toReal(d24));
 
-    // 3. Coleta de Valores de Despesa
-    const d16 = toInt(document.getElementById('vf16').value);
-    const d17 = toInt(document.getElementById('vf17').value);
-    const d18 = toInt(document.getElementById('vf18').value);
-    const d19 = toInt(document.getElementById('vf19').value);
-    const d20 = toInt(document.getElementById('vf20').value);
-    const d21 = toInt(document.getElementById('vf21').value);
-    const d22 = toInt(document.getElementById('vf22').value);
-    const d23 = toInt(document.getElementById('vf23').value);
-    const d25 = toInt(document.getElementById('vf25').value);
+    const d26 = r8; // Repasse Solidariedade/Ozanam (Espelha o Campo 08)
+    ui.mostrarLinha('vf26', math.toReal(d26));
 
-    // Cálculos Automáticos de Repasse
-    // Campo 24: Décima (10% do campo 06)
-    const d24 = Math.floor(r6 * 0.10); 
-    document.getElementById('vf24').value = toReal(d24);
-    document.getElementById('field-24').style.display = 'flex';
+    const d27 = r12; // Repasse referente à linha 12
+    ui.mostrarLinha('vf27', math.toReal(d27));
 
-    //Campo 26 - repasse campo 8
-    const d26 = toInt(document.getElementById('vf8').value);
-    document.getElementById('vf26').value = toReal(d26);
-    document.getElementById('field-26').style.display = 'flex';
+    // Soma todas as despesas (16 a 27, pulando as que não existem ou são labels)
+    const dDespesasFixas = 
+        math.toInt(document.getElementById('vf16').value) + 
+        math.toInt(document.getElementById('vf17').value) + 
+        math.toInt(document.getElementById('vf18').value) + 
+        math.toInt(document.getElementById('vf19').value) + 
+        math.toInt(document.getElementById('vf20').value) + 
+        math.toInt(document.getElementById('vf21').value) + 
+        math.toInt(document.getElementById('vf22').value) + 
+        math.toInt(document.getElementById('vf23').value) + 
+        math.toInt(document.getElementById('vf25').value);
 
-    //Campo 27 - repasse referente a linha 12
-    const d27 = toInt(document.getElementById('vf12').value);
-    document.getElementById('vf27').value = toReal(d27);
-    document.getElementById('field-27').style.display = 'flex';
+    const d28 = dDespesasFixas + d24 + d26 + d27; // Soma Total Despesas
+    ui.mostrarLinha('vf28', math.toReal(d28));
 
-    // Campo 28: Soma das Despesas
-    const d28 = d16 + d17 + d18 + d19 + d20 + d21 + d22 + d23 + d24 + d25 + d26 + d27;
-    document.getElementById('vf28').value = toReal(d28);
-    document.getElementById('field-28').style.display = 'flex';
-
-    // Campo 29: Saldo Final (Balanço - Despesas)
-    const r29 = r15 - d28;
-    document.getElementById('vf29').value = toReal(r29);
-    document.getElementById('field-29').style.display = 'flex';
-
-    //campo 30: Balaço (Soma dos campos 28 e 29)
-    const d30 = d28 + r29;
-    document.getElementById('vf30').value = toReal(d30);
-    document.getElementById('field-30').style.display = 'flex';
-
-    // Campo 34: Décimas Acumuladas (Décima de hoje + o que veio da reunião passada)
-    const pastTenth = toInt(document.getElementById('vf38').value);
-    const totalTenth = d24 + pastTenth;
-    document.getElementById('vf34').value = toReal(totalTenth);
-    document.getElementById('resumo-table').style.display = 'block';
-
-    // Campo 35: Outras contribuições a enviar ao C.P (Coleta de Ozanan, Contribuição da Solidariedade)
-    const pastContributions = toInt(document.getElementById('vf39').value);
-    const totalContributions = pastContributions + d26 + d27;
-    document.getElementById('vf35').value = toReal(totalContributions);
-
-    //Campo 36: Total de recursos com a tesouraria
-    const totalResources = r29 + totalTenth + pastContributions;
-    document.getElementById('vf36').value = toReal(totalResources);
-
-    // Verificar se tem valores nos header da tabela
-    const tabelas = ['receita-table', 'despesa-table', 'resumo-table'];
-    
-    tabelas.forEach(idTable => {
-        const tabela = document.getElementById(idTable);
-        if (!tabela) return;
-
-        // Verificamos se existe algum input dentro desta tabela com valor > 0
-        let temConteudo = false;
-        tabela.querySelectorAll('input').forEach(input => {
-            if (toInt(input.value) > 0) {
-                temConteudo = true;
-            }
-        });
-
-        // Se a tabela tem algum valor (digitado ou calculado), ela PRECISA aparecer
-        tabela.style.display = temConteudo ? 'block' : 'none';
-        document.getElementById("btn-whatsapp").style.display = 'block';
-    });
-
-    // Verificar se tem valores nas ROWS (Linhas) dentro das tabelas visíveis
-    document.querySelectorAll('.table-row').forEach(row => {
-        const input = row.querySelector('input');
-        if (input) {
-            const valorInt = toInt(input.value);
-
-            if (input.disabled) {
-                // Campos automáticos (subtotais/décimas): aparecem se tiverem valor
-                row.style.display = valorInt > 0 ? 'flex' : 'none';
-            } else {
-                // Campos de digitação: aparecem apenas se tiverem valor
-                row.style.display = valorInt > 0 ? 'flex' : 'none';
-            }
-        }
-    });
-
-    window.scrollTo(0, 0);
-}
-
-function clearAll() {
-    if (confirm("Deseja realmente limpar todos os dados?")) {
-        window.location.reload();
+    // Se houver qualquer despesa (mesmo que seja apenas a décima automática)
+    // precisamos mostrar a tabela de despesas que estava oculta
+    if (d28 > 0) {
+        document.getElementById('despesa-table').style.display = 'block';
     }
+
+    // Saldos Finais
+    const r29 = r15 - d28; // Saldo Final Semana Atual
+    ui.mostrarLinha('vf29', math.toReal(r29));
+    
+    ui.mostrarLinha('vf30', math.toReal(d28 + r29)); // Verificação (deve ser igual ao r15)
+
+    // --- PARTE C: RESUMO SITUAÇÃO CAIXA (TESOURARIA) ---
+    const pastTenth = math.toInt(document.getElementById('vf38').value);
+    const transferTenth = math.toInt(document.getElementById('vf38a').value);
+    const totalTenth = d24 + pastTenth - transferTenth; // Décimas acumuladas (Hoje + Passado - Tranferida (caso tenha))
+    ui.mostrarLinha('vf34', math.toReal(totalTenth));
+    
+    const pastContributions = math.toInt(document.getElementById('vf39').value);
+    const transferContributions = math.toInt(document.getElementById('vf39a').value);
+    const totalOthers = (pastContributions + d26 + d27) - transferContributions; // Outros repasses
+    ui.mostrarLinha('vf35', math.toReal(totalOthers));
+
+    // Recursos em Tesouraria (Saldo Livre + o que deve ser repassado ao CP)
+    const totalResources = r29 + totalTenth + totalOthers; 
+    ui.mostrarLinha('vf36', math.toReal(totalResources));
+
+    calculoRealizado = true;
+
+    // Finalização Visual
+    document.getElementById('resumo-table').style.display = 'block';
+    document.getElementById("btn-whatsapp").style.display = 'block';
+
+    // Garante que as seções de resultado apareçam se houver saldo ou movimento
+    if (r15 > 0) document.getElementById('receita-table').style.display = 'block';
+    if (d28 > 0) document.getElementById('despesa-table').style.display = 'block';
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function validatePresentFieldsInForm(){
-    const camposNecessarios = [
-        'vf1', 'vf2', 'vf3', 'vf4', 'vf5', 'vf6', 'vf7', 'vf8', 'vf9', 'vf10', 
-        'vf11', 'vf12', 'vf13', 'vf14', 'vf15', 'vf16', 'vf17', 'vf18', 'vf19', 
-        'vf20', 'vf21', 'vf22', 'vf23', 'vf24', 'vf25', 'vf28', 'vf29', 'vf30',
-        'vf34', 'vf35', 'vf36', 'vf37', 'vf38', 'vf39'
-    ];
+// Função para Salvar os dados antes de limpar
+function salvarDadosParaProximaSemana() {
+    const numAtaAtual = parseInt(document.getElementById('vf40').value) || 0;
+    
+    const dados = {
+        proximaAta: numAtaAtual + 1,
+        saldoAnterior: document.getElementById('vf29').value, // vf29 -> vf37
+        decimasAcumuladas: document.getElementById('vf34').value, // vf34 -> vf38
+        outrasContribuicoes: document.getElementById('vf35').value // vf35 -> vf39
+    };
 
-    camposNecessarios.forEach(id => {
-        if (!document.getElementById(id)) {
-            console.error(`ERRO CRÍTICO: O campo ID "${id}" não foi encontrado no HTML.`);
+    localStorage.setItem('dados_conferencia', JSON.stringify(dados));
+}
+
+// Função para Carregar os dados ao abrir o app
+function carregarDadosLocalStorage() {
+    const dadosSalvos = localStorage.getItem('dados_conferencia');
+    
+    if (dadosSalvos) {
+        // Se existem dados, mostramos o botão de limpeza
+        document.getElementById('container-limpar-inicio').style.display = 'block';
+        const dados = JSON.parse(dadosSalvos);
+        
+        // Função auxiliar interna para validar se o valor deve ser preenchido
+        const preencherSeValido = (inputEl, valor) => {
+            if (!inputEl) return;
+            // Se o valor for nulo, indefinido, vazio ou "0,00", o campo permanece limpo
+            if (valor && valor !== "0,00" && valor !== "") {
+                inputEl.value = valor;
+            } else {
+                inputEl.value = "";
+            }
+        };
+
+        // 1. Número da Ata (Sempre preenche se existir e for maior que 0)
+        if (dados.proximaAta && dados.proximaAta > 0) {
+            document.getElementById('vf40').value = dados.proximaAta;
         }
-    });
+
+        // 2. Saldos e Repasses (Aplica a regra do "0,00")
+        preencherSeValido(document.getElementById('vf37'), dados.saldoAnterior);
+        preencherSeValido(document.getElementById('vf38'), dados.decimasAcumuladas);
+        preencherSeValido(document.getElementById('vf39'), dados.outrasContribuicoes);
+    }
 }

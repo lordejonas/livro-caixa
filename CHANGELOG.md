@@ -6,7 +6,12 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
-## [2.0.0] – 2026-04-02
+## [2.0.1] – 2026-04-10
+### Alterado
+- Mensagem de confirmação do botão "Encerrar"
+- Reposicionar a chamada do arquivo js/script.js para a tag <head>
+
+## [2.0.0] – 2026-04-10
 ### Adicionado
 - Criação da funcionalidade "Enviar Relatório WhatsApp"
 - Criação da funcionalidade de abatimentos de valores quando houver repasses de décimas ou contribuições 

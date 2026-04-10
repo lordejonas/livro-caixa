@@ -31,13 +31,13 @@ export function enviarWhatsApp() {
     mensagem += "--------------------------\n";
     mensagem += "_Relatório gerado pelo App Livro Caixa_";
 
-    console.log(mensagem);
+    //console.log(mensagem);
 
-    //window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
+    window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
 }
 
 function receitas(vf1, vf6, vf13) {
-    console.log("Atualizaou 12:00");
+    
     let linhas = [];
 
     const temColeta = vf1 > 0;

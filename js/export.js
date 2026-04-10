@@ -4,56 +4,92 @@ export function enviarWhatsApp() {
     const numeroAta = document.getElementById('vf40').value || "----";
     const dataReuniao = document.getElementById('vf41').value || new Date().toLocaleDateString('pt-BR');
 
-    /*Coletar valores receitas sugeitas a decima*/
+    /*Coletar valores receitas*/
     const vf1 = toInt(document.getElementById('vf1').value);
     const vf6 = toInt(document.getElementById('vf6').value);
     const vf13 = toInt(document.getElementById('vf13').value);
     const vf14 = document.getElementById('vf14').value;
+
+    /*Coletar valores despesas*/
     const vf24 = toInt(document.getElementById('vf24').value);
+    const vf26 = toInt(document.getElementById('vf26').value);
+    const vf27 = toInt(document.getElementById('vf27').value);
+    const totRepasses = vf26 + vf27;
     const vf28 = toInt(document.getElementById('vf28').value);
     const vf29 = document.getElementById('vf29').value;
 
-    let mensagem = `*POSIÇÃO CAIXA CONFERÊNCIA*\n`;
-    mensagem += `*DIA ${dataReuniao} ATA Nº ${numeroAta}*\n`;
+    let mensagem = `*POSIÇÃO CAIXA DA CONFERÊNCIA*\n`;
+    mensagem += `*Dia ${dataReuniao} - Ata Nº ${numeroAta}*\n`;
     mensagem += "--------------------------\n\n";
     mensagem += `Saldo anterior: R$ ${vf14}\n\n`;
     mensagem += "*RECEITAS*\n";
     mensagem += receitas(vf1, vf6, vf13);
     mensagem += "*DESPESAS*\n";
-    mensagem += despesas(vf24, vf28);
+    mensagem += despesas(vf24, vf28, totRepasses);
     mensagem += "*TOTAIS*\n";
     mensagem += `Saldo final: R$ ${vf29}\n\n`;
     mensagem += "--------------------------\n";
     mensagem += "_Relatório gerado pelo App Livro Caixa_";
 
-    //console.log(mensagem);
+    console.log(mensagem);
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
+    //window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
 }
 
-function receitas(vf1, vf6, vf13){
-    let ret = "";
-    if (vf1 > 0 && vf1 == vf6){
-        ret += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
-    }else if(vf1 > 0){
-        let demaisRecSujeitasDecima = vf6 - vf1;
-        ret += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
-        ret += `Demais receitas sujeitas décima: R$ ${toReal(demaisRecSujeitasDecima)}\n`;
+function receitas(vf1, vf6, vf13) {
+    console.log("Atualizaou 12:00");
+    let linhas = [];
+
+    const temColeta = vf1 > 0;
+    const temExtraDecima = vf13 > vf6;
+    const temDiferencaDemais = vf6 > vf1;
+
+    // 1. Sempre mostra se existir
+    if (temColeta) {
+        linhas.push(`Coleta na reunião: R$ ${toReal(vf1)}`);
     }
-    if(vf13 > vf6){
-        let restanteReceitas = vf13 - vf6;
-        ret += `Receitas não sujeitas a décima: R$ ${toReal(restanteReceitas)}\n`;
+
+    // 2. REGRA ESPECIAL: "Demais receitas" só aparece se houver Coleta OU Extra Décima
+    if (temDiferencaDemais && (temColeta || temExtraDecima)) {
+        linhas.push(`Demais receitas: R$ ${toReal(vf6 - vf1)}`);
     }
-    ret += `Total receitas: R$ ${toReal(vf13)}\n\n`;
-    return ret;
+
+    // 3. Sempre mostra se existir
+    if (temExtraDecima) {
+        linhas.push(`Receitas não sujeitas décima: R$ ${toReal(vf13 - vf6)}`);
+    }
+
+    // 4. Total sempre aparece
+    linhas.push(`Total receitas: R$ ${toReal(vf13)}`);
+
+    return linhas.join('\n') + '\n\n';
 }
 
-function despesas(vf24, vf28){
+function despesas(vf24, vf28, totalRepasses){
+    let linhas = [];
+    const temDecima = vf24 > 0;
+    //const temAlemDecima = vf28 > vf24;
+    const temAlemDecimaRepasse = (vf28 != (vf24 + totalRepasses));
+    const temRepasses = totalRepasses > 0;
+    
+    if(temDecima)
+        linhas.push(`Recolhimento décima: R$ ${toReal(vf24)}`);
+
+    if(temAlemDecimaRepasse)
+        linhas.push(`Demais despesas: R$ ${toReal(vf28 - vf24 - totalRepasses)}`)
+
+    if(temRepasses)
+        linhas.push(`Repasses ao C.P.: R$ ${toReal(totalRepasses)}`)
+
+    linhas.push(`Total despesas: R$ ${toReal(vf28)}`);
+    return linhas.join('\n') + '\n\n';;
+}
+
+function despesas_old(vf24, vf28){
     let ret = "";
     let demaisDespesas = vf28 - vf24;
     if(vf24 > 0){
         ret += `Recolhimento décima: R$ ${toReal(vf24)}\n`;
-        ret += `Demais despesas: R$ ${toReal(demaisDespesas)}\n`;
     }
 
     if(demaisDespesas > 0){

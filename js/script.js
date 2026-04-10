@@ -219,17 +219,11 @@ function consolidar() {
     const transferTenth = math.toInt(document.getElementById('vf38a').value);
     const totalTenth = d24 + pastTenth - transferTenth; // Décimas acumuladas (Hoje + Passado - Tranferida (caso tenha))
     ui.mostrarLinha('vf34', math.toReal(totalTenth));
-    //console.log("Décima acumulada (int):" + pastTenth);
-    //console.log("Décima a trasferir (int):" + transferTenth);
-    //console.log("Total décima:" + math.toReal(totalTenth));
     
     const pastContributions = math.toInt(document.getElementById('vf39').value);
     const transferContributions = math.toInt(document.getElementById('vf39a').value);
     const totalOthers = (pastContributions + d26 + d27) - transferContributions; // Outros repasses
     ui.mostrarLinha('vf35', math.toReal(totalOthers));
-    //console.log("Contribuições acumuladas (int):" + pastContributions);
-    //console.log("Contribuições repassadas (int):" + transferContributions);
-    //console.log("Total contribuições (real):" + math.toReal(totalOthers));
 
     // Recursos em Tesouraria (Saldo Livre + o que deve ser repassado ao CP)
     const totalResources = r29 + totalTenth + totalOthers; 

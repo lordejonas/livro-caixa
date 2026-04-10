@@ -24,6 +24,23 @@
     border-bottom: 1px solid #eee;
 }
 
+/* Estilo para as linhas de Repasse (38a e 39a) */
+.row-repasse {
+    background-color: rgba(245, 99, 99, 0.03); /* Fundo avermelhado sutil */
+}
+
+/* Estilo para a descrição dentro da linha de repasse */
+.row-repasse .table-item-desc {
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/*Remover a borda de baixo da última linha do bloco para ficar mais limpo */
+.bloco-fechamento-receita .table-row:last-child,
+.bloco-fechamento-despesa .table-row:last-child {
+    border-bottom: none;
+}
+
 .h-col1 { width: 10%; font-size: 0.8em; }
 .table-item-desc { width: 60%; padding-right: 5px; font-size: 0.9em; }
 .table-item-val { width: 30%; }
@@ -35,10 +52,4 @@
 
 .bloco-fechamento-despesa {
     background-color: rgba(245, 99, 99, 0.05); /* Opcional: um fundo leve avermelhado */
-}
-
-/*Remover a borda de baixo da última linha do bloco para ficar mais limpo */
-.bloco-fechamento-receita .table-row:last-child,
-.bloco-fechamento-despesa .table-row:last-child {
-    border-bottom: none;
 }

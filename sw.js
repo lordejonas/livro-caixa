@@ -13,7 +13,8 @@ const assets = [
   './manifest.json',
   './assets/icons/favicon.ico',
   './assets/icons/icon512_maskable.png',
-  './assets/icons/icon512_rounded.png'
+  './assets/icons/icon512_rounded.png',
+  './assets/icons/logo-ssvp-transparente-st.png'
 ];
 
 // Instalação do Service Worker e Cache dos arquivos

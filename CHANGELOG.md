@@ -14,8 +14,13 @@ armazenar os dados apenas retornar ao estado inicial sem sobrescrever o históri
 ## [2.0.0] – 2026-04-02
 ### Adicionado
 - Criação da funcionalidade "Enviar Relatório WhatsApp"
+- Criação da funcionalidade de abatimentos de valores quando houver repasses de décimas ou contribuições 
+--da conferência para o Concelho Particular.
+- Criação da possibilidade de armazenar o produto dos cálculos e carregar esses dados na tela inicial toda 
+--vez que a aplicação for iniciada.
 - Modularização e molhoramento dos códigos .js(s) e .css(s)
---Como agora está usando módulos (type="module"), o navegador exige que o projeto seja rodado através de um servidor local   --para carregar os arquivos (por questões de segurança do protocolo http/https).
+--Como agora está usando módulos (type="module"), o navegador exige que o projeto seja rodado através de 
+--um servidor local   --para carregar os arquivos (por questões de segurança do protocolo http/https).
 --Se tentar abrir o index.html clicando duas vezes no arquivo (protocolo file://), os imports podem falhar.
 - Inclusão campo "número da ata" no carregamento inicial
 - Inclusão campo "Data da reunião" no carregamento inicial
@@ -25,7 +30,8 @@ armazenar os dados apenas retornar ao estado inicial sem sobrescrever o históri
 - Adição de funções que garanta que a aplicação funcione melhor no IOS/Safari
 --Essa mudanças fora focadas nas mascaras dos campos de valor e data.
 --No CSS foi adcionada uma instrução que impede o zoom automático no iOS em campos de formulário
-- Adicionar a instrução <meta name="theme-color" content="#0064b6"> que pinta a barra de status do navegador/sistema. Só para Android.
+- Adicionar a instrução <meta name="theme-color" content="#0064b6"> que pinta a barra de status do 
+--navegador/sistema. Só para Android.
 ### Alterado
 - Reescrita do projeto para novo desing
 - Melhoramento e reescrita das funções java script

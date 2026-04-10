@@ -1,11 +1,11 @@
 {
   "short_name": "Livro Caixa",
-  "name": "Conf. Sta Perpétua e Felicidade",
-  "description": "Auxiliar Controle Financeiro da Conferência",
+  "name": "Conf. Sta Perpétua e Felicidade - DF",
+  "description": "Controle Financeiro da Conferência",
   "icons": [
     {
-      "src": "assets/icons/logo-ssvp-transparente.png",
-      "sizes": "1000x1000",
+      "src": "assets/icons/logo-ssvp-transparente-st.png",
+      "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"
     }

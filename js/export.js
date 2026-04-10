@@ -68,14 +68,13 @@ function receitas(vf1, vf6, vf13) {
 function despesas(vf24, vf28, totalRepasses){
     let linhas = [];
     const temDecima = vf24 > 0;
-    //const temAlemDecima = vf28 > vf24;
-    const temAlemDecimaRepasse = (vf28 != (vf24 + totalRepasses));
+    const temAlemDecimaErepasse = (vf28 != (vf24 + totalRepasses));
     const temRepasses = totalRepasses > 0;
     
     if(temDecima)
         linhas.push(`Recolhimento décima: R$ ${toReal(vf24)}`);
 
-    if(temAlemDecimaRepasse)
+    if(temAlemDecimaErepasse)
         linhas.push(`Demais despesas: R$ ${toReal(vf28 - vf24 - totalRepasses)}`)
 
     if(temRepasses)

@@ -4,7 +4,7 @@
   "description": "Controle Financeiro da Conferência",
   "icons": [
     {
-      "src": "https://obrasvicentinascm.maringa.br/sistema/imagens/1/261222092517_logotipo_ssvp_brasil__azul01_png.png",
+      "src": "./assets/icons/logo-full.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

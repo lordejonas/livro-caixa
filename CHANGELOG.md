@@ -10,6 +10,7 @@ Os tópicos tem a seguinte descrições
 ### Alterado
 - Mensagem de confirmação do botão "Encerrar"
 - Reposicionar a chamada do arquivo js/script.js para a tag <head>
+- Alterar manifest.json para ajustar a tela de abertura
 
 ## [2.0.0] – 2026-04-10
 ### Adicionado

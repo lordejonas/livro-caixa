@@ -1,28 +1,18 @@
 {
-  "short_name": "Caixa SSVP",
-  "name": "Livro Caixa SSVP - Conferências",
+  "short_name": "Livro Caixa",
+  "name": "SSVP - Sta Perpétua e Felicidade",
+  "description": "Controle Financeiro da Conferência",
   "icons": [
     {
-      "purpose":"maskable",
-      "sizes":"512x512",
-      "src":"assets/icons/icon512_maskable.png",
-      "type":"image/png"
-    },
-    {
-      "purpose":"any",
-      "sizes":"512x512",
-      "src":"assets/icons/icon512_rounded.png",
-      "type":"image/png"
-    },
-    {
-      "src": "assets/icons/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "https://obrasvicentinascm.maringa.br/sistema/imagens/1/261222092517_logotipo_ssvp_brasil__azul01_png.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#0064b6",
-  "background_color": "#f4f4f9",
+  "background_color": "#0064b6",
   "orientation": "portrait"
 }

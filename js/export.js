@@ -8,6 +8,7 @@ export function enviarWhatsApp() {
     const vf1 = toInt(document.getElementById('vf1').value);
     const vf6 = toInt(document.getElementById('vf6').value);
     const vf13 = toInt(document.getElementById('vf13').value);
+    const vf14 = document.getElementById('vf14').value;
     const vf24 = toInt(document.getElementById('vf24').value);
     const vf28 = toInt(document.getElementById('vf28').value);
     const vf29 = document.getElementById('vf29').value;
@@ -15,6 +16,7 @@ export function enviarWhatsApp() {
     let mensagem = `*POSIÇÃO CAIXA CONFERÊNCIA*\n`;
     mensagem += `*DIA ${dataReuniao} ATA Nº ${numeroAta}*\n`;
     mensagem += "--------------------------\n\n";
+    mensagem += `Saldo anterior: R$ ${vf14}\n\n`;
     mensagem += "*RECEITAS*\n";
     mensagem += receitas(vf1, vf6, vf13);
     mensagem += "*DESPESAS*\n";
@@ -36,11 +38,11 @@ function receitas(vf1, vf6, vf13){
     }else if(vf1 > 0){
         let demaisRecSujeitasDecima = vf6 - vf1;
         ret += `Coleta na reunião: R$ ${toReal(vf1)}\n`;
-        ret += `Sujeitas a décima: R$ ${toReal(demaisRecSujeitasDecima)}\n`;
+        ret += `Demais receitas sujeitas décima: R$ ${toReal(demaisRecSujeitasDecima)}\n`;
     }
     if(vf13 > vf6){
         let restanteReceitas = vf13 - vf6;
-        ret += `Não sujeitas a décima: R$ ${toReal(restanteReceitas)}\n`;
+        ret += `Receitas não sujeitas a décima: R$ ${toReal(restanteReceitas)}\n`;
     }
     ret += `Total receitas: R$ ${toReal(vf13)}\n\n`;
     return ret;
@@ -48,11 +50,16 @@ function receitas(vf1, vf6, vf13){
 
 function despesas(vf24, vf28){
     let ret = "";
+    let demaisDespesas = vf28 - vf24;
     if(vf24 > 0){
-        let demaisDespesas = vf28 - vf24;
         ret += `Recolhimento décima: R$ ${toReal(vf24)}\n`;
         ret += `Demais despesas: R$ ${toReal(demaisDespesas)}\n`;
     }
+
+    if(demaisDespesas > 0){
+        ret += `Demais despesas: R$ ${toReal(demaisDespesas)}\n`;
+    }
+
     ret += `Total despesas: R$ ${toReal(vf28)}\n\n`;
     return ret;
 }

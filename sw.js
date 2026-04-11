@@ -1,20 +1,22 @@
-const CACHE_NAME = 'caixa-ssvp-v200';
-const assets = [
+const CACHE_NAME = 'caixa-ssvp-v2011';
+const urlsToCache = [
   './',
   './index.html',
+  './caixa.html',
+  './contador.html',
   './css/base.css',
   './css/layout.css',
   './css/components.css',
   './css/tables.css',
+  './css/contador.css',
   './js/script.js',
-  './js/export.js',
   './js/math.js',
   './js/ui.js',
-  './manifest.json',
+  './js/export.js',
+  './js/contador.js',
   './assets/icons/favicon.ico',
-  './assets/icons/icon512_maskable.png',
-  './assets/icons/icon512_rounded.png',
-  './assets/icons/logo-ssvp-transparente-st.png'
+  './assets/icons/logo-ssvp-transparente.png',
+  './manifest.json'
 ];
 
 // Instalação do Service Worker e Cache dos arquivos

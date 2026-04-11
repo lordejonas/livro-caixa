@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caixa-ssvp-v300B';
+const CACHE_NAME = 'caixa-ssvp-v300C';
 const urlsToCache = [
   './',
   './index.html',

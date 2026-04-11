@@ -165,15 +165,18 @@ function enviarWhatsApp() {
     const pix = parseFloat(pixStr.replace(".", "").replace(",", ".")) || 0;
     const participantes = document.getElementById('rel-participantes').value;
     
+    // Captura e formata a data atual
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
+
     const totalGeral = valorDinheiroFinal + pix;
     const totalFormatado = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    const mensagem = `Coleta após a missa das ${horario}%0A` +
-                     `Valor total: ${totalFormatado}%0A` +
+    // Montagem da mensagem com a nova frase e data
+    const mensagem = `Resultado da coleta após a missa das ${horario} data ${dataAtual}%0A%0A` +
+                     `Valor total: *${totalFormatado}*%0A%0A` +
                      `Participaram da atividade: ${participantes}`;
 
-    // Abre o WhatsApp com a mensagem pronta
-    //console.log(mensagem);
+    // Abre o WhatsApp
     window.open(`https://wa.me/?text=${mensagem}`, '_blank');
 }
 

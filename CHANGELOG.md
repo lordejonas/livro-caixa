@@ -6,11 +6,11 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
-## [2.2.1] – 2026-04-10
+## [3.0.0] – 2026-04-10
 ### Adicionado
 - Nova funcionalidade de contar cédulas/moedas e salvar os valores
 - Inclusão da do menu na página index.html
-- Separação em três páginas: contador.html, caixa.html e index.html
+- Separação em três páginas: contador.html, caixa.html e index.html dai versão 3
 
 ## [2.0.1] – 2026-04-10
 ### Alterado

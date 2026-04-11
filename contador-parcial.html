@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Parcial SSVP</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/contador.css"> <link rel="stylesheet" href="css/contador-parcial.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="assets/icons/favicon.ico" alt="Ícone SSVP" class="header-icon">
+            <h2>Contar dinheiro (Parcial)</h2>
+            <a href="index.html" class="home-link">
+                <svg class="home-icon-svg" viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="white"/>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <main id="main-container">
+        <section class="chose-section" style="padding: 15px;">
+            <select id="select-moeda" class="valor" style="width: 100%; padding: 10px; border-radius: 8px;">
+                <option value="" disabled selected>Escolha a nota/moeda para adicionar...</option>
+                </select>
+        </section>
+
+        <div id="lista-parcial">
+            </div>
+        
+        <div class="row-contador row-total-geral" id="row-total-parcial" style="display: none;">
+            <div class="info-texto">
+                <span class="label-cedula">TOTAL PARCIAL</span>
+                <span class="valor-linha" id="total-geral-parcial" style="font-size: 1.4rem; font-weight: 800;">R$ 0,00</span>
+            </div>
+        </div>
+
+        <div id="toast">✅ Valores incrementados!</div>
+
+        <section id="form-relatorio" style="display: none; padding: 20px; background: #f9f9f9; border-top: 2px solid #0064b6; margin-top: 20px;">
+            <h3 style="color: #0064b6; margin-bottom: 15px;">Relatório de Coleta</h3>
+            
+            <label>Horário da Missa:</label>
+            <input type="text" id="rel-horario" placeholder="00:00" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 10px;" maxlength="5">
+
+            <label>Valores em Dinheiro (Contabilizado):</label>
+            <input type="text" id="rel-dinheiro" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 10px; background: #eee;" disabled>
+
+            <label>Valores em PIX:</label>
+            <input type="text" id="rel-pix" placeholder="0,00" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 10px;">
+
+            <label>Participantes:</label>
+            <textarea id="rel-participantes" class="input-qty" style="width: 100%; text-align: left; padding: 10px; height: 60px; margin-bottom: 15px;"></textarea>
+        </section>
+
+        <div class="actions" style="padding: 10px 20px;">
+            <button id="btn-somar" onclick="incrementarValores()" class="btn-primary" style="width: 100%; margin-bottom: 15px; background-color: #0064b6;">
+                ➕ Somar ao Contador Principal
+            </button>
+            
+            <button id="btn-relatorio" onclick="gerenciarRelatorio()" class="btn-primary" style="width: 100%; margin-bottom: 15px; background-color: #27ae60; display: none;">
+                📱 Enviar Relatório de Coleta
+            </button>
+
+            <a href="index.html" class="btn-secondary" style="display: block; text-align: center; text-decoration: none;">
+                Voltar ao Menu
+            </a>
+        </div>
+    </main>
+
+    <script src="js/contador-parcial.js"></script>
+</body>
+</html>

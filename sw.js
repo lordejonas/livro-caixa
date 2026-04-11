@@ -16,6 +16,9 @@ const urlsToCache = [
   './js/contador.js',
   './assets/icons/favicon.ico',
   './assets/icons/logo-ssvp-transparente.png',
+  './contador-parcial.html',
+  './js/contador-parcial.js',
+  './css/contador-parcial.css',
   './manifest.json'
 ];
 

@@ -103,3 +103,11 @@
 
 @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
 @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+#form-relatorio label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #333;
+}

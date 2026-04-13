@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caixa-ssvp-v300BB';
+const CACHE_NAME = 'caixa-ssvp-v300C';
 const urlsToCache = [
   './',
   './index.html',
@@ -8,7 +8,6 @@ const urlsToCache = [
   './css/base.css',
   './css/layout.css',
   './css/contador.css',
-  './css/contador-parcial.css',
   './js/script.js',
   './js/contador.js',
   './js/contador-parcial.js',
@@ -23,7 +22,7 @@ const urlsToCache = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(assets);
+      return cache.addAll(urlsToCache);
     })
   );
 });

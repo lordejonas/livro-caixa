@@ -172,9 +172,9 @@ function enviarWhatsApp() {
     const totalFormatado = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     // Montagem da mensagem com a nova frase e data
-    const mensagem = `Resultado da coleta após a missa das ${horario} data ${dataAtual}%0A%0A` +
-                     `Valor total: *${totalFormatado}*%0A%0A` +
-                     `Participaram da atividade: ${participantes}`;
+    const mensagem = `⛪ *Resultado da coleta após a missa* das ${horario} do dia ${dataAtual}%0A%0A` +
+                     `💰 *Valor total:* ${totalFormatado}*%0A%0A` +
+                     `🤝 *Participaram:* ${participantes}`;
 
     // Abre o WhatsApp
     window.open(`https://wa.me/?text=${mensagem}`, '_blank');

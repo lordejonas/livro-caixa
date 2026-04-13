@@ -11,6 +11,8 @@ Os tópicos tem a seguinte descrições
 - Nova funcionalidade de contar cédulas/moedas e salvar os valores
 - Inclusão da do menu na página index.html
 - Separação em três páginas: contador.html, caixa.html e index.html dai versão 3
+- Inclusão de tags no index.html para ter compatibilidade com iPhone/Safari
+- Inclusão do icone "Livro Caixa" em dimensão 192x192
 
 ## [2.0.1] – 2026-04-10
 ### Alterado

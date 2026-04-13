@@ -4,6 +4,44 @@ header {
     padding: 10px;
 }
 
+
+/* Header Especial da Página Inicial */
+.header-principal {
+    background-color: #ffffff; /* Fundo branco para destacar a logo colorida */
+    padding: 25px 15px;
+    border-bottom: 4px solid #0064b6; /* Linha azul característica no rodapé do header */
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    justify-content: center; /* Centraliza horizontalmente o conteúdo */
+}
+
+.header-container-flex {
+    display: flex;
+    flex-direction: column; /* Organiza logo em cima e texto embaixo no mobile */
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-principal-ssvp {
+    width: 120px; /* Tamanho ideal para destaque sem ocupar a tela toda */
+    height: auto;
+}
+
+.header-titulos h1 {
+    color: #0064b6;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.header-titulos p {
+    color: #555;
+    margin: 5px 0 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
 .header-content {
     display: flex;
     align-items: center;

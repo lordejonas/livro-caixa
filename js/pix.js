@@ -43,13 +43,26 @@ function editarChave() {
 
 function enviarPix(tipo) {
     const chave = localStorage.getItem('chavePix');
-    let mensagem = `*Chave PIX - SSVP*%0A%0AChave: *${chave}*`;
-    
-    if (tipo === 2) {
-        // Gera um link de visualização rápida do QR Code via API externa
-        const linkQR = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${chave}`;
-        mensagem += `%0A%0AVisualizar QR Code: ${linkQR}`;
+    if (!chave) {
+        alert("Por favor, configure uma chave primeiro.");
+        return;
     }
 
+    // 1. Limpa espaços em branco que podem ter vindo do input
+    const chaveLimpa = chave.trim();
+    
+    // 2. Codifica a chave para formato de URL (essencial para @, + e .)
+    const chaveCodificada = encodeURIComponent(chaveLimpa);
+    
+    // 3. Monta a mensagem para o WhatsApp
+    let mensagem = `*Chave PIX - SSVP*%0A%0AChave: *${chaveLimpa}*`;
+    
+    if (tipo === 2) {
+        // Usamos o parâmetro completo conforme a documentação oficial
+        const linkQR = `https://api.qrserver.com/v1/create-qr-code/?data=${chaveCodificada}&size=300x300&ecc=H`;
+        mensagem += `%0A%0A*Link para o QR Code:*%0A${linkQR}`;
+    }
+
+    // 4. Dispara para o WhatsApp
     window.open(`https://wa.me/?text=${mensagem}`, '_blank');
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caixa-ssvp-v300E';
+const CACHE_NAME = 'caixa-ssvp-v300G';
 const urlsToCache = [
   './',
   './index.html',
@@ -13,7 +13,7 @@ const urlsToCache = [
   './js/contador-parcial.js',
   './chave-pix.html',
   './js/pix.js',
-  './js/qrcode.min.js',
+  './js/libs/qrcode.min.js',
   './assets/icons/favicon.ico',
   './assets/icons/logo-ssvp-global.png',
   './assets/icons/logo-ssvp-transparente-st_192x192.png',

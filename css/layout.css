@@ -4,16 +4,98 @@ header {
     padding: 10px;
 }
 
+
+/* Header Especial da Página Inicial */
+.header-principal {
+    background-color: #ffffff; /* Fundo branco para destacar a logo colorida */
+    padding: 25px 15px;
+    border-bottom: 4px solid #0064b6; /* Linha azul característica no rodapé do header */
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    justify-content: center; /* Centraliza horizontalmente o conteúdo */
+}
+
+.header-container-flex {
+    display: flex;
+    flex-direction: column; /* Organiza logo em cima e texto embaixo no mobile */
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-principal-ssvp {
+    width: 120px; /* Tamanho ideal para destaque sem ocupar a tela toda */
+    height: auto;
+}
+
+.header-titulos h1 {
+    color: #0064b6;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.header-titulos p {
+    color: #555;
+    margin: 5px 0 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
 .header-content {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between; /* Empurra o ícone para a direita */
+    width: 100%;
+    padding: 0 10px; /* Pequeno respiro nas bordas */
 }
 
 .header-icon {
     width: 31px;
     height: 31px;
     border-radius: 4px;
+}
+
+.home-link {
+    display: inline-flex !important; /* Força a exibição */
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;  /* Área mínima de toque recomendada pela Apple/Google */
+    min-height: 44px;
+    margin-left: 10px;
+    z-index: 999;     /* Garante que fique acima de outros elementos */
+}
+
+.home-icon {
+    /* Você pode usar um emoji ou se preferir uma imagem */
+    filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.2));
+}
+
+/* Cor oficial da SSVP no preenchimento do SVG 
+.home-icon-svg path {
+    fill: #0064b6; 
+}*/
+
+.home-icon-svg {
+    display: block !important;
+    width: 28px;
+    height: 28px;
+}
+
+.home-icon-svg path {
+    fill: #0064b6 !important; 
+}
+
+/* Feedback visual simples ao tocar/clicar */
+.home-link:active .home-icon-svg {
+    transform: scale(0.9); /* Pequeno encolhimento ao tocar */
+    opacity: 0.8;
+}
+
+.header-content h2 {
+    flex-grow: 1; /* Faz o título ocupar o espaço restante */
+    margin-left: 10px;
+    font-size: 1.2rem; /* Ajuste o tamanho se necessário para mobile */
 }
 
 header h2 {

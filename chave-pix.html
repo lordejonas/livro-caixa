@@ -9,15 +9,47 @@
     <script src="js/qrcode.min.js"></script>
     <style>
         .pix-container { text-align: center; padding: 20px; }
-        #qrcode { 
+        /*#qrcode { 
             background: white; 
             padding: 15px; 
             display: inline-block; 
             border-radius: 10px;
             margin: 20px 0;
-        }
+        }*/
         #qrcode img { margin: 0 auto; }
         .chave-display { font-weight: bold; font-size: 1.2rem; color: #0064b6; margin-bottom: 20px; }
+        
+        /* Estilo padrão do container */
+        #qrcode {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        /* Estado em Tela Cheia */
+        #qrcode.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Fica acima de tudo */
+            padding: 0;
+            border-radius: 0;
+        }
+
+        /* Garante que a imagem dentro do QR Code cresça no modo tela cheia */
+        #qrcode.fullscreen img {
+            width: 85vw !important;  /* Ocupa quase toda a largura */
+            height: auto !important;
+        }
     </style>
 </head>
 <body>
@@ -34,8 +66,13 @@
         </div>
 
         <div id="display-secao" style="display: none;">
+            <p style="font-size: 0.8rem; color: #666;">(Toque na imagem caso queira ampliar)</p>
             <div id="qrcode"></div>
             <div class="chave-display" id="texto-chave"></div>
+
+            <button onclick="baixarQRCode()" class="btn-primary" style="margin-bottom: 15px; background-color: #2c3e50;">
+                💾 Baixar Imagem do QR Code
+            </button>
             
             <button onclick="enviarPix(1)" class="btn-secondary" style="margin-bottom: 10px;">
                 Enviar Texto via WhatsApp

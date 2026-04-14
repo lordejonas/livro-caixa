@@ -34,6 +34,17 @@ function exibirQRCode(chave) {
         // Ajuste aqui: acessando o nível de correção de forma mais segura
         correctLevel : QRCode.CorrectLevel ? QRCode.CorrectLevel.H : 2 
     });
+
+    container.onclick = function() {
+        this.classList.toggle('fullscreen');
+        
+        // Dica visual: esconde o restante da página para focar no QR
+        if (this.classList.contains('fullscreen')) {
+            document.body.style.overflow = 'hidden'; // Trava o scroll
+        } else {
+            document.body.style.overflow = 'auto';   // Libera o scroll
+        }
+    };
 }
 
 function editarChave() {
@@ -67,6 +78,7 @@ function enviarPix(tipo) {
     window.open(`https://wa.me/?text=${mensagem}`, '_blank');
 }
 */
+
 function enviarPix(tipo) {
     const chave = localStorage.getItem('chavePix');
     if (!chave) return;
@@ -90,4 +102,35 @@ function enviarPix(tipo) {
     // Usamos o link de API do WhatsApp que funciona melhor para disparar prévias
     const urlFinal = `https://api.whatsapp.com/send?text=${mensagem}`;
     window.open(urlFinal, '_blank');
+}
+
+function baixarQRCode() {
+    // Procura a imagem ou canvas dentro da div do qrcode
+    const qrContainer = document.getElementById('qrcode');
+    const img = qrContainer.querySelector('img');
+    const canvas = qrContainer.querySelector('canvas');
+    const chave = localStorage.getItem('chavePix') || 'pix';
+
+    let imagemURL = '';
+
+    if (img && img.src) {
+        imagemURL = img.src;
+    } else if (canvas) {
+        imagemURL = canvas.toDataURL("image/png");
+    }
+
+    if (imagemURL) {
+        // Cria um link invisível para forçar o download
+        const link = document.createElement('a');
+        link.href = imagemURL;
+        link.download = `QR_Code_PIX_${chave.replace(/[^a-z0-9]/gi, '_')}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Feedback para o utilizador
+        alert("Imagem guardada! Agora pode anexá-la no WhatsApp.");
+    } else {
+        alert("Erro ao gerar imagem para download.");
+    }
 }

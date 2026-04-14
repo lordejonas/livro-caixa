@@ -173,7 +173,7 @@ function enviarWhatsApp() {
 
     // Montagem da mensagem com a nova frase e data
     const mensagem = `⛪ *Resultado da coleta após a missa* das ${horario} do dia ${dataAtual}%0A%0A` +
-                     `💰 *Valor total:* ${totalFormatado}*%0A%0A` +
+                     `💰 *Valor total:* ${totalFormatado}%0A%0A` +
                      `🤝 *Participaram:* ${participantes}`;
 
     // Abre o WhatsApp

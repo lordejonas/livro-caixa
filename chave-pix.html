@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chave PIX - SSVP</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <script src="js/qrcode.min.js"></script>
+    <style>
+        .pix-container { text-align: center; padding: 20px; }
+        #qrcode { 
+            background: white; 
+            padding: 15px; 
+            display: inline-block; 
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        #qrcode img { margin: 0 auto; }
+        .chave-display { font-weight: bold; font-size: 1.2rem; color: #0064b6; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <header class="header-minimal">
+        <button onclick="location.href='index.html'">← Voltar</button>
+        <h2>Chave PIX</h2>
+    </header>
+
+    <main class="pix-container">
+        <div id="config-secao">
+            <label for="input-chave">Configure sua Chave PIX:</label>
+            <input type="text" id="input-chave" class="input-qty" placeholder="E-mail, CPF ou Celular">
+            <button onclick="salvarChave()" class="btn-primary">Gerar QR Code</button>
+        </div>
+
+        <div id="display-secao" style="display: none;">
+            <div id="qrcode"></div>
+            <div class="chave-display" id="texto-chave"></div>
+            
+            <button onclick="enviarPix(1)" class="btn-secondary" style="margin-bottom: 10px;">
+                Enviar Texto via WhatsApp
+            </button>
+            <button onclick="enviarPix(2)" class="btn-secondary">
+                Enviar Texto + Link QR Code
+            </button>
+            <hr>
+            <button onclick="editarChave()" style="background: none; border: none; color: #666; text-decoration: underline;">
+                Alterar Chave
+            </button>
+        </div>
+    </main>
+
+    <script src="js/pix.js"></script>
+</body>
+</html>

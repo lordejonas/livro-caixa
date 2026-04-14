@@ -40,7 +40,7 @@ function editarChave() {
     document.getElementById('config-secao').style.display = 'block';
     document.getElementById('display-secao').style.display = 'none';
 }
-
+/*
 function enviarPix(tipo) {
     const chave = localStorage.getItem('chavePix');
     if (!chave) {
@@ -65,4 +65,29 @@ function enviarPix(tipo) {
 
     // 4. Dispara para o WhatsApp
     window.open(`https://wa.me/?text=${mensagem}`, '_blank');
+}
+*/
+function enviarPix(tipo) {
+    const chave = localStorage.getItem('chavePix');
+    if (!chave) return;
+
+    // 1. Limpa espaços em branco que podem ter vindo do input
+    const chaveLimpa = chave.trim();
+    // 2. Codifica a chave para formato de URL (essencial para @, + e .)
+    const chaveCodificada = encodeURIComponent(chaveLimpa);
+    
+    // 3. Monta a mensagem para o WhatsApp
+    let mensagem = `*Chave PIX - SSVP*%0A`;
+    mensagem += `Chave: *${chaveLimpa}*%0A%0A`;
+    
+    if (tipo === 2) {
+        // Coloca o link por último para facilitar a leitura do WhatsApp
+        const linkQR = `https://api.qrserver.com/v1/create-qr-code/?data=${chaveCodificada}&size=400x400`;
+        mensagem += `Clique no link para abrir o QR Code e fazer sua doação:%0A${linkQR}`;
+    }
+
+    // 4. Dispara para o WhatsApp
+    // Usamos o link de API do WhatsApp que funciona melhor para disparar prévias
+    const urlFinal = `https://api.whatsapp.com/send?text=${mensagem}`;
+    window.open(urlFinal, '_blank');
 }

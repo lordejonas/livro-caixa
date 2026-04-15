@@ -1,4 +1,4 @@
-let qrCodeInstancia = null;
+//let qrCodeInstancia = null;
 
 /*
 document.addEventListener('DOMContentLoaded', () => {
@@ -113,25 +113,6 @@ function baixarQRCode() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Função para calcular o CRC16 (Obrigatório para o PIX funcionar)
 function calcularCRC16(payload) {
     let res = 0xFFFF;
@@ -147,37 +128,45 @@ function calcularCRC16(payload) {
 }
 
 // Monta o "PIX Copia e Cola" dinamicamente
-function gerarPayloadPix(chave) {
-    const nome = "CONFERENCIA SSVP"; // Nome padrão
+function gerarPayloadPix(chave, nome) {
+    // O PIX exige nomes sem acentos e em maiúsculas para maior compatibilidade
+    const nomeLimpo = nome.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().substring(0, 25);
     const cidade = "BRASIL"; 
     
-    let payload = "000201"; // Versão do payload
+    let payload = "000201";
     payload += "26" + (22 + chave.length).toString().padStart(2, '0'); 
     payload += "0014br.gov.bcb.pix";
     payload += "01" + chave.length.toString().padStart(2, '0') + chave;
     
-    payload += "52040000"; // Categoria
-    payload += "5303986";  // Moeda (BRL)
-    payload += "5802BR";   // País
-    payload += "59" + nome.length.toString().padStart(2, '0') + nome;
+    payload += "52040000";
+    payload += "5303986";
+    payload += "5802BR";
+    payload += "59" + nomeLimpo.length.toString().padStart(2, '0') + nomeLimpo;
     payload += "60" + cidade.length.toString().padStart(2, '0') + cidade;
-    payload += "62070503***"; // Campo livre
-    payload += "6304"; // Início do CRC16
+    payload += "62070503***";
+    payload += "6304";
     
     payload += calcularCRC16(payload);
     return payload;
 }
 
-function exibirQRCode(chave) {
-    document.getElementById('config-secao').style.display = 'none';
-    document.getElementById('display-secao').style.display = 'block';
-    
-    // EXTREMAMENTE IMPORTANTE: 
-    // O texto visual mostra a chave (e-mail), 
-    // mas o QR Code recebe o Payload do PIX!
-    document.getElementById('texto-chave').innerText = chave;
+function exibirQRCode(chave, nome) {
+    const elementoTexto = document.getElementById('texto-chave');
+    const configSecao = document.getElementById('config-secao');
+    const displaySecao = document.getElementById('display-secao');
 
-    const payloadPix = gerarPayloadPix(chave);
+    // Verifica se os elementos existem antes de tentar usá-los
+    if (configSecao) configSecao.style.display = 'none';
+    if (displaySecao) displaySecao.style.display = 'block';
+    
+    if (elementoTexto) {
+        elementoTexto.innerHTML = `
+            <small style="color: #666; display: block; margin-bottom: 5px;">${nome}</small>
+            <strong style="color: #0064b6; font-size: 1.1rem;">${chave}</strong>
+        `;
+    }
+
+    const payloadPix = gerarPayloadPix(chave, nome);
     const container = document.getElementById('qrcode');
     container.innerHTML = '';
 
@@ -196,7 +185,7 @@ function exibirQRCode(chave) {
         document.body.style.overflow = this.classList.contains('fullscreen') ? 'hidden' : 'auto';
     };
 }
-
+/*
 function salvarChave() {
     const input = document.getElementById('input-chave');
     const chave = input.value.trim();
@@ -204,51 +193,121 @@ function salvarChave() {
         localStorage.setItem('chavePix', chave);
         exibirQRCode(chave);
     }
+}*/
+
+function salvarConfiguracao() {
+    const nomeInput = document.getElementById('input-nome-conf').value.trim();
+    const chaveInput = document.getElementById('input-chave').value.trim();
+
+    if (nomeInput && chaveInput) {
+        localStorage.setItem('nomeConferencia', nomeInput);
+        localStorage.setItem('chavePix', chaveInput);
+        exibirQRCode(chaveInput, nomeInput);
+    } else {
+        alert("Por favor, preencha o nome da conferência e a chave PIX.");
+    }
 }
 
 function editarChave() {
     document.getElementById('config-secao').style.display = 'block';
     document.getElementById('display-secao').style.display = 'none';
-}
-/*
-function enviarPix(tipo) {
-    const chave = localStorage.getItem('chavePix');
-    const payload = gerarPayloadPix(chave);
     
-    let mensagem = `*Chave PIX - SSVP*%0AChave: *${chave}*`;
-    
-    if (tipo === 2) {
-        const linkQR = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(payload)}&size=400x400`;
-        mensagem += `%0A%0ACopie e cole o código ou abra o QR Code:%0A${payload}%0A%0A${linkQR}`;
-    }
-    window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
+    // Preenche os campos com o que já está salvo para facilitar a edição
+    document.getElementById('input-nome-conf').value = localStorage.getItem('nomeConferencia') || "";
+    document.getElementById('input-chave').value = localStorage.getItem('chavePix') || "";
 }
-*/
 
-function enviarPix(tipo) {
+// Ajuste na função de envio para o WhatsApp
+function enviarPix() {
     const chave = localStorage.getItem('chavePix');
+    const nome = localStorage.getItem('nomeConferencia') || "SSVP";
+    
     if (!chave) return;
 
     // Mensagem 1: O cabeçalho informativo
-    const titulo = `*Chave PIX da Conferência SSVP* 👇`;
-    
+    const titulo = `*Chave PIX - Conferência vicentina ${nome}* 👇`;
+
     // Mensagem 2: A chave isolada (usamos o sinal de código ` ` para destacar)
     // No WhatsApp, isso cria um bloco cinza que facilita a visualização
-    const chaveIsolada = `\`${chave}\``;
+    const chaveFormatada = `\`\`\`${chave}\`\`\``;
 
-    let mensagemFinal = `${titulo}%0A%0A${chaveIsolada}`;
+    const mensagem = `${titulo}%0A%0A${chaveFormatada}`;
+    window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
+}
 
-    if (tipo === 2) {
-        const payload = gerarPayloadPix(chave);
-        const linkQR = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(payload)}&size=400x400`;
-        mensagemFinal += `%0A%0A*Link do QR Code:*%0A${linkQR}`;
+
+function enviarPix() {
+    const chave = localStorage.getItem('chavePix');
+    if (!chave) return;
+
+    // Título claro com emoji para guiar o olhar
+    let mensagem = `*Chave PIX da Conferência SSVP* 👇%0A%0A`;
+    
+    // Usamos três crases (```) para criar um bloco de código monoespaçado.
+    // Isso faz o WhatsApp exibir a chave com um fundo levemente diferente ou fonte fixa,
+    // e ajuda a evitar que o sistema de "link azul" sublinhe tudo.
+    mensagem += `\`\`\`${chave}\`\`\``;
+
+    // Link direto para abrir a conversa
+    window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
+}
+
+
+function copiarChave() {
+    const chave = localStorage.getItem('chavePix');
+    
+    if (!chave) {
+        alert("Nenhuma chave encontrada para copiar.");
+        return;
     }
 
-    window.open(`https://api.whatsapp.com/send?text=${mensagemFinal}`, '_blank');
+    // Tenta usar a API moderna de área de transferência
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(chave).then(() => {
+            mostrarAvisoCopiado();
+        }).catch(err => {
+            console.error("Erro ao copiar: ", err);
+            copiarFallback(chave); // Tenta método antigo se o moderno falhar
+        });
+    } else {
+        copiarFallback(chave);
+    }
+}
+
+// Função para dar um feedback visual mais elegante que um alert
+function mostrarAvisoCopiado() {
+    const btn = document.querySelector('button[onclick="copiarChave()"]');
+    const textoOriginal = btn.innerHTML;
+    
+    btn.innerHTML = "✅ Copiado!";
+    btn.style.backgroundColor = "#27ae60"; // Muda para verde temporariamente
+    
+    setTimeout(() => {
+        btn.innerHTML = textoOriginal;
+        btn.style.backgroundColor = "#0064b6";
+    }, 2000);
+}
+
+// Método de reserva para navegadores mais antigos
+function copiarFallback(texto) {
+    const textArea = document.createElement("textarea");
+    textArea.value = texto;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+        document.execCommand('copy');
+        mostrarAvisoCopiado();
+    } catch (err) {
+        alert("Não foi possível copiar automaticamente. Por favor, selecione e copie o texto manualmente.");
+    }
+    document.body.removeChild(textArea);
 }
 
 // Carregar ao iniciar
 document.addEventListener('DOMContentLoaded', () => {
-    const salva = localStorage.getItem('chavePix');
-    if (salva) exibirQRCode(salva);
+    const salvaChave = localStorage.getItem('chavePix');
+    const salvaNome = localStorage.getItem('nomeConferencia');
+    if (salvaChave && salvaNome) {
+        exibirQRCode(salvaChave, salvaNome);
+    }
 });

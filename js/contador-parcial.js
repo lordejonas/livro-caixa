@@ -171,11 +171,22 @@ function enviarWhatsApp() {
     const totalGeral = valorDinheiroFinal + pix;
     const totalFormatado = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    // Montagem da mensagem com a nova frase e data
-    const mensagem = `⛪ *Resultado da coleta após a missa* das ${horario} do dia ${dataAtual}%0A%0A` +
-                     `💰 *Valor total:* ${totalFormatado}%0A%0A` +
-                     `🤝 *Participaram:* ${participantes}`;
+    let horarioFormatado = "";
+    const [hora, minuto] = horario.split(':');
+    if (minuto === "00") {
+        horarioFormatado = `${parseInt(hora)}h`;
+    }else{
+        horarioFormatado =  `${parseInt(hora)}h ${parseInt(minuto)}`;
+    }
 
+    const mensagem = `⛪ *Resultado da coleta na prota da ingreja*%0A%0A` +
+                     `📅 Data ${dataAtual} missa das ${horarioFormatado}%0A%0A`+
+                     `💰 *Valor total:* ${totalFormatado}%0A%0A` +
+                     `🤝 *Participaram da atividade:* ${participantes}%0A%0A` +
+                     `%0A%0AMuito obrigado e a paz do senhor a todos 🙏`;
+
+    
+    //console.log(mensagem);
     // Abre o WhatsApp
     window.open(`https://wa.me/?text=${mensagem}`, '_blank');
 }

@@ -99,7 +99,7 @@
             <h3 style="color: #0064b6; margin-bottom: 15px;">Configuração da Conta</h3>
             
             <label for="input-nome-conf" style="display: block; font-weight: bold; color: #0064b6; margin-bottom: 5px;">Nome da Conferência:</label>
-            <input type="text" id="input-nome-conf" placeholder="Ex: Santa Perpétua e Felicidade" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 15px; box-sizing: border-box;">
+            <input type="text" id="input-nome-conf" placeholder="Ex: Santas Perpétua e Felicidade" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 15px; box-sizing: border-box;">
 
             <label for="input-chave" style="display: block; font-weight: bold; color: #0064b6; margin-bottom: 5px;">Chave PIX (E-mail, CPF ou Aleatória):</label>
             <input type="text" id="input-chave" placeholder="Cole aqui a sua chave" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 20px; box-sizing: border-box;">
@@ -149,7 +149,6 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                console.log("REGISTRAR Service Worker. Futuramente colocar ordenadamente no arquivos .js");
                 navigator.serviceWorker.register('sw.js')
                     .then(reg => console.log("SW registrado com sucesso:", reg.scope))
                     .catch(err => console.log("Falha ao registrar SW:", err));

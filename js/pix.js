@@ -241,7 +241,7 @@ function enviarPix() {
     if (!chave) return;
 
     // Título claro com emoji para guiar o olhar
-    let mensagem = `*Chave PIX da Conferência SSVP* 👇%0A%0A`;
+    let mensagem = `*Chave PIX da Conferência Vicentina* 👇%0A%0A`;
     
     // Usamos três crases (```) para criar um bloco de código monoespaçado.
     // Isso faz o WhatsApp exibir a chave com um fundo levemente diferente ou fonte fixa,

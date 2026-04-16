@@ -165,30 +165,35 @@ function enviarWhatsApp() {
     const pix = parseFloat(pixStr.replace(".", "").replace(",", ".")) || 0;
     const participantes = document.getElementById('rel-participantes').value;
     
-    // Captura e formata a data atual
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
-    const totalGeral = valorDinheiroFinal + pix;
+    // Supondo que valorDinheiroFinal esteja definido globalmente como no seu código original
+    const totalGeral = (typeof valorDinheiroFinal !== 'undefined' ? valorDinheiroFinal : 0) + pix;
     const totalFormatado = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     let horarioFormatado = "";
-    const [hora, minuto] = horario.split(':');
-    if (minuto === "00") {
-        horarioFormatado = `${parseInt(hora)}h`;
-    }else{
-        horarioFormatado =  `${parseInt(hora)}h ${parseInt(minuto)}`;
+    if (horario.includes(':')) {
+        const [hora, minuto] = horario.split(':');
+        if (minuto === "00") {
+            horarioFormatado = `${parseInt(hora)}h`;
+        } else {
+            horarioFormatado = `${parseInt(hora)}h${parseInt(minuto)}`;
+        }
     }
 
-    const mensagem = `⛪ *Resultado da coleta na prota da ingreja*%0A%0A` +
-                     `📅 Data ${dataAtual} missa das ${horarioFormatado}%0A%0A`+
-                     `💰 *Valor total:* ${totalFormatado}%0A%0A` +
-                     `🤝 *Participaram da atividade:* ${participantes}%0A%0A` +
-                     `%0A%0AMuito obrigado e a paz do senhor a todos 🙏`;
+    // Montamos a string normal, com quebras de linha reais (\n)
+    const textoMensagem = `⛪ *Coleta na porta da igreja* ⛪\n` +
+                          `📅 Data: ${dataAtual} - Missa das ${horarioFormatado}\n\n` +
+                          `💰 *Valor total:* ${totalFormatado}\n\n` +
+                          `🤝 *Participaram da atividade:* ${participantes}\n\n` +
+                          `Muito obrigado e a paz do Senhor a todos 🙏`;
 
+    // O SEGREDO: encodeURIComponent transforma os emojis e quebras de linha para o formato de URL
+    const mensagemFinal = encodeURIComponent(textoMensagem);
     
     //console.log(mensagem);
-    // Abre o WhatsApp
-    window.open(`https://wa.me/?text=${mensagem}`, '_blank');
+    // Abre o WhatsApp usando a API correta (api.whatsapp.com é mais estável para PWAs)
+    window.open(`https://api.whatsapp.com/send?text=${mensagemFinal}`, '_blank');
 }
 
 init();

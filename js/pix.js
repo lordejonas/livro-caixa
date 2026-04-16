@@ -161,7 +161,7 @@ function exibirQRCode(chave, nome) {
     
     if (elementoTexto) {
         elementoTexto.innerHTML = `
-            <small style="color: #666; display: block; margin-bottom: 5px;">${nome}</small>
+            <small style="color: #666; display: block; margin-bottom: 5px;">Conferência ${nome}</small>
             <strong style="color: #0064b6; font-size: 1.4rem;">${chave}</strong>
         `;
     }
@@ -217,7 +217,7 @@ function editarChave() {
     document.getElementById('input-chave').value = localStorage.getItem('chavePix') || "";
 }
 
-// Ajuste na função de envio para o WhatsApp
+/*
 function enviarPix() {
     const chave = localStorage.getItem('chavePix');
     const nome = localStorage.getItem('nomeConferencia') || "SSVP";
@@ -225,30 +225,26 @@ function enviarPix() {
     if (!chave) return;
 
     // Mensagem 1: O cabeçalho informativo
-    const titulo = `*Chave PIX - Conferência vicentina ${nome}* 👇`;
+    const titulo = `Chave PIX - Conferência *vicentina* ${nome} 👇`;
 
     // Mensagem 2: A chave isolada (usamos o sinal de código ` ` para destacar)
     // No WhatsApp, isso cria um bloco cinza que facilita a visualização
     const chaveFormatada = `\`\`\`${chave}\`\`\``;
 
     const mensagem = `${titulo}%0A%0A${chaveFormatada}`;
-    window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
-}
+    console.log(mensagem);
+    //window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
+}*/
 
 
 function enviarPix() {
     const chave = localStorage.getItem('chavePix');
+    const nome = localStorage.getItem('nomeConferencia') || " da SSVP";
+    
     if (!chave) return;
 
-    // Título claro com emoji para guiar o olhar
-    let mensagem = `*Chave PIX da Conferência Vicentina* 👇%0A%0A`;
-    
-    // Usamos três crases (```) para criar um bloco de código monoespaçado.
-    // Isso faz o WhatsApp exibir a chave com um fundo levemente diferente ou fonte fixa,
-    // e ajuda a evitar que o sistema de "link azul" sublinhe tudo.
-    mensagem += `\`\`\`${chave}\`\`\``;
-
-    // Link direto para abrir a conversa
+    const mensagem = `Chave PIX - Conferência *vicentina* ${nome} 👇%0A${chave}`;
+    //console.log(mensagem);
     window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
 }
 

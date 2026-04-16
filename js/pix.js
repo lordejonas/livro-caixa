@@ -162,7 +162,7 @@ function exibirQRCode(chave, nome) {
     if (elementoTexto) {
         elementoTexto.innerHTML = `
             <small style="color: #666; display: block; margin-bottom: 5px;">${nome}</small>
-            <strong style="color: #0064b6; font-size: 1.1rem;">${chave}</strong>
+            <strong style="color: #0064b6; font-size: 1.3rem;">${chave}</strong>
         `;
     }
 

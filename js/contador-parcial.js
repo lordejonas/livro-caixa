@@ -182,11 +182,11 @@ function enviarWhatsApp() {
     }
 
     // Montamos a string normal, com quebras de linha reais (\n)
-    const textoMensagem = `⛪ *Coleta na porta da igreja* ⛪\n` +
+    const textoMensagem = `⛪ *Coleta na porta da igreja*\n\n` +
                           `📅 Data: ${dataAtual} - Missa das ${horarioFormatado}\n\n` +
                           `💰 *Valor total:* ${totalFormatado}\n\n` +
                           `🤝 *Participaram da atividade:* ${participantes}\n\n` +
-                          `Muito obrigado e a paz do Senhor a todos 🙏`;
+                          `*Muito obrigado e a paz do Senhor a todos* 🙏`;
 
     // O SEGREDO: encodeURIComponent transforma os emojis e quebras de linha para o formato de URL
     const mensagemFinal = encodeURIComponent(textoMensagem);

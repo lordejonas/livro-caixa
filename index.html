@@ -2,22 +2,24 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0064b6">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <!--<link rel="icon" type="image/png" href="assets/icons/favicon.ico">-->
     
     <link rel="apple-touch-icon" href="assets/icons/logo-ssvp-transparente-st_192x192.png">
-    <meta name="apple-mobile-web-app-title" content="Livro Caixa">
+    <meta name="apple-mobile-web-app-title" content="Tesouraria Conferência">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <link rel="icon" type="image/png" href="assets/icons/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
     <link rel="manifest" href="manifest.json">
+    
+    <title>Tesouraria Conferência</title>
 
-    <title>Tesouraria SSVP</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
+
     <style>
         .menu-grid {
             display: grid;
@@ -37,7 +39,23 @@
             font-weight: bold;
             border: 2px solid #0064b6;
         }
-        .icon-box { font-size: 3rem; margin-bottom: 10px; }
+        /*.icon-box { font-size: 3rem; margin-bottom: 10px; }*/
+        /* Pequeno ajuste na icon-box para centralizar imagens e emojis igualmente */
+        .icon-box { 
+            font-size: 3rem; 
+            margin-bottom: 10px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3.5rem; /* Altura fixa para manter o alinhamento dos textos */
+        }
+        /* Ajuste para que a imagem do PIX siga o tamanho dos emojis */
+        .menu-icon-img {
+            width: 3rem;  /* Mesma largura do font-size do icon-box */
+            height: 3rem; /* Mesma altura para manter a proporção */
+            object-fit: contain;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -55,6 +73,12 @@
     </header>
 
     <main class="menu-grid">
+        <a href="chave-pix.html" class="menu-card">
+            <div class="icon-box">
+                <img src="assets/icons/icons8-pix-50.png" alt="Ícone PIX" class="menu-icon-img">
+            </div>
+            <span>Chave Pix Conferência</span>
+        </a>
         <a href="caixa.html" class="menu-card">
             <div class="icon-box">📘</div>
             <span>Livro Caixa</span>
@@ -72,7 +96,7 @@
     <footer class="footer-fixo">
         <div class="footer-content">
             <span>Conferência Santa Perpétua e Santa Felicidade</span>
-            <span class="version-tag">v3.0.0-Beta B</span>
+            <span class="version-tag">v3.0.0-Beta J</span>
         </div>
     </footer>
 </body>

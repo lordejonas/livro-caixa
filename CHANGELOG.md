@@ -9,6 +9,7 @@ Os tópicos tem a seguinte descrições
 ## [3.0.0] – 2026-04-10
 ### Adicionado
 - Nova funcionalidade de contar cédulas/moedas e salvar os valores
+- Inclusão da funcionalidade chave pix. Para manter a chaves pix da conferência.
 - Inclusão da do menu na página index.html
 - Separação em três páginas: contador.html, caixa.html e index.html dai versão 3
 - Inclusão de tags no index.html para ter compatibilidade com iPhone/Safari

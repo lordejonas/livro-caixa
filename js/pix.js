@@ -1,87 +1,3 @@
-//let qrCodeInstancia = null;
-
-/*
-document.addEventListener('DOMContentLoaded', () => {
-    const chaveSalva = localStorage.getItem('chavePix');
-    if (chaveSalva) {
-        exibirQRCode(chaveSalva);
-    }
-});
-
-
-function salvarChave() {
-    const chave = document.getElementById('input-chave').value;
-    if (chave) {
-        localStorage.setItem('chavePix', chave);
-        exibirQRCode(chave);
-    }
-}
-
-
-function exibirQRCode(chave) {
-    document.getElementById('config-secao').style.display = 'none';
-    document.getElementById('display-secao').style.display = 'block';
-    document.getElementById('texto-chave').innerText = chave;
-
-    const container = document.getElementById('qrcode');
-    container.innerHTML = ''; // Limpa o QR Code anterior
-
-    // Criamos a instância. 
-    // Se QRCode.CorrectLevel não funcionar, usamos o padrão automático da biblioteca
-    qrCodeInstancia = new QRCode(container, {
-        text: chave,
-        width: 250,
-        height: 250,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        // Ajuste aqui: acessando o nível de correção de forma mais segura
-        correctLevel : QRCode.CorrectLevel ? QRCode.CorrectLevel.H : 2 
-    });
-
-    container.onclick = function() {
-        this.classList.toggle('fullscreen');
-        
-        // Dica visual: esconde o restante da página para focar no QR
-        if (this.classList.contains('fullscreen')) {
-            document.body.style.overflow = 'hidden'; // Trava o scroll
-        } else {
-            document.body.style.overflow = 'auto';   // Libera o scroll
-        }
-    };
-}
-
-function editarChave() {
-    document.getElementById('config-secao').style.display = 'block';
-    document.getElementById('display-secao').style.display = 'none';
-}
-*/
-/*
-function enviarPix(tipo) {
-    const chave = localStorage.getItem('chavePix');
-    if (!chave) return;
-
-    // 1. Limpa espaços em branco que podem ter vindo do input
-    const chaveLimpa = chave.trim();
-    // 2. Codifica a chave para formato de URL (essencial para @, + e .)
-    const chaveCodificada = encodeURIComponent(chaveLimpa);
-    
-    // 3. Monta a mensagem para o WhatsApp
-    let mensagem = `*Chave PIX - SSVP*%0A`;
-    mensagem += `Chave: *${chaveLimpa}*%0A%0A`;
-    
-    if (tipo === 2) {
-        // Coloca o link por último para facilitar a leitura do WhatsApp
-        const linkQR = `https://api.qrserver.com/v1/create-qr-code/?data=${chaveCodificada}&size=400x400`;
-        mensagem += `Clique no link para abrir o QR Code e fazer sua doação:%0A${linkQR}`;
-    }
-
-    // 4. Dispara para o WhatsApp
-    // Usamos o link de API do WhatsApp que funciona melhor para disparar prévias
-    const urlFinal = `https://api.whatsapp.com/send?text=${mensagem}`;
-    window.open(urlFinal, '_blank');
-}
-*/
-
 function baixarQRCode() {
     // Procura a imagem ou canvas dentro da div do qrcode
     const qrContainer = document.getElementById('qrcode');
@@ -245,6 +161,8 @@ function editarChave() {
     // Preenche os campos com o que já está salvo para facilitar a edição
     document.getElementById('input-nome-conf').value = localStorage.getItem('nomeConferencia') || "";
     document.getElementById('input-chave').value = localStorage.getItem('chavePix') || "";
+    document.getElementById('input-beneficiario').value = localStorage.getItem('beneficiarioPix') || "";
+    document.getElementById('input-banco').value = localStorage.getItem('bancoPix') || "";
 }
 
 

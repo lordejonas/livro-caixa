@@ -181,7 +181,7 @@ function exibirQRCode(chave, nome) {
 
     // Ajuste para o clique/zoom que fizemos antes
     container.onclick = function() {
-        console.log("TESTE");
+        //console.log("TESTE");
         document.body.style.overflow = 'hidden';
         window.scrollTo(0, 0);
         const beneficiario = localStorage.getItem('beneficiarioPix') || "";
@@ -246,26 +246,31 @@ function editarChave() {
     document.getElementById('input-chave').value = localStorage.getItem('chavePix') || "";
 }
 
-/*
+
 function enviarPix() {
     const chave = localStorage.getItem('chavePix');
     const nome = localStorage.getItem('nomeConferencia') || "SSVP";
+    const beneficiario = localStorage.getItem('beneficiarioPix') || "";
+    const instituicao = localStorage.getItem('bancoPix') || "";
     
     if (!chave) return;
 
     // Mensagem 1: O cabeçalho informativo
-    const titulo = `Chave PIX - Conferência *vicentina* ${nome} 👇`;
+    const titulo = `Chave PIX - Unidade *VICENTINA*`;
+    const lnUnidade = `Conferência: ${nome}`;//Fururamente pode trocar o nome Conferencia pela unidade
+    const lnBeneficiario =  `Beneficiario: ${beneficiario}`;
+    const lnInstituicao =   `Instituição: ${instituicao}`;
 
     // Mensagem 2: A chave isolada (usamos o sinal de código ` ` para destacar)
     // No WhatsApp, isso cria um bloco cinza que facilita a visualização
     const chaveFormatada = `\`\`\`${chave}\`\`\``;
 
-    const mensagem = `${titulo}%0A%0A${chaveFormatada}`;
-    console.log(mensagem);
-    //window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
-}*/
+    const mensagem = `${titulo}%0A${lnUnidade}%0A${lnBeneficiario}%0A${lnInstituicao}%0A%0A${chaveFormatada}`;
+    //console.log(mensagem);
+    window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
+}
 
-
+/*
 function enviarPix() {
     const chave = localStorage.getItem('chavePix');
     const nome = localStorage.getItem('nomeConferencia') || " da SSVP";
@@ -275,7 +280,7 @@ function enviarPix() {
     const mensagem = `Chave PIX - Conferência *vicentina* ${nome} 👇%0A${chave}`;
     //console.log(mensagem);
     window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
-}
+}*/
 
 
 function copiarChave() {

@@ -54,21 +54,28 @@
         }
 
         #qrcode.fullscreen img {
-            margin-top: auto;
-            margin-bottom: auto;
-            max-width: 85vw !important;
-            max-height: 50dvh !important; /* Diminuímos um pouco para sobrar espaço */
+            margin-top: auto !important;
+            margin-bottom: auto !important;
+            display: block !important;
+            width: 80vw !important; 
+            height: 80vw !important; 
+            max-width: 350px !important;
+            max-height: 350px !important;
+        }
+
+        #qrcode.fullscreen canvas {
+            display: none; 
         }
 
         /* Estilo do texto do Beneficiário no topo */
         #info-topo-pix {
             text-align: center;
             width: 100%;
-            /* Dá o espaço necessário para não bater no relógio do iPhone */
-            padding-top: calc(env(safe-area-inset-top) + 30px); 
-            padding-bottom: 20px;
-            background: #f9f9f9; /* Um fundo leve para destacar a info */
+            padding-top: calc(env(safe-area-inset-top) + 20px); 
+            padding-bottom: 15px;
+            background: #f9f9f9;
             border-bottom: 1px solid #eee;
+            flex-shrink: 0; /* Impede que o texto seja esmagado */
         }
 
         /* Instrução de fechar */
@@ -173,7 +180,7 @@
     <footer class="footer-fixo">
         <div class="footer-content">
             <span>Conferência Santa Perpétua e Santa Felicidade</span>
-            <span class="version-tag">v3.0.0-Beta P</span>
+            <span class="version-tag">v3.0.0-Beta Q</span>
         </div>
     </footer>
     <!--Garantir que Service Worker fique ativo ativo

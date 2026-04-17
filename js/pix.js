@@ -181,8 +181,32 @@ function exibirQRCode(chave, nome) {
 
     // Ajuste para o clique/zoom que fizemos antes
     container.onclick = function() {
+        console.log("TESTE");
+        //document.body.style.overflow = 'hidden';
+        //window.scrollTo(0, 0);
+        const beneficiario = localStorage.getItem('beneficiarioPix') || "";
+        const banco = localStorage.getItem('bancoPix') || "";
         this.classList.toggle('fullscreen');
-        document.body.style.overflow = this.classList.contains('fullscreen') ? 'hidden' : 'auto';
+        if (this.classList.contains('fullscreen')) {
+            // Inserir info no topo do QR Code ampliado
+            let infoTopo = document.getElementById('info-topo-pix');
+            if (!infoTopo) {
+                infoTopo = document.createElement('div');
+                infoTopo.id = 'info-topo-pix';
+                this.prepend(infoTopo);
+            }
+            infoTopo.innerHTML = `
+                <p style="margin:0; font-weight:bold; color:#0064b6;">Beneficiário: ${beneficiario}</p>
+                <p style="margin:0; font-size: 0.9rem; color:#666;">Instituição: ${banco}</p>
+            `;
+        }else{
+            document.body.style.overflow = 'auto';
+            // Remove a info ao fechar para não poluir a tela normal
+            const infoTopo = document.getElementById('info-topo-pix');
+            if (infoTopo) infoTopo.remove();
+        }
+        
+        //document.body.style.overflow = this.classList.contains('fullscreen') ? 'hidden' : 'auto';
     };
 }
 /*
@@ -197,14 +221,19 @@ function salvarChave() {
 
 function salvarConfiguracao() {
     const nomeInput = document.getElementById('input-nome-conf').value.trim();
+    const beneficiarioInput = document.getElementById('input-beneficiario').value.trim();
+    const bancoInput = document.getElementById('input-banco').value.trim();
     const chaveInput = document.getElementById('input-chave').value.trim();
 
-    if (nomeInput && chaveInput) {
+    if (nomeInput && chaveInput && beneficiarioInput && bancoInput) {
         localStorage.setItem('nomeConferencia', nomeInput);
+        localStorage.setItem('beneficiarioPix', beneficiarioInput);
+        localStorage.setItem('bancoPix', bancoInput);
         localStorage.setItem('chavePix', chaveInput);
+        
         exibirQRCode(chaveInput, nomeInput);
     } else {
-        alert("Por favor, preencha o nome da conferência e a chave PIX.");
+        alert("Por favor, preencha todos os campos para garantir a clareza do doador.");
     }
 }
 

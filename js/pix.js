@@ -182,8 +182,8 @@ function exibirQRCode(chave, nome) {
     // Ajuste para o clique/zoom que fizemos antes
     container.onclick = function() {
         console.log("TESTE");
-        //document.body.style.overflow = 'hidden';
-        //window.scrollTo(0, 0);
+        document.body.style.overflow = 'hidden';
+        window.scrollTo(0, 0);
         const beneficiario = localStorage.getItem('beneficiarioPix') || "";
         const banco = localStorage.getItem('bancoPix') || "";
         this.classList.toggle('fullscreen');
@@ -195,9 +195,14 @@ function exibirQRCode(chave, nome) {
                 infoTopo.id = 'info-topo-pix';
                 this.prepend(infoTopo);
             }
-            infoTopo.innerHTML = `
+            /*infoTopo.innerHTML = `
                 <p style="margin:0; font-weight:bold; color:#0064b6;">Beneficiário: ${beneficiario}</p>
                 <p style="margin:0; font-size: 0.9rem; color:#666;">Instituição: ${banco}</p>
+            `;*/
+            infoTopo.innerHTML = `
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: #0064b6; letter-spacing: 1px; margin-bottom: 4px;">Dados da conta</div>
+                <div style="font-weight: bold; font-size: 1.1rem; color: #333;">${beneficiario}</div>
+                <div style="font-size: 0.9rem; color: #666;">${banco}</div>
             `;
         }else{
             document.body.style.overflow = 'auto';

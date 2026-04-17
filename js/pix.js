@@ -179,39 +179,40 @@ function exibirQRCode(chave, nome) {
         correctLevel : QRCode.CorrectLevel.H
     });
 
-    // Ajuste para o clique/zoom que fizemos antes
-    container.onclick = function() {
-        console.log("TESTE");
-        document.body.style.overflow = 'hidden';
-        window.scrollTo(0, 0);
+    // Ajuste para o clique/zoom
+    container.onclick = function(e) {
+        // Evita bugs de clique duplo em celulares
+        e.stopPropagation();
+
         const beneficiario = localStorage.getItem('beneficiarioPix') || "";
         const banco = localStorage.getItem('bancoPix') || "";
+        
+        // Alterna a classe
         this.classList.toggle('fullscreen');
+
         if (this.classList.contains('fullscreen')) {
-            // Inserir info no topo do QR Code ampliado
+            document.body.style.overflow = 'hidden';
+            window.scrollTo(0, 0);
+
+            // Criamos o elemento de texto se ele não existir
             let infoTopo = document.getElementById('info-topo-pix');
             if (!infoTopo) {
                 infoTopo = document.createElement('div');
                 infoTopo.id = 'info-topo-pix';
-                this.prepend(infoTopo);
+                // Colocamos ANTES da imagem do QR Code
+                this.insertBefore(infoTopo, this.firstChild);
             }
-            /*infoTopo.innerHTML = `
-                <p style="margin:0; font-weight:bold; color:#0064b6;">Beneficiário: ${beneficiario}</p>
-                <p style="margin:0; font-size: 0.9rem; color:#666;">Instituição: ${banco}</p>
-            `;*/
+            
             infoTopo.innerHTML = `
                 <div style="font-size: 0.75rem; text-transform: uppercase; color: #0064b6; letter-spacing: 1px; margin-bottom: 4px;">Dados da conta</div>
                 <div style="font-weight: bold; font-size: 1.1rem; color: #333;">${beneficiario}</div>
                 <div style="font-size: 0.9rem; color: #666;">${banco}</div>
             `;
-        }else{
+        } else {
             document.body.style.overflow = 'auto';
-            // Remove a info ao fechar para não poluir a tela normal
             const infoTopo = document.getElementById('info-topo-pix');
             if (infoTopo) infoTopo.remove();
         }
-        
-        //document.body.style.overflow = this.classList.contains('fullscreen') ? 'hidden' : 'auto';
     };
 }
 /*

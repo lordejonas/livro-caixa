@@ -181,7 +181,6 @@ function exibirQRCode(chave, nome) {
 
     // Ajuste para o clique/zoom
     container.onclick = function(e) {
-        // Evita bugs de clique duplo em celulares
         e.stopPropagation();
 
         const beneficiario = localStorage.getItem('beneficiarioPix') || "";
@@ -194,12 +193,12 @@ function exibirQRCode(chave, nome) {
             document.body.style.overflow = 'hidden';
             window.scrollTo(0, 0);
 
-            // Criamos o elemento de texto se ele não existir
+            // Criamos o cabeçalho
             let infoTopo = document.getElementById('info-topo-pix');
             if (!infoTopo) {
                 infoTopo = document.createElement('div');
                 infoTopo.id = 'info-topo-pix';
-                // Colocamos ANTES da imagem do QR Code
+                // Usamos insertBefore para garantir que o texto fique ANTES da imagem
                 this.insertBefore(infoTopo, this.firstChild);
             }
             

@@ -193,11 +193,12 @@ function exibirQRCode(chave, nome) {
             if (!infoTopo) {
                 infoTopo = document.createElement('div');
                 infoTopo.id = 'info-topo-pix';
+                infoTopo.style.marginBottom = "1em";
                 this.prepend(infoTopo);
             }
             infoTopo.innerHTML = `
                 <p style="margin:0; font-weight:bold; color:#0064b6;">Beneficiário: ${beneficiario}</p>
-                <p style="margin-bottom: 1em; font-size: 0.9rem; color:#666;">Instituição: ${banco}</p>
+                <p style="margin:0; font-size: 0.9rem; color:#666;">Instituição: ${banco}</p>
             `;
         }else{
             document.body.style.overflow = 'auto';
@@ -257,15 +258,15 @@ function enviarPix() {
 
     // Mensagem 1: O cabeçalho informativo
     const titulo = `Chave PIX - Unidade *VICENTINA*`;
-    const lnUnidade = `Conferência: ${nome}`;//Fururamente pode trocar o nome Conferencia pela unidade
-    const lnBeneficiario =  `Beneficiario: ${beneficiario}`;
-    const lnInstituicao =   `Instituição: ${instituicao}`;
+    const lnUnidade = `*Conferência*: ${nome}`;//Fururamente pode trocar o nome Conferencia pela unidade
+    const lnBeneficiario =  `*Beneficiario*: ${beneficiario}`;
+    const lnInstituicao =   `*Instituição*: ${instituicao}`;
 
     // Mensagem 2: A chave isolada (usamos o sinal de código ` ` para destacar)
     // No WhatsApp, isso cria um bloco cinza que facilita a visualização
     const chaveFormatada = `\`\`\`${chave}\`\`\``;
 
-    const mensagem = `${titulo}%0A${lnUnidade}%0A${lnBeneficiario}%0A${lnInstituicao}%0A%0A${chaveFormatada}`;
+    const mensagem = `${titulo}%0A%0A${lnUnidade}%0A${lnBeneficiario}%0A${lnInstituicao}%0A%0A${chaveFormatada}`;
     //console.log(mensagem);
     window.open(`https://api.whatsapp.com/send?text=${mensagem}`, '_blank');
 }

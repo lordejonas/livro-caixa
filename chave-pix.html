@@ -53,18 +53,23 @@
             box-sizing: border-box;
         }
 
-        #qrcode.fullscreen img {
+        #qrcode.fullscreen img, 
+        #qrcode.fullscreen canvas {
             margin-top: auto !important;
             margin-bottom: auto !important;
-            display: block !important;
+            display: block !important; /* Garante que ambos sejam visíveis */
             width: 80vw !important; 
             height: 80vw !important; 
-            max-width: 350px !important;
-            max-height: 350px !important;
+            max-width: 320px !important;
+            max-height: 320px !important;
+            border: 10px solid white; /* Moldura para garantir leitura do scanner */
+            box-sizing: content-box;
         }
 
-        #qrcode.fullscreen canvas {
-            display: none; 
+        /* Se a lib gerar os dois, escondemos o canvas apenas para evitar duplicidade */
+        /* Mas só fazemos isso se a imagem existir */
+        #qrcode.fullscreen img + canvas {
+            display: none !important;
         }
 
         /* Estilo do texto do Beneficiário no topo */
@@ -180,7 +185,7 @@
     <footer class="footer-fixo">
         <div class="footer-content">
             <span>Conferência Santa Perpétua e Santa Felicidade</span>
-            <span class="version-tag">v3.0.0-Beta Q</span>
+            <span class="version-tag">v3.0.0-Beta R</span>
         </div>
     </footer>
     <!--Garantir que Service Worker fique ativo ativo

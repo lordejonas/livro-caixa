@@ -179,39 +179,34 @@ function exibirQRCode(chave, nome) {
         correctLevel : QRCode.CorrectLevel.H
     });
 
-    // Ajuste para o clique/zoom
-    container.onclick = function(e) {
-        e.stopPropagation();
-
+    // Ajuste para o clique/zoom que fizemos antes
+    container.onclick = function() {
+        console.log("TESTE");
+        document.body.style.overflow = 'hidden';
+        window.scrollTo(0, 0);
         const beneficiario = localStorage.getItem('beneficiarioPix') || "";
         const banco = localStorage.getItem('bancoPix') || "";
-        
-        // Alterna a classe
         this.classList.toggle('fullscreen');
-
         if (this.classList.contains('fullscreen')) {
-            document.body.style.overflow = 'hidden';
-            window.scrollTo(0, 0);
-
-            // Criamos o cabeçalho
+            // Inserir info no topo do QR Code ampliado
             let infoTopo = document.getElementById('info-topo-pix');
             if (!infoTopo) {
                 infoTopo = document.createElement('div');
                 infoTopo.id = 'info-topo-pix';
-                // Usamos insertBefore para garantir que o texto fique ANTES da imagem
-                this.insertBefore(infoTopo, this.firstChild);
+                this.prepend(infoTopo);
             }
-            
             infoTopo.innerHTML = `
-                <div style="font-size: 0.75rem; text-transform: uppercase; color: #0064b6; letter-spacing: 1px; margin-bottom: 4px;">Dados da conta</div>
-                <div style="font-weight: bold; font-size: 1.1rem; color: #333;">${beneficiario}</div>
-                <div style="font-size: 0.9rem; color: #666;">${banco}</div>
+                <p style="margin:0; font-weight:bold; color:#0064b6;">Beneficiário: ${beneficiario}</p>
+                <p style="margin-bottom: 1em; font-size: 0.9rem; color:#666;">Instituição: ${banco}</p>
             `;
-        } else {
+        }else{
             document.body.style.overflow = 'auto';
+            // Remove a info ao fechar para não poluir a tela normal
             const infoTopo = document.getElementById('info-topo-pix');
             if (infoTopo) infoTopo.remove();
         }
+        
+        //document.body.style.overflow = this.classList.contains('fullscreen') ? 'hidden' : 'auto';
     };
 }
 /*

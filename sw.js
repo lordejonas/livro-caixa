@@ -1,33 +1,26 @@
-const CACHE_NAME = 'caixa-ssvp-v300N';
-const urlsToCache = [
+const CACHE_NAME = 'caixa-ssvp-v200';
+const assets = [
   './',
   './index.html',
-  './caixa.html',
-  './chave-pix.html',
-  './contador.html',
-  './contador-parcial.html',
   './css/base.css',
   './css/layout.css',
-  './css/contador.css',
-  './js/contador.js',
-  './js/contador-parcial.js',
+  './css/components.css',
+  './css/tables.css',
   './js/script.js',
-  './js/pix.js',
+  './js/export.js',
+  './js/math.js',
   './js/ui.js',
-  './js/libs/qrcode.min.js',
+  './manifest.json',
   './assets/icons/favicon.ico',
-  './assets/icons/logo-ssvp-global.png',
-  './assets/icons/logo-ssvp-transparente-st_192x192.png',
-  './assets/icons/logo-ssvp-transparente-st.png',
-  './assets/icons/icons8-pix-50.png',
-  './manifest.json'
+  './assets/icons/icon512_maskable.png',
+  './assets/icons/icon512_rounded.png'
 ];
 
 // Instalação do Service Worker e Cache dos arquivos
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
+      return cache.addAll(assets);
     })
   );
 });

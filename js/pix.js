@@ -100,7 +100,7 @@ function exibirQRCode(chave, nome) {
         //console.log("TESTE");
         document.body.style.overflow = 'hidden';
         window.scrollTo(0, 0);
-        const beneficiario = localStorage.getItem('beneficiarioPixQrCode') || "";
+        const beneficiario = localStorage.getItem('beneficiarioPix') || "";
         const banco = localStorage.getItem('bancoPix') || "";
         this.classList.toggle('fullscreen');
         if (this.classList.contains('fullscreen')) {
@@ -138,15 +138,13 @@ function salvarChave() {
 
 function salvarConfiguracao() {
     const nomeInput = document.getElementById('input-nome-conf').value.trim();
-    const beneficiarioInputQrCode = document.getElementById('input-beneficiario-qrcode').value.trim();
-    const beneficiarioInputChave = document.getElementById('input-beneficiario-chave').value.trim();
+    const beneficiarioInput = document.getElementById('input-beneficiario').value.trim();
     const bancoInput = document.getElementById('input-banco').value.trim();
     const chaveInput = document.getElementById('input-chave').value.trim();
 
-    if (nomeInput && chaveInput && beneficiarioInputQrCode && beneficiarioInputChave && bancoInput) {
+    if (nomeInput && chaveInput && beneficiarioInput && bancoInput) {
         localStorage.setItem('nomeConferencia', nomeInput);
-        localStorage.setItem('beneficiarioPixQrCode', beneficiarioInputQrCode);
-        localStorage.setItem('beneficiarioPixChave', beneficiarioInputChave);
+        localStorage.setItem('beneficiarioPix', beneficiarioInput);
         localStorage.setItem('bancoPix', bancoInput);
         localStorage.setItem('chavePix', chaveInput);
         
@@ -163,8 +161,7 @@ function editarChave() {
     // Preenche os campos com o que já está salvo para facilitar a edição
     document.getElementById('input-nome-conf').value = localStorage.getItem('nomeConferencia') || "";
     document.getElementById('input-chave').value = localStorage.getItem('chavePix') || "";
-    document.getElementById('input-beneficiario-qrcode').value = localStorage.getItem('beneficiarioPixQrCode') || "";
-    document.getElementById('input-beneficiario-chave').value = localStorage.getItem('beneficiarioPixChave') || "";
+    document.getElementById('input-beneficiario').value = localStorage.getItem('beneficiarioPix') || "";
     document.getElementById('input-banco').value = localStorage.getItem('bancoPix') || "";
 }
 
@@ -172,7 +169,7 @@ function editarChave() {
 function enviarPix() {
     const chave = localStorage.getItem('chavePix');
     const nome = localStorage.getItem('nomeConferencia') || "SSVP";
-    const beneficiarioChave = localStorage.getItem('beneficiarioPixChave') || "";
+    const beneficiario = localStorage.getItem('beneficiarioPix') || "";
     const instituicao = localStorage.getItem('bancoPix') || "";
     
     if (!chave) return;
@@ -180,7 +177,7 @@ function enviarPix() {
     // Mensagem 1: O cabeçalho informativo
     const titulo = `Chave PIX - Unidade *VICENTINA*`;
     const lnUnidade = `*Conferência*: ${nome}`;//Fururamente pode trocar o nome Conferencia pela unidade
-    const lnBeneficiario =  `*Beneficiario*: ${beneficiarioChave}`;
+    const lnBeneficiario =  `*Beneficiario*: ${beneficiario}`;
     const lnInstituicao =   `*Instituição*: ${instituicao}`;
 
     // Mensagem 2: A chave isolada (usamos o sinal de código ` ` para destacar)

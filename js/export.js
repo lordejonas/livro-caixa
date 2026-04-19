@@ -1,6 +1,6 @@
 import { toInt, toReal } from './math.js';
 
-export function enviarWhatsApp() {
+export function enviarWhatsApp_old() {
     const numeroAta = document.getElementById('vf40').value || "----";
     const dataReuniao = document.getElementById('vf41').value || new Date().toLocaleDateString('pt-BR');
 
@@ -31,9 +31,9 @@ export function enviarWhatsApp() {
     mensagem += "--------------------------\n";
     mensagem += "_Relatório gerado pelo App Livro Caixa_";
 
-    //console.log(mensagem);
+    console.log(mensagem);
 
-    window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
+    //window.open("https://wa.me/?text=" + encodeURIComponent(mensagem), '_blank');
 }
 
 function receitas(vf1, vf6, vf13) {
@@ -84,19 +84,97 @@ function despesas(vf24, vf28, totalRepasses){
     return linhas.join('\n') + '\n\n';;
 }
 
-function despesas_old(vf24, vf28){
-    let ret = "";
-    let demaisDespesas = vf28 - vf24;
-    if(vf24 > 0){
-        ret += `Recolhimento décima: R$ ${toReal(vf24)}\n`;
+export function enviarWhatsApp() {
+    // 1. Mapeamento de nomes resumidos (Dicionário)
+    const nomesCampos = {
+        'vf1': 'Coleta Reunião',
+        'vf2': 'Benfeitores',
+        'vf3': 'Doações',
+        'vf4': 'Eventos/Bazar etc',
+        'vf5': 'Outras Rec. suj.(Décima)',
+        'vf7': 'Subv. Pública',
+        'vf8': 'Solidariedade/Ozanam',
+        'vf9': 'União Fraternal (E)',
+        'vf10': 'Outros 1', // Será sobrescrito se houver descrição manual
+        'vf11': 'Outros 2', // Será sobrescrito se houver descrição manual
+        'vf12': 'Rec. p/ Repasse',
+        
+        'vf16': 'Básicas, Cestas, etc',
+        'vf17': 'Moradia Assistidos',
+        'vf18': 'Pagamento Conta Assist.',
+        'vf19': 'Obras Especiais',
+        'vf20': 'União Fraternal (S)',
+        'vf21': 'Outros 1', // Será sobrescrito se houver descrição manual
+        'vf22': 'Outros 2', // Será sobrescrito se houver descrição manual
+        'vf23': 'Desp. Admin',
+        'vf24': 'Décimas C.P.',
+        'vf25': 'Outros 3', // Será sobrescrito se houver descrição manual
+        'vf26': 'Repasse Ozanam/Solid.',
+        'vf27': 'Repasse Linha 12'
+    };
+
+    // 2. Função auxiliar para capturar valores e nomes
+    const obterLinha = (id) => {
+        const campo = document.getElementById(id);
+        if (!campo) return "";
+        
+        const valor = campo.value;
+        if (!valor || valor === "0,00" || valor === "0") return "";
+
+        let nome = nomesCampos[id] || "Campo " + id;
+
+        // Se for um dos campos "Outros", tenta pegar a descrição manual
+        const inputDescManual = document.getElementById(`desc-${id}`);
+        if (inputDescManual && inputDescManual.value.trim() !== "") {
+            nome = inputDescManual.value.trim();
+        }
+
+        return `🔹 ${nome}: R$ ${valor}\n`;
+    };
+
+    // 3. Captura de Totais
+    const numeroAta = document.getElementById('vf40').value || "----";
+    const dataReuniao = document.getElementById('vf41').value || new Date().toLocaleDateString('pt-BR');
+    const saldoAnterior = document.getElementById('vf14').value || "0,00";
+    const totalReceitas = document.getElementById('vf13').value || "0,00";
+    const totalDespesas = document.getElementById('vf28').value || "0,00";
+    const saldoFinal = document.getElementById('vf29').value || "0,00";
+
+    // 4. Construção das seções
+    let secaoReceitas = "";
+    // Percorre campos 1 a 12 (pulando o 6)
+    [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12].forEach(num => {
+        secaoReceitas += obterLinha(`vf${num}`);
+    });
+
+    let secaoDespesas = "";
+    // Percorre campos 16 a 27
+    for (let i = 16; i <= 27; i++) {
+        secaoDespesas += obterLinha(`vf${i}`);
     }
 
-    if(demaisDespesas > 0){
-        ret += `Demais despesas: R$ ${toReal(demaisDespesas)}\n`;
-    }
+    // 5. Montagem da Mensagem
+    //let msg = `📊 *RELATÓRIO DE CAIXA SSVP*\n\n`;
+    let msg = `*POSIÇÃO CAIXA DA CONFERÊNCIA*\n`;
+    msg += `*Dia ${dataReuniao} - Ata Nº ${numeroAta}*\n`;
+    mensagem += "--------------------------\n\n";
+    msg += `💰 *Saldo anterior:* R$ ${saldoAnterior}\n\n`;
 
-    ret += `Total despesas: R$ ${toReal(vf28)}\n\n`;
-    return ret;
+    msg += `📈 *RECEITAS*\n`;
+    msg += secaoReceitas;
+    msg += `*Total receitas: R$ ${totalReceitas}*\n\n`;
+
+    msg += `📉 *DESPESAS*\n`;
+    msg += secaoDespesas;
+    msg += `*Total despesas: R$ ${totalDespesas}*\n\n`;
+
+    msg += `✅ *TOTAIS*\n`;
+    msg += `*Saldo final em caixa: R$ ${saldoFinal}*\n\n`;
+    msg += `_Gerado pelo App Tesouraria_`;
+
+    // 6. Envio
+    //console.log(msg);
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 /*

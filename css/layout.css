@@ -139,3 +139,27 @@ header h2 {
     margin-bottom: 20px;
     text-align: center;
 }
+
+.input-transparente {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #333;
+    padding: 4px 0;
+    border-bottom: 1px dashed #ccc; /* Linha discreta para indicar que é editável */
+}
+
+.input-transparente:focus {
+    outline: none;
+    border-bottom: 1px solid #0064b6;
+    background: #f0f7ff;
+}
+
+/* Ajuste para o placeholder não sumir totalmente */
+.input-transparente::placeholder {
+    color: #888;
+    font-style: italic;
+    font-size: 0.85rem;
+}

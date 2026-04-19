@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Seletor de Lançamentos (Lógica de Menu)
     document.getElementById('cbx-fields').addEventListener('change', function() {
+        
         calculoRealizado = false;
         const selectedId = this.value;
         if (selectedId === "field-0") return;
@@ -229,7 +230,6 @@ function consolidar() {
     ui.mostrarLinha('vf36', math.toReal(totalResources));
 
     calculoRealizado = true;
-    document.getElementById('btn-limpar-todos').innerText = "🖫 Salvar e Encerrar";//Alterar nome do botão para nova função
 
     // Finalização Visual
     document.getElementById('resumo-table').style.display = 'block';

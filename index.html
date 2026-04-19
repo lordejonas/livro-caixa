@@ -2,102 +2,330 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0064b6">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
-    <!--<link rel="icon" type="image/png" href="assets/icons/favicon.ico">-->
-    
-    <link rel="apple-touch-icon" href="assets/icons/logo-ssvp-transparente-st_192x192.png">
-    <meta name="apple-mobile-web-app-title" content="Tesouraria Conferência">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <link rel="manifest" href="manifest.json">
-    
-    <title>Tesouraria Conferência</title>
-
+    <title>Livro Caixa SSVP</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
-
-    <style>
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        .menu-card {
-            background: white;
-            border-radius: 12px;
-            padding: 40px 10px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-decoration: none;
-            color: #0064b6;
-            font-weight: bold;
-            border: 2px solid #0064b6;
-        }
-        /*.icon-box { font-size: 3rem; margin-bottom: 10px; }*/
-        /* Pequeno ajuste na icon-box para centralizar imagens e emojis igualmente */
-        .icon-box { 
-            font-size: 3rem; 
-            margin-bottom: 10px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 3.5rem; /* Altura fixa para manter o alinhamento dos textos */
-        }
-        /* Ajuste para que a imagem do PIX siga o tamanho dos emojis */
-        .menu-icon-img {
-            width: 3rem;  /* Mesma largura do font-size do icon-box */
-            height: 3rem; /* Mesma altura para manter a proporção */
-            object-fit: contain;
-            vertical-align: middle;
-        }
-    </style>
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="assets/icons/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0064b6">
 </head>
 <body>
-    <header class="header-principal">
-        <div class="header-container-flex">
-            <img src="assets/icons/logo-ssvp-global.png" 
-                alt="Logo SSVP" 
-                class="logo-principal-ssvp">
-            
-            <div class="header-titulos">
-                <h1>Tesouraria Conferência</h1>
-                <!--<p>Conferência Santas Perpétua e Felicidade</p>-->
-            </div>
+    <header>
+        <div class="header-content">
+            <img src="assets/icons/favicon.ico" alt="Ícone SSVP" class="header-icon">
+            <h2>Preenchimento Livro Caixa</h2>
         </div>
+        <input type="hidden" id="initial-state" value="1">
     </header>
 
-    <main class="menu-grid">
-        <a href="chave-pix.html" class="menu-card">
-            <div class="icon-box">
-                <img src="assets/icons/icons8-pix-50.png" alt="Ícone PIX" class="menu-icon-img">
+    <main id="main-container">
+        <section id="reuniao-passada-table" class="responsive-table">
+            <div class="table-header">
+                VALORES INICIAIS
             </div>
-            <span>Chave Pix Conferência</span>
-        </a>
-        <a href="caixa.html" class="menu-card">
-            <div class="icon-box">📘</div>
-            <span>Livro Caixa</span>
-        </a>
-        <a href="contador.html" class="menu-card">
-            <div class="icon-box">💵</div>
-            <span>Contar Dinheiro</span>
-        </a>
-        <a href="contador-parcial.html" class="menu-card">
-            <div class="icon-box">💰</div>
-            <span>Contar Dinheiro (Parcial)</span>
-        </a>
+            <div class="table-row">
+                <div class="h-col1">00</div>
+                <div class="table-item-desc">Número da Ata</div>
+                <div class="table-item-val"><input type="number" id="vf40" class="valor" inputmode="numeric"></div>
+            </div>
+            <div class="table-row">
+                <div class="h-col1">00</div>
+                <div class="table-item-desc">Data da Reunião</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf41" class="valor" maxlength="10" 
+                        placeholder="dd/mm/aaaa" inputmode="numeric" autocomplete="off">
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="h-col1">14</div>
+                <div class="table-item-desc">Saldo final da semana anterior</div>
+                <div class="table-item-val"><input type="text" id="vf37" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div class="table-row">
+                <div class="h-col1">34</div>
+                <div class="table-item-desc">
+                    Décimas acumuladas <a href="#" id="link-repasse-38" class="link-small">(repasses)</a>
+                </div>
+                <div class="table-item-val"><input type="text" id="vf38" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-38a" class="table-row row-repasse" style="display: none;">
+                <div class="h-col1">R</div>
+                <div class="table-item-desc">Repasse valores décimas ao conselho</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf38a" class="valor input-mask" inputmode="numeric">
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="h-col1">35</div>
+                <div class="table-item-desc">
+                    Outras contribuições para enviar ao Conselho particular (Coleta de Ozanam, Contribuição da solidariedade)
+                    <a href="#" id="link-repasse-39" class="link-small">(repasses)</a>
+                </div>
+                <div class="table-item-val"><input type="text" id="vf39" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-39a" class="table-row row-repasse" style="display: none;">
+                <div class="h-col1">R</div>
+                <div class="table-item-desc">Repasse valores contribuições ao conselho</div>
+                <div class="table-item-val">
+                    <input type="text" id="vf39a" class="valor input-mask" inputmode="numeric">
+                </div>
+            </div>
+        </section>
+
+        <div id="message" style="display:none"></div>
+
+        <section id="receita-table" class="responsive-table" style="display:none">
+            <div class="table-header">
+                RECEITAS
+            </div>
+            <div id="field-1" class="table-row" style="display:none">
+                <div class="h-col1">01</div>
+                <div class="table-item-desc">Coleta na reunião</div>
+                <div class="table-item-val"><input type="text" id="vf1" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-2" class="table-row" style="display:none">
+                <div class="h-col1">02</div>
+                <div class="table-item-desc">Subscritores e Benfeitores</div>
+                <div class="table-item-val"><input type="text" id="vf2" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-3" class="table-row" style="display:none">
+                <div class="h-col1">03</div>
+                <div class="table-item-desc">Doações recebidas</div>
+                <div class="table-item-val"><input type="text" id="vf3" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-4" class="table-row" style="display:none">
+                <div class="h-col1">04</div>
+                <div class="table-item-desc"> Resultados Líquidos c/ realização de eventos (rifas, bazar, almoços etc)</div>
+                <div class="table-item-val"><input type="text" id="vf4" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-5" class="table-row" style="display:none">
+                <div class="h-col1">05</div>
+                <div class="table-item-desc">Outras receitas sujeitas a Décimas</div>
+                <div class="table-item-val"><input type="text" id="vf5" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-6" class="table-row auto-field" style="display:none">
+                <div class="h-col1">06</div>
+                <div class="table-item-desc">Subtotal Base Décima</div>
+                <div class="table-item-val"><input type="text" id="vf6" class="valor" disabled></div>
+            </div>
+            <div id="field-7" class="table-row" style="display:none">
+                <div class="h-col1">07</div>
+                <div class="table-item-desc">Subvençãoo ofical dos Poderes Públicos</div>
+                <div class="table-item-val"><input type="text" id="vf7" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-8" class="table-row" style="display:none">
+                <div class="h-col1">08</div>
+                <div class="table-item-desc">Contribuição da sociedade e Coleta da Ozanam</div>
+                <div class="table-item-val"><input type="text" id="vf8" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-9" class="table-row" style="display:none">
+                <div class="h-col1">09</div>
+                <div class="table-item-desc">União Fraternal</div>
+                <div class="table-item-val"><input type="text" id="vf9" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-10" class="table-row" style="display:none">
+                <div class="h-col1">10</div>
+                <div class="table-item-desc">Outros 1 (Receita)</div>
+                <div class="table-item-val"><input type="text" id="vf10" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-11" class="table-row" style="display:none">
+                <div class="h-col1">11</div>
+                <div class="table-item-desc">Outros 2 (Receita)</div>
+                <div class="table-item-val"><input type="text" id="vf11" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-12" class="table-row" style="display:none">
+                <div class="h-col1">12</div>
+                <div class="table-item-desc">Recebimentos para repasses (exclusivamente em R$)</div>
+                <div class="table-item-val"><input type="text" id="vf12" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div class="bloco-fechamento-receita">
+                <div id="field-13" class="table-row auto-field" style="display:none">
+                    <div class="h-col1">13</div>
+                    <div class="table-item-desc">Soma Receita Semana</div>
+                    <div class="table-item-val"><input type="text" id="vf13" class="valor" disabled></div>
+                </div>
+                <div id="field-14" class="table-row">
+                    <div class="h-col1">14</div>
+                    <div class="table-item-desc">Saldo Semana Anterior</div>
+                    <div class="table-item-val"><input type="text" id="vf14" class="valor input-mask"></div>
+                </div>
+                <div id="field-15" class="table-row" style="display:none">
+                    <div class="h-col1">15</div>
+                    <div class="table-item-desc">Balanço Total</div>
+                    <div class="table-item-val"><input type="text" id="vf15" class="valor" disabled></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="despesa-table" class="responsive-table" style="display: none;">
+            <div class="table-header">
+                DESPESAS
+            </div>
+            <div id="field-16" class="table-row" style="display: none;">
+                <div class="h-col1">16</div>
+                <div class="table-item-desc">Cestas básicas / Higiene / Limpeza</div>
+                <div class="table-item-val"><input type="text" id="vf16" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-17" class="table-row" style="display: none;">
+                <div class="h-col1">17</div>
+                <div class="table-item-desc">Moradia dos assistidos</div>
+                <div class="table-item-val"><input type="text" id="vf17" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-18" class="table-row" style="display: none;">
+                <div class="h-col1">18</div>
+                <div class="table-item-desc">Contas dos assistidos (Água/Luz)</div>
+                <div class="table-item-val"><input type="text" id="vf18" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-19" class="table-row" style="display: none;">
+                <div class="h-col1">19</div>
+                <div class="table-item-desc">Obras especiais</div>
+                <div class="table-item-val"><input type="text" id="vf19" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-20" class="table-row" style="display: none;">
+                <div class="h-col1">20</div>
+                <div class="table-item-desc">União Fraternal (Saída)</div>
+                <div class="table-item-val"><input type="text" id="vf20" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-21" class="table-row" style="display: none;">
+                <div class="h-col1">21</div>
+                <div class="table-item-desc">Outros 1 (Despesa)</div>
+                <div class="table-item-val"><input type="text" id="vf21" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-22" class="table-row" style="display: none;">
+                <div class="h-col1">22</div>
+                <div class="table-item-desc">Outros 2 (Despesa)</div>
+                <div class="table-item-val"><input type="text" id="vf22" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-23" class="table-row" style="display: none;">
+                <div class="h-col1">23</div>
+                <div class="table-item-desc">Despesas administrativas / Consumo</div>
+                <div class="table-item-val"><input type="text" id="vf23" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-24" class="table-row" style="display: none;">
+                <div class="h-col1">24</div>
+                <div class="table-item-desc">Décimas pagas ao C.P.</div>
+                <div class="table-item-val"><input type="text" id="vf24" class="valor" disabled></div>
+            </div>
+            <div id="field-25" class="table-row" style="display: none;">
+                <div class="h-col1">25</div>
+                <div class="table-item-desc">Outros 3</div>
+                <div class="table-item-val"><input type="text" id="vf25" class="valor input-mask" inputmode="numeric"></div>
+            </div>
+            <div id="field-26" class="table-row" style="display: none;">
+                <div class="h-col1">26</div>
+                <div class="table-item-desc">Repasse da contribuição da solidariedade e da coleta de Ozanan (Linha 8)</div>
+                <div class="table-item-val"><input type="text" id="vf26" class="valor" disabled></div>
+            </div>
+            <div id="field-27" class="table-row" style="display: none;">
+                <div class="h-col1">27</div>
+                <div class="table-item-desc">Repasse referente a linha 12</div>
+                <div class="table-item-val"><input type="text" id="vf27" class="valor" disabled></div>
+            </div>
+            <div class="bloco-fechamento-despesa">
+                <div id="field-28" class="table-row" style="display: none;">
+                    <div class="h-col1">28</div>
+                    <div class="table-item-desc">Soma das Despesas da Semana</div>
+                    <div class="table-item-val"><input type="text" id="vf28" class="valor" disabled></div>
+                </div>
+                <div id="field-29" class="table-row" style="display: none;">
+                    <div class="h-col1">29</div>
+                    <div class="table-item-desc">Saldo Final Semana Atual</div>
+                    <div class="table-item-val"><input type="text" id="vf29" class="valor" disabled></div>
+                </div>
+                <div id="field-30" class="table-row" style="display: none;">
+                    <div class="h-col1">30</div>
+                    <div class="table-item-desc">Balanço</div>
+                    <div class="table-item-val"><input type="text" id="vf30" class="valor" disabled></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="resumo-table" class="responsive-table" style="display: none;">
+            <div class="table-header">
+                RESUMO SITUAÇÃO CAIXA
+            </div>
+            <div id="field-34" class="table-row">
+                <div class="h-col1">34</div>
+                <div class="table-item-desc">Décimas a enviar ao C.P. <span id="accumulatedTenth" style="font-size: 0.8em; color: gray;"></span></div>
+                <div class="table-item-val"><input type="text" id="vf34" class="valor" disabled></div>
+            </div>
+            <div id="field-35" class="table-row" style="display: none;">
+                <div class="h-col1">35</div>
+                <div class="table-item-desc">Outros repasses (Ozanam/Solidariedade)</div>
+                <div class="table-item-val"><input type="text" id="vf35" class="valor" disabled></div>
+            </div>
+            <div id="field-36" class="table-row" style="display: none;">
+                <div class="h-col1">36</div>
+                <div class="table-item-desc">Total Recursos em Tesouraria</div>
+                <div class="table-item-val"><input type="text" id="vf36" class="valor" disabled></div>
+            </div>
+        </section>
+
+        <section class="chose-section">
+            <select id="cbx-fields">
+                <option value="field-0" disabled selected>Selecione o lançamento...</option>
+                <optgroup label="Receitas">
+                    <option  value="field-1">01 - Coleta na reunião</option>
+                    <option  value="field-2">02 - Subscritores/benf</option>
+                    <option  value="field-3">03 - Outras doações...</option>
+                    <option  value="field-4">04 - Result. Li. (Bazar)</option>
+                    <option  value="field-5">05 - Outras Receita 1/10</option>
+                    <option  value="field-7">07 - Subvenção oficial</option>
+                    <option  value="field-8">08 - Solidaridade/Ozanam</option>
+                    <option  value="field-9">09 - União Fraternal</option>
+                    <option value="field-10">10 - Outros (Receita 1)</option>
+                    <option value="field-11">11 - Outros (Receita 2)</option>
+                    <option value="field-12">12 - Recebi. repasses R$</option>
+                </optgroup>
+                <optgroup label="======== Despesas ========">
+                    <option value="field-16">16 - Cestas básicas out.</option>
+                    <option value="field-17">17 - Moradia assistidos</option>
+                    <option value="field-18">18 - Contas assistidos</option>
+                    <option value="field-19">19 - Obras especiais</option>
+                    <option value="field-20">20 - União Fraternal</option>
+                    <option value="field-21">21 - Outras despesas 1</option>
+                    <option value="field-22">22 - Outras despesas 2</option>
+                    <option value="field-23">23 - Despesas administ.</option>
+                    <option value="field-25">25 - Outros (Despesa 3)</option>
+                </optgroup>
+            </select>
+        </section>
+
+        <div class="actions">
+            <button id="btn-consolidar" style="display:none">Calcular Lançamentos</button>
+            <button id="btn-whatsapp" class="btn-success" style="display:none">Enviar Relatório WhatsApp</button>
+            <button id="btn-limpar-todos" class="btn-danger" style="display:none">Encerrar</button>
+        </div>
+        <div id="container-limpar-inicio">
+            <button id="btn-limpar-inicio" class="btn-secondary">
+                Limpar Valores Iniciais
+            </button>
+        </div>
     </main>
 
     <footer class="footer-fixo">
         <div class="footer-content">
-            <span>Conferência Santa Perpétua e Santa Felicidade - DF</span>
-            <span class="version-tag">v3.0.0-Beta V</span>
+            <span>Conferência Santa Perpétua e Santa Felicidade</span>
+            <span class="version-tag">v2.0.0</span>
         </div>
     </footer>
+    
+    <script type="module" src="js/script.js"></script>
+    <div id="modal-confirm" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Encerrar?</h3>
+            <p>Deseja realmente encerrar o preenchimento?</p>
+            <div class="modal-buttons">
+                <button id="btn-confirm-cancel" class="btn-secondary">Cancelar</button>
+                <button id="btn-confirm-yes" class="btn-danger">Sim, Limpar</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

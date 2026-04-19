@@ -20,9 +20,6 @@ body {
     padding: 10px;
     color: #333;
     padding-bottom: 90px; /* Ajustado para dar folga ao rodapé fixo */
-    
-    /* Adiciona um preenchimento extra no topo apenas para iPhones */
-    padding-top: env(safe-area-inset-top);
 }
 
 #message { 

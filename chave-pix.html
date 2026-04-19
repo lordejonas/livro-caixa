@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0064b6">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <!--<link rel="icon" type="image/png" href="assets/icons/favicon.ico">-->
+
+    <link rel="apple-touch-icon" href="assets/icons/logo-ssvp-transparente-st_192x192.png">
+    <meta name="apple-mobile-web-app-title" content="Tesouraria Conferência">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Chave PIX - Conferência</title>
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/contador.css">
+
+    <script src="js/libs/qrcode.min.js"></script> 
+    <script src="js/pix.js"></script>
+
+    <style>
+        /* Estilos específicos para esta página */
+        #qrcode {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            /*margin-top: 20px;*/
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Efeito de Tela Cheia para o QR Code */
+        #qrcode.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* dvh ocupa 100% da tela visível, descontando barras do navegador */
+            height: 100dvh; 
+            background: white;
+            display: flex;
+            flex-direction: column; /* Para alinhar imagem e botão de fechar */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 0;
+            margin: 0;
+            padding-top: 0 !important;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        #qrcode.fullscreen img {
+            /* Ajusta para cobrir a maior área possível sem distorcer */
+            max-width: 90vw !important;
+            max-height: 80dvh !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+        #qrcode.fullscreen::after {
+            content: "Toque para fechar";
+            position: absolute;
+            bottom: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            font-family: sans-serif;
+        }
+
+        .chave-display {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-all;
+            max-width: 90%;
+            margin: 10px auto;
+            line-height: 1.4;
+        }
+
+        /* Garantindo que os botões sigam o padrão do contador */
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            display: block;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <img src="assets/icons/favicon.ico" alt="Ícone SSVP" class="header-icon">
+            <h2>Chave PIX unidade <b>Vicentina</b></h2> 
+            
+            <a href="index.html" class="home-link" title="Voltar ao Início">
+                <svg class="home-icon-svg" viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="white"/>
+                </svg>
+            </a>
+        </div>
+        <input type="hidden" id="initial-state" value="1">
+    </header>
+    <!--
+    <header style="background: #0064b6; color: white; padding: 15px; text-align: center;">
+        <h1 style="margin: 0; font-size: 1.2rem;">Chave PIX para Doação</h1>
+    </header>
+    -->
+    <main class="container">
+        
+        <section id="config-secao" style="padding: 20px; background: #f9f9f9; border-top: 2px solid #0064b6; margin-top: 20px;">
+            <h3 style="color: #0064b6; margin-bottom: 15px;">Configuração da Conta</h3>
+            
+            <label for="input-nome-conf">Nome da Conferência:</label>
+            <input type="text" id="input-nome-conf" placeholder="Ex: São Vicente de Paula" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 15px; box-sizing: border-box;">
+
+            <label for="input-beneficiario">Beneficiário (Nome do Titular):</label>
+            <input type="text" id="input-beneficiario" placeholder="Nome de quem receberá o PIX" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 15px; box-sizing: border-box;">
+
+            <label for="input-banco">Instituição / Banco:</label>
+            <input type="text" id="input-banco" placeholder="Ex: Banco do Brasil, Nubank..." class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 15px; box-sizing: border-box;">
+
+            <label for="input-chave">Chave PIX:</label>
+            <input type="text" id="input-chave" placeholder="Cole aqui a sua chave" class="input-qty" style="width: 100%; text-align: left; padding: 10px; margin-bottom: 20px; box-sizing: border-box;">
+
+            <button onclick="salvarConfiguracao()" class="btn-primary">
+                ✅ Salvar Dados
+            </button>
+        </section>
+
+        <section id="display-secao" style="display: none; text-align: center; padding: 0 10px; border-top: 2px solid #0064b6;">
+            
+            <div id="texto-chave" class="chave-display"></div>
+
+            <div id="qrcode"></div>
+            
+            <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">(Toque na imagem para ampliar)</p>
+            
+            <div style="margin-top: 20px;">
+                <button onclick="copiarChave()" class="btn-primary">
+                    📋 Copiar Texto da Chave
+                </button>
+
+                <button onclick="baixarQRCode()" class="btn-secondary">
+                    💾 Baixar Imagem QR Code
+                </button>
+
+                <button onclick="enviarPix()" class="btn-secondary">
+                    📱 Enviar via WhatsApp
+                </button>
+            </div>
+
+            <div style="margin-top: 30px; margin-bottom: 30px;">
+                <button onclick="editarChave()" style="background: none; border: none; color: #0064b6; text-decoration: underline; font-size: 0.9rem; cursor: pointer;">
+                    Alterar Nome ou Chave
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer-fixo">
+        <div class="footer-content">
+            <span>Conferência Santa Perpétua e Santa Felicidade - DF</span>
+            <span class="version-tag">v3.0.0-Beta V</span>
+        </div>
+    </footer>
+    <!--Garantir que Service Worker fique ativo ativo
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log("SW registrado com sucesso:", reg.scope))
+                    .catch(err => console.log("Falha ao registrar SW:", err));
+            });
+        }
+    </script>
+    -->
+</body>
+</html>

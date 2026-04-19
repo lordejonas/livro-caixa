@@ -6,7 +6,22 @@ Os tópicos tem a seguinte descrições
 - **Alterado**: Para mudanças em funcionalidades já existentes.
 - **Removido**: Para recursos que foram tirados do app.
 
-## [2.0.0] – 2026-04-02
+## [3.0.0] – 2026-04-10
+### Adicionado
+- Nova funcionalidade de contar cédulas/moedas e salvar os valores
+- Inclusão da funcionalidade chave pix. Para manter a chaves pix da conferência.
+- Inclusão da do menu na página index.html
+- Separação em três páginas: contador.html, caixa.html e index.html dai versão 3
+- Inclusão de tags no index.html para ter compatibilidade com iPhone/Safari
+- Inclusão do icone "Livro Caixa" em dimensão 192x192
+
+## [2.0.1] – 2026-04-10
+### Alterado
+- Mensagem de confirmação do botão "Encerrar"
+- Reposicionar a chamada do arquivo js/script.js para a tag <head>
+- Alterar manifest.json para ajustar a tela de abertura
+
+## [2.0.0] – 2026-04-10
 ### Adicionado
 - Criação da funcionalidade "Enviar Relatório WhatsApp"
 - Criação da funcionalidade de abatimentos de valores quando houver repasses de décimas ou contribuições 

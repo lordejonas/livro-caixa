@@ -157,7 +157,7 @@ export function enviarWhatsApp() {
     //let msg = `📊 *RELATÓRIO DE CAIXA SSVP*\n\n`;
     let msg = `*POSIÇÃO CAIXA DA CONFERÊNCIA*\n`;
     msg += `*Dia ${dataReuniao} - Ata Nº ${numeroAta}*\n`;
-    mensagem += "--------------------------\n\n";
+    msg += "--------------------------\n\n";
     msg += `💰 *Saldo anterior:* R$ ${saldoAnterior}\n\n`;
 
     msg += `📈 *RECEITAS*\n`;

@@ -84,21 +84,6 @@ function despesas(vf24, vf28, totalRepasses){
     return linhas.join('\n') + '\n\n';;
 }
 
-function despesas_old(vf24, vf28){
-    let ret = "";
-    let demaisDespesas = vf28 - vf24;
-    if(vf24 > 0){
-        ret += `Recolhimento décima: R$ ${toReal(vf24)}\n`;
-    }
-
-    if(demaisDespesas > 0){
-        ret += `Demais despesas: R$ ${toReal(demaisDespesas)}\n`;
-    }
-
-    ret += `Total despesas: R$ ${toReal(vf28)}\n\n`;
-    return ret;
-}
-
 /*
 function enviarWhatsApp() {
     // 1. Funções auxiliares para conversão (conforme você já usa no script)

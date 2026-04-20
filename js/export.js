@@ -87,14 +87,14 @@ function despesas(vf24, vf28, totalRepasses){
 export function enviarWhatsApp() {
     // 1. Mapeamento de nomes resumidos (Dicionário)
     const nomesCampos = {
-        'vf1': 'Coleta Reunião',
-        'vf2': 'Benfeitores/Subscritores',
-        'vf3': 'Porta Igreja/doações/etc',
-        'vf4': 'Eventos/Bazar/etc',
-        'vf5': 'Outras Rec. suj. Décima',
-        'vf7': 'Subv. Pública',
-        'vf8': 'Solidariedade/Ozanam',
-        'vf9': 'União Fraternal (E)',
+        'vf1':  'Coleta Reunião',
+        'vf2':  'Benfeitores/Subscritores',
+        'vf3':  'Porta Igreja/doações/etc',
+        'vf4':  'Eventos/Bazar/etc',
+        'vf5':  'Outras Rec. suj. Décima',
+        'vf7':  'Subv. Pública',
+        'vf8':  'Solidariedade/Ozanam',
+        'vf9':  'União Fraternal (E)',
         'vf10': 'Outros 1', // Será sobrescrito se houver descrição manual
         'vf11': 'Outros 2', // Será sobrescrito se houver descrição manual
         'vf12': 'Recebi. Repasses',
@@ -129,7 +129,7 @@ export function enviarWhatsApp() {
             nome = inputDescManual.value.trim();
         }
 
-        return `🔹 ${nome}: ${valor}\n`;
+        return `🔹 ${nome}: R$ ${valor}\n`;
     };
 
     // 3. Captura de Totais
@@ -170,7 +170,7 @@ export function enviarWhatsApp() {
 
     msg += `✅ *TOTAIS*\n`;
     msg += `*Saldo final em caixa: R$ ${saldoFinal}*\n\n`;
-    msg += `_Gerado pelo App Tesouraria_`;
+    msg += `_Gerado pelo App Livro Caixa_`;
 
     // 6. Envio
     //console.log(msg);

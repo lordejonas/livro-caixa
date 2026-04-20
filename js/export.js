@@ -88,18 +88,18 @@ export function enviarWhatsApp() {
     // 1. Mapeamento de nomes resumidos (Dicionário)
     const nomesCampos = {
         'vf1': 'Coleta Reunião',
-        'vf2': 'Benfeitores',
-        'vf3': 'Doações',
-        'vf4': 'Eventos/Bazar etc',
-        'vf5': 'Outras Rec. suj.(Décima)',
+        'vf2': 'Benfeitores/Subscritores',
+        'vf3': 'Porta Igreja/doações/etc',
+        'vf4': 'Eventos/Bazar/etc',
+        'vf5': 'Outras Rec. suj. Décima',
         'vf7': 'Subv. Pública',
         'vf8': 'Solidariedade/Ozanam',
         'vf9': 'União Fraternal (E)',
         'vf10': 'Outros 1', // Será sobrescrito se houver descrição manual
         'vf11': 'Outros 2', // Será sobrescrito se houver descrição manual
-        'vf12': 'Rec. p/ Repasse',
+        'vf12': 'Recebi. Repasses',
         
-        'vf16': 'Básicas, Cestas, etc',
+        'vf16': 'Básicas/Cestas/etc',
         'vf17': 'Moradia Assistidos',
         'vf18': 'Pagamento Conta Assist.',
         'vf19': 'Obras Especiais',
@@ -107,7 +107,7 @@ export function enviarWhatsApp() {
         'vf21': 'Outros 1', // Será sobrescrito se houver descrição manual
         'vf22': 'Outros 2', // Será sobrescrito se houver descrição manual
         'vf23': 'Desp. Admin',
-        'vf24': 'Décimas C.P.',
+        'vf24': 'Recolhimento Décimas',
         'vf25': 'Outros 3', // Será sobrescrito se houver descrição manual
         'vf26': 'Repasse Ozanam/Solid.',
         'vf27': 'Repasse Linha 12'
@@ -129,7 +129,7 @@ export function enviarWhatsApp() {
             nome = inputDescManual.value.trim();
         }
 
-        return `🔹 ${nome}: R$ ${valor}\n`;
+        return `🔹 ${nome}: ${valor}\n`;
     };
 
     // 3. Captura de Totais

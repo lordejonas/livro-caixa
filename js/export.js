@@ -107,7 +107,7 @@ export function enviarWhatsApp() {
         'vf21': 'Outros 1', // Será sobrescrito se houver descrição manual
         'vf22': 'Outros 2', // Será sobrescrito se houver descrição manual
         'vf23': 'Desp. Admin',
-        'vf24': 'Recolhimento Décimas',
+        'vf24': 'Recolhimento Décima',
         'vf25': 'Outros 3', // Será sobrescrito se houver descrição manual
         'vf26': 'Repasse Ozanam/Solid.',
         'vf27': 'Repasse Linha 12'
